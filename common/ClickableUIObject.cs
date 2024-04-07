@@ -17,7 +17,25 @@ namespace online_osu_beatmap_editor_client.components
 
         public event EventHandler Clicked;
 
-        public ClickableUIObject(int posX, int posY, Color defaultColor, Color activeColor) : base(posX, posY)
+        private bool _isActive = false;
+
+        public bool isActive
+        {
+            get
+            {
+                return _isActive;
+            }
+            set
+            {
+                if (value != _isActive)
+                {
+                    _isActive = value;
+                    currentColor = value ? activeColor : defaultColor;
+                }
+            }
+        }
+
+        public ClickableUIObject(int posX, int posY, Color defaultColor, Color activeColor, bool isActive = false) : base(posX, posY)
         {
             this.defaultColor = defaultColor;
             this.activeColor = activeColor;
@@ -44,7 +62,10 @@ namespace online_osu_beatmap_editor_client.components
             else if (isPressed && !Mouse.IsButtonPressed(Mouse.Button.Left))
             {
                 isPressed = false;
-                currentColor = defaultColor;
+                if (!isActive)
+                {
+                    currentColor = defaultColor;
+                }
                 OnRelease();
             }
         }
