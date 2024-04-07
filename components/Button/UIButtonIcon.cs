@@ -23,12 +23,15 @@ namespace online_osu_beatmap_editor_client.components.Button
         private RectangleShape buttonShape;
         public event EventHandler Clicked;
 
-        public UIButtonIcon(string iconPath, int posX, int posY, bool isActive = false)
+        public UIButtonIcon(string iconPath, int posX = 0, int posY = 0, bool isActive = false)
             : base(posX, posY)
         {
             this.isActive = isActive;
             this.GenerateBaseButtonShape();
             this.GenerateIcon(iconPath);
+
+            width = (int)buttonSize.X;
+            height = (int)buttonSize.Y;
         }
 
         private void GenerateBaseButtonShape()
@@ -64,6 +67,12 @@ namespace online_osu_beatmap_editor_client.components.Button
                 isClicked = false;
                 buttonShape.FillColor = isActive ? activeColor : normalColor;
             }
+        }
+
+        public override void HandlePositionUpdate(int posX, int posY)
+        {
+            buttonShape.Position = new Vector2f(posX, posY);
+            iconSprite.Position = new Vector2f(posX + buttonShape.Size.X / 2, posY + buttonShape.Size.Y / 2);
         }
 
         public override void Update()

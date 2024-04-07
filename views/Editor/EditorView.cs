@@ -1,5 +1,6 @@
 ﻿using online_osu_beatmap_editor_client.common;
 using online_osu_beatmap_editor_client.components.Button;
+using online_osu_beatmap_editor_client.components.Container;
 using SFML.Graphics;
 using System;
 
@@ -10,18 +11,26 @@ namespace online_osu_beatmap_editor_client.views.Editor
         public EditorView(RenderWindow window)
         {
             BaseUIComponent.SetWindow(window);
+            this.GenerateToolbar();
+        }
 
-            UIButtonIcon button1 = new UIButtonIcon("assets/icons/circle.png", 100, 100);
-            UIButtonIcon button2 = new UIButtonIcon("assets/icons/circle.png", 250, 100);
-            UIButtonIcon button3 = new UIButtonIcon("assets/icons/circle.png", 400, 100);
+        private void GenerateToolbar()
+        {
+            UIVerticalContainer verticalContainer = new UIVerticalContainer(100, 100, 10);
+
+            UIButtonIcon button1 = new UIButtonIcon("assets/icons/circle.png");
+            UIButtonIcon button2 = new UIButtonIcon("assets/icons/circle.png");
+            UIButtonIcon button3 = new UIButtonIcon("assets/icons/circle.png");
 
             button1.Clicked += (sender, e) => Console.WriteLine("Button 1 clicked!");
             button2.Clicked += (sender, e) => Console.WriteLine("Button 2 clicked!");
             button3.Clicked += (sender, e) => Console.WriteLine("Button 3 clicked!");
 
-            AddComponent(button1);
-            AddComponent(button2);
-            AddComponent(button3);
+            verticalContainer.AddElement(button1);
+            verticalContainer.AddElement(button2);
+            verticalContainer.AddElement(button3);
+
+            AddComponent(verticalContainer);
         }
     }
 }

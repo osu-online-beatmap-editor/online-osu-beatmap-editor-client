@@ -1,14 +1,15 @@
 ﻿using SFML.Graphics;
-using SFML.System;
 
 namespace online_osu_beatmap_editor_client.common
 {
     public abstract class BaseUIComponent
     {
-        protected int posX;
-        protected int posY;
+        public int posX;
+        public int posY;
+        public int width;
+        public int height;
 
-        protected static RenderWindow window; 
+        protected static RenderWindow window;
 
         public static void SetWindow(RenderWindow _window)
         {
@@ -21,6 +22,14 @@ namespace online_osu_beatmap_editor_client.common
             this.posY = posY;
         }
 
+        public void SetPosition(int posX, int poxY)
+        {
+            this.posX = posX;
+            this.posY = poxY;
+            this.HandlePositionUpdate(posX, poxY);
+        }
+
+        public virtual void HandlePositionUpdate(int posX, int poxY) { }
 
         public abstract void Update();
 
