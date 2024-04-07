@@ -66,6 +66,7 @@
     <Compile Include="config\StyleVariables.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="views\Editor\EditorNavBar.cs" />
     <Compile Include="views\Editor\EditorToolBar.cs" />
     <Compile Include="views\Editor\EditorTools.cs" />
     <Compile Include="views\Editor\EditorView.cs" />

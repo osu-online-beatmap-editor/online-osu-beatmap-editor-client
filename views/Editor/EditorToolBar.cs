@@ -1,11 +1,9 @@
 ﻿using online_osu_beatmap_editor_client.common;
 using online_osu_beatmap_editor_client.components.Button;
 using online_osu_beatmap_editor_client.components.Container;
+using online_osu_beatmap_editor_client.config;
+using SFML.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
