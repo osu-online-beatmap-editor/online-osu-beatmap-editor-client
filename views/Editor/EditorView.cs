@@ -25,7 +25,19 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private void GenerateNavBar()
         {
-            navBar = new UIContainer(0, 0, 1920, 50, 10, ContainerOrientation.Horizontal);
+            navBar = new UIContainer(0, 0, 1920, 50, 0, ContainerOrientation.Horizontal);
+
+            UIButtonLabel button1 = new UIButtonLabel("File");
+            UIButtonLabel button2 = new UIButtonLabel("Edit");
+            UIButtonLabel button3 = new UIButtonLabel("View");
+
+            button1.Clicked += (sender, e) => Console.WriteLine("Button 1 clicked!");
+            button2.Clicked += (sender, e) => Console.WriteLine("Button 2 clicked!");
+            button3.Clicked += (sender, e) => Console.WriteLine("Button 3 clicked!");
+
+            navBar.AddElement(button1);
+            navBar.AddElement(button2);
+            navBar.AddElement(button3);
 
             AddComponent(navBar);
         }

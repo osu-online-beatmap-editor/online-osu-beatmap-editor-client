@@ -58,8 +58,10 @@
   <ItemGroup>
     <Compile Include="common\BaseUIComponent.cs" />
     <Compile Include="common\BaseView.cs" />
-    <Compile Include="components\Button\UIButtonIcon.cs" />
+    <Compile Include="common\ClickableUIObject.cs" />
+    <Compile Include="components\ButtonIcon\UIButtonIcon.cs" />
     <Compile Include="components\HitCircle\HitCircle.cs" />
+    <Compile Include="components\UIButtonLabel\UIButtonLabel.cs" />
     <Compile Include="components\UIContainer\UIContainer.cs" />
     <Compile Include="config\StyleVariables.cs" />
     <Compile Include="Program.cs" />
@@ -94,6 +96,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="assets\font\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

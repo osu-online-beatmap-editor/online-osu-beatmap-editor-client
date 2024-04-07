@@ -22,11 +22,11 @@ namespace online_osu_beatmap_editor_client.common
             this.posY = posY;
         }
 
-        public void SetPosition(int posX, int poxY)
+        public void SetPosition(int posX, int posY)
         {
             this.posX = posX;
-            this.posY = poxY;
-            this.HandlePositionUpdate(posX, poxY);
+            this.posY = posY;
+            HandlePositionUpdate(posX, posY);
         }
 
         public virtual void HandlePositionUpdate(int posX, int poxY) { }
