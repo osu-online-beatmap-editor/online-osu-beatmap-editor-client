@@ -9,19 +9,25 @@ namespace online_osu_beatmap_editor_client.views.Editor
     {
         private UIContainer toolbar;
 
+
+        private UIButtonIcon buttonSelect;
+        private UIButtonIcon buttonCircle;
+        private UIButtonIcon buttonSlider;
+        private UIButtonIcon buttonSpinner;
+
         public EditorToolBar ()
         {
             toolbar = new UIContainer(0, 50, 95, 1080 - 50, 10, ContainerOrientation.Vertical);
 
-            UIButtonIcon buttonSelect = new UIButtonIcon("assets/icons/select.png");
-            UIButtonIcon buttonCircle = new UIButtonIcon("assets/icons/circle.png");
-            UIButtonIcon buttonSlider = new UIButtonIcon("assets/icons/slider.png");
-            UIButtonIcon buttonSpinner = new UIButtonIcon("assets/icons/spinner.png");
+            buttonSelect = new UIButtonIcon("assets/icons/select.png");
+            buttonCircle = new UIButtonIcon("assets/icons/circle.png");
+            buttonSlider = new UIButtonIcon("assets/icons/slider.png");
+            buttonSpinner = new UIButtonIcon("assets/icons/spinner.png");
 
-            buttonSelect.Clicked += (sender, e) => Console.WriteLine("Button 1 clicked!");
-            buttonCircle.Clicked += (sender, e) => Console.WriteLine("Button 2 clicked!");
-            buttonSlider.Clicked += (sender, e) => Console.WriteLine("Button 3 clicked!");
-            buttonSpinner.Clicked += (sender, e) => Console.WriteLine("Button 3 clicked!");
+            buttonSelect.Clicked += (sender, e) => EditorData.currentlySelectedEditorTool = EditorTools.Select;
+            buttonCircle.Clicked += (sender, e) => EditorData.currentlySelectedEditorTool = EditorTools.Circle;
+            buttonSlider.Clicked += (sender, e) => EditorData.currentlySelectedEditorTool = EditorTools.Slider;
+            buttonSpinner.Clicked += (sender, e) => EditorData.currentlySelectedEditorTool = EditorTools.Spinner;
 
             toolbar.AddElement(buttonSelect);
             toolbar.AddElement(buttonCircle);
@@ -32,6 +38,14 @@ namespace online_osu_beatmap_editor_client.views.Editor
         public BaseUIComponent GetComponent()
         {
             return toolbar;
+        }
+
+        public void Update()
+        {
+            buttonSelect.isActive = EditorData.currentlySelectedEditorTool == EditorTools.Select;
+            buttonCircle.isActive = EditorData.currentlySelectedEditorTool == EditorTools.Circle;
+            buttonSlider.isActive = EditorData.currentlySelectedEditorTool == EditorTools.Slider;
+            buttonSpinner.isActive = EditorData.currentlySelectedEditorTool == EditorTools.Spinner;
         }
     }
 }

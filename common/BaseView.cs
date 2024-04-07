@@ -19,7 +19,7 @@ namespace online_osu_beatmap_editor_client.common
             }
         }
 
-        public void Update()
+        public virtual void Update()
         {
             foreach (var component in components)
             {
