@@ -4,19 +4,22 @@ using online_osu_beatmap_editor_client.components.Button;
 using online_osu_beatmap_editor_client.components.Container;
 using SFML.Graphics;
 using System;
+using System.ComponentModel;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
     internal class EditorView : BaseView
     {
         private UIContainer navBar;
-        private UIContainer toolbar;
+        private EditorToolBar toolBar;
 
         public EditorView(RenderWindow window)
         {
             BaseUIComponent.SetWindow(window);
             this.GenerateNavBar();
-            this.GenerateToolbar();
+            InitToolBar();
+
+
 
             HitCircle hc = new HitCircle(300, 300, 50);
 
@@ -45,23 +48,11 @@ namespace online_osu_beatmap_editor_client.views.Editor
             AddComponent(navBar);
         }
 
-        private void GenerateToolbar()
+        private void InitToolBar()
         {
-            toolbar = new UIContainer(0, navBar.height, 95, 1080 - navBar.height, 10, ContainerOrientation.Vertical);
-
-            UIButtonIcon button1 = new UIButtonIcon("assets/icons/circle.png");
-            UIButtonIcon button2 = new UIButtonIcon("assets/icons/circle.png");
-            UIButtonIcon button3 = new UIButtonIcon("assets/icons/circle.png");
-
-            button1.Clicked += (sender, e) => Console.WriteLine("Button 1 clicked!");
-            button2.Clicked += (sender, e) => Console.WriteLine("Button 2 clicked!");
-            button3.Clicked += (sender, e) => Console.WriteLine("Button 3 clicked!");
-
-            toolbar.AddElement(button1);
-            toolbar.AddElement(button2);
-            toolbar.AddElement(button3);
-
-            AddComponent(toolbar);
+            toolBar = new EditorToolBar();
+            BaseUIComponent toolBarComponent = toolBar.GetComponent();
+            AddComponent(toolBarComponent);
         }
     }
 }
