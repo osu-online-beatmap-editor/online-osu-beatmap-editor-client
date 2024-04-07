@@ -21,6 +21,7 @@ namespace online_osu_beatmap_editor_client.common
             this.posY = posY;
         }
 
+
         public abstract void Update();
 
         public abstract void Draw();
