@@ -25,7 +25,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private UIButtonIcon buttonDistanceSnap;
         private UIButtonIcon buttonGridSnap;
 
-        public EditorToolBar ()
+        public EditorToolBar()
         {
             toolbar = new UIContainer(0, 50, 95, 1080 - 50, 10, ContainerOrientation.Vertical);
 
@@ -69,6 +69,13 @@ namespace online_osu_beatmap_editor_client.views.Editor
             buttonDistanceSnap = new UIButtonIcon("assets/icons/distanceSnap.png");
             buttonGridSnap = new UIButtonIcon("assets/icons/gridSnap.png");
 
+            buttonNewCombo.Clicked += (sender, e) => EditorData.isNewComboActive = !EditorData.isNewComboActive;
+            buttonWhistle.Clicked += (sender, e) => EditorData.isWhistleActive = !EditorData.isWhistleActive;
+            buttonFinish.Clicked += (sender, e) => EditorData.isFinishActive = !EditorData.isFinishActive;
+            buttonClap.Clicked += (sender, e) => EditorData.isClapActive = !EditorData.isClapActive;
+            buttonDistanceSnap.Clicked += (sender, e) => EditorData.isDistanceSnapActive = !EditorData.isDistanceSnapActive;
+            buttonGridSnap.Clicked += (sender, e) => EditorData.isGridSnapActive = !EditorData.isGridSnapActive;
+
             var buttons = new[]
             {
                 buttonNewCombo, buttonWhistle, buttonFinish, buttonClap, buttonDistanceSnap, buttonGridSnap
@@ -91,6 +98,13 @@ namespace online_osu_beatmap_editor_client.views.Editor
             buttonCircle.isActive = EditorData.currentlySelectedEditorTool == EditorTools.Circle;
             buttonSlider.isActive = EditorData.currentlySelectedEditorTool == EditorTools.Slider;
             buttonSpinner.isActive = EditorData.currentlySelectedEditorTool == EditorTools.Spinner;
+
+            buttonNewCombo.isActive = EditorData.isNewComboActive;
+            buttonWhistle.isActive = EditorData.isWhistleActive;
+            buttonFinish.isActive = EditorData.isFinishActive;
+            buttonClap.isActive = EditorData.isClapActive;
+            buttonDistanceSnap.isActive = EditorData.isDistanceSnapActive;
+            buttonGridSnap.isActive = EditorData.isGridSnapActive;
         }
     }
 }
