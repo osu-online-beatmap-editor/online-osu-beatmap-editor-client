@@ -1,4 +1,5 @@
 ﻿using online_osu_beatmap_editor_client.common;
+using online_osu_beatmap_editor_client.components;
 using online_osu_beatmap_editor_client.components.Button;
 using online_osu_beatmap_editor_client.components.Container;
 using System;
@@ -15,10 +16,29 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private UIButtonIcon buttonSlider;
         private UIButtonIcon buttonSpinner;
 
+        private UISpacer toolBarSeparator;
+
+        private UIButtonIcon buttonNewCombo;
+        private UIButtonIcon buttonWhistle;
+        private UIButtonIcon buttonFinish;
+        private UIButtonIcon buttonClap;
+        private UIButtonIcon buttonDistanceSnap;
+        private UIButtonIcon buttonGridSnap;
+
         public EditorToolBar ()
         {
             toolbar = new UIContainer(0, 50, 95, 1080 - 50, 10, ContainerOrientation.Vertical);
 
+            CreateToolButtons();
+
+            toolBarSeparator = new UISpacer(0, 0, 0, 50);
+            toolbar.AddElement(toolBarSeparator);
+
+            CreateToogleButtons();
+        }
+
+        private void CreateToolButtons()
+        {
             buttonSelect = new UIButtonIcon("assets/icons/select.png");
             buttonCircle = new UIButtonIcon("assets/icons/circle.png");
             buttonSlider = new UIButtonIcon("assets/icons/slider.png");
@@ -29,10 +49,35 @@ namespace online_osu_beatmap_editor_client.views.Editor
             buttonSlider.Clicked += (sender, e) => EditorData.currentlySelectedEditorTool = EditorTools.Slider;
             buttonSpinner.Clicked += (sender, e) => EditorData.currentlySelectedEditorTool = EditorTools.Spinner;
 
-            toolbar.AddElement(buttonSelect);
-            toolbar.AddElement(buttonCircle);
-            toolbar.AddElement(buttonSlider);
-            toolbar.AddElement(buttonSpinner);
+            var buttons = new[]
+            {
+                buttonSelect, buttonCircle, buttonSlider, buttonSpinner,
+            };
+
+            foreach (var button in buttons)
+            {
+                toolbar.AddElement(button);
+            }
+        }
+
+        private void CreateToogleButtons()
+        {
+            buttonNewCombo = new UIButtonIcon("assets/icons/newCombo.png");
+            buttonWhistle = new UIButtonIcon("assets/icons/whistle.png");
+            buttonFinish = new UIButtonIcon("assets/icons/finish.png");
+            buttonClap = new UIButtonIcon("assets/icons/finish.png"); //@TODO find clap icon
+            buttonDistanceSnap = new UIButtonIcon("assets/icons/distanceSnap.png");
+            buttonGridSnap = new UIButtonIcon("assets/icons/gridSnap.png");
+
+            var buttons = new[]
+            {
+                buttonNewCombo, buttonWhistle, buttonFinish, buttonClap, buttonDistanceSnap, buttonGridSnap
+            };
+
+            foreach (var button in buttons)
+            {
+                toolbar.AddElement(button);
+            }
         }
 
         public BaseUIComponent GetComponent()
