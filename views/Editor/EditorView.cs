@@ -21,7 +21,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private void GenerateToolbar()
         {
-            UIVerticalContainer verticalContainer = new UIVerticalContainer(100, 100, 10);
+            UIVerticalContainer verticalContainer = new UIVerticalContainer(0, 0, 95, 1080, 10);
 
             UIButtonIcon button1 = new UIButtonIcon("assets/icons/circle.png");
             UIButtonIcon button2 = new UIButtonIcon("assets/icons/circle.png");

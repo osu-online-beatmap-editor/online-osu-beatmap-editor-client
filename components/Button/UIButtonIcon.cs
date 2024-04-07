@@ -9,7 +9,7 @@ namespace online_osu_beatmap_editor_client.components.Button
 {
     public class UIButtonIcon : BaseUIComponent
     {
-        private Color normalColor = StyleVariables.colorBgSecondary;
+        private Color normalColor = StyleVariables.colorBgTertiary;
         private Color activeColor = StyleVariables.colorPrimary;
         private Vector2f iconSize = new Vector2f(50, 50);
         private Vector2f buttonSize = new Vector2f(75, 75);
