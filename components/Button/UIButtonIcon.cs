@@ -7,7 +7,7 @@ using SFML.Window;
 
 namespace online_osu_beatmap_editor_client.components.Button
 {
-    public class UIButton : BaseUIComponent
+    public class UIButtonIcon : BaseUIComponent
     {
         private Color normalColor = StyleVariables.colorBgSecondary;
         private Color activeColor = StyleVariables.colorPrimary;
@@ -23,7 +23,7 @@ namespace online_osu_beatmap_editor_client.components.Button
         private RectangleShape buttonShape;
         public event EventHandler Clicked;
 
-        public UIButton(string iconPath, int posX, int posY, bool isActive = false)
+        public UIButtonIcon(string iconPath, int posX, int posY, bool isActive = false)
             : base(posX, posY)
         {
             this.isActive = isActive;
@@ -56,13 +56,13 @@ namespace online_osu_beatmap_editor_client.components.Button
             if (isMouseOver && Mouse.IsButtonPressed(Mouse.Button.Left) && !isClicked)
             {
                 isClicked = true;
-                //buttonShape.FillColor = activeColor;
+                buttonShape.FillColor = activeColor;
                 Clicked?.Invoke(this, EventArgs.Empty);
             }
             else if (!Mouse.IsButtonPressed(Mouse.Button.Left))
             {
                 isClicked = false;
-                //buttonShape.FillColor = isActive ? activeColor : normalColor;
+                buttonShape.FillColor = isActive ? activeColor : normalColor;
             }
         }
 

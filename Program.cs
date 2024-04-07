@@ -3,6 +3,7 @@ using online_osu_beatmap_editor_client.common;
 using online_osu_beatmap_editor_client.components;
 using online_osu_beatmap_editor_client.components.Button;
 using online_osu_beatmap_editor_client.config;
+using online_osu_beatmap_editor_client.views.Editor;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -33,8 +34,7 @@ namespace online_osu_beatmap_editor_client
 
             Color windowColor = StyleVariables.colorBg;
 
-            UIButton myButton = new UIButton("assets/icons/circle.png", 100, 100);
-            myButton.Clicked += OnButtonClick;
+            BaseView view = new EditorView(app);
 
             while (app.IsOpen)
             {
@@ -42,8 +42,8 @@ namespace online_osu_beatmap_editor_client
 
                 app.Clear(windowColor);
 
-                myButton.Draw();
-                myButton.Update();
+                view.Draw();
+                view.Update();
 
                 app.Display();
             }
