@@ -4,6 +4,7 @@ using SFML.Graphics;
 using SFML.System;
 using online_osu_beatmap_editor_client.common;
 using online_osu_beatmap_editor_client.config;
+using System.Runtime.InteropServices;
 
 namespace online_osu_beatmap_editor_client.components.Container
 {
@@ -19,13 +20,21 @@ namespace online_osu_beatmap_editor_client.components.Container
         private List<BaseUIComponent> elements = new List<BaseUIComponent>();
         private int spacing;
         private ContainerOrientation orientation;
+        private RectangleShape background;
 
-        public UIContainer(int posX, int posY, int width, int height, int spacing, ContainerOrientation orientation) : base(posX, posY)
+        public UIContainer(int posX, int posY, int width, int height, int spacing, ContainerOrientation orientation, [Optional]Color bgColor) : base(posX, posY)
         {
+            if (bgColor != new Color(0,0,0,0))
+            {
+                this.bgColor = bgColor;
+            }
+            
             this.orientation = orientation;
             this.spacing = spacing;
             this.width = width;
             this.height = height;
+
+            InitBackground();
         }
 
         public void AddElement(BaseUIComponent element)
@@ -51,17 +60,24 @@ namespace online_osu_beatmap_editor_client.components.Container
             }
         }
 
-        private void DrawBackground()
+        private void InitBackground()
         {
-            RectangleShape background = new RectangleShape(new Vector2f(width, height));
+            background = new RectangleShape(new Vector2f(width, height));
             background.Position = new Vector2f(posX, posY);
             background.FillColor = bgColor;
-            window.Draw(background);
+        }
+
+        public override void HandlePositionUpdate(int posX, int posY)
+        {
+            this.posX = posX;
+            this.posY = posY;
+            background.Position = new Vector2f(posX, posY);
+            RepositionElements();
         }
 
         public override void Draw()
         {
-            DrawBackground();
+            window.Draw(background);
 
             foreach (var element in elements)
             {
