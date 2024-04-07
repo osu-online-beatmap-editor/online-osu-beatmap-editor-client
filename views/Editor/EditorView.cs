@@ -1,4 +1,5 @@
 ﻿using online_osu_beatmap_editor_client.common;
+using online_osu_beatmap_editor_client.components;
 using online_osu_beatmap_editor_client.components.Button;
 using online_osu_beatmap_editor_client.components.Container;
 using SFML.Graphics;
@@ -12,6 +13,10 @@ namespace online_osu_beatmap_editor_client.views.Editor
         {
             BaseUIComponent.SetWindow(window);
             this.GenerateToolbar();
+
+            HitCircle hc = new HitCircle(300, 300, 50);
+
+            AddComponent(hc);
         }
 
         private void GenerateToolbar()

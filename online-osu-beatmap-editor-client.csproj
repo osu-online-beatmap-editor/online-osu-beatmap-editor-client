@@ -59,6 +59,7 @@
     <Compile Include="common\BaseUIComponent.cs" />
     <Compile Include="common\BaseView.cs" />
     <Compile Include="components\Button\UIButtonIcon.cs" />
+    <Compile Include="components\HitCircle\HitCircle.cs" />
     <Compile Include="components\VerticalContainer\UIVerticalContainer.cs" />
     <Compile Include="config\StyleVariables.cs" />
     <Compile Include="Program.cs" />
