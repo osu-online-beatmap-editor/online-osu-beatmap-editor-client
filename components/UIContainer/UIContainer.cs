@@ -1,23 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using online_osu_beatmap_editor_client.common;
-using online_osu_beatmap_editor_client.config;
 using SFML.Graphics;
 using SFML.System;
+using online_osu_beatmap_editor_client.common;
+using online_osu_beatmap_editor_client.config;
 
 namespace online_osu_beatmap_editor_client.components.Container
 {
-    public class UIVerticalContainer : BaseUIComponent
+    public enum ContainerOrientation
+    {
+        Vertical,
+        Horizontal
+    }
+
+    public class UIContainer : BaseUIComponent
     {
         private Color bgColor = StyleVariables.colorBgSecondary;
         private List<BaseUIComponent> elements = new List<BaseUIComponent>();
         private int spacing;
+        private ContainerOrientation orientation;
 
-        public UIVerticalContainer(int posX, int posY, int width, int height, int spacing) : base(posX, posY)
+        public UIContainer(int posX, int posY, int width, int height, int spacing, ContainerOrientation orientation) : base(posX, posY)
         {
+            this.orientation = orientation;
             this.spacing = spacing;
-            this.width = width; 
-            this.height = height;   
+            this.width = width;
+            this.height = height;
         }
 
         public void AddElement(BaseUIComponent element)
@@ -28,12 +36,18 @@ namespace online_osu_beatmap_editor_client.components.Container
 
         private void RepositionElements()
         {
+            int currentX = posX + spacing;
             int currentY = posY + spacing;
             foreach (var element in elements)
             {
-                int elementPosX = posX + spacing;
-                element.SetPosition(elementPosX, currentY);
-                currentY += element.height + spacing;
+                int elementPosX = orientation == ContainerOrientation.Horizontal ? currentX : posX + spacing;
+                int elementPosY = orientation == ContainerOrientation.Vertical ? currentY : posY + spacing;
+                element.SetPosition(elementPosX, elementPosY);
+
+                if (orientation == ContainerOrientation.Horizontal)
+                    currentX += element.width + spacing;
+                else
+                    currentY += element.height + spacing;
             }
         }
 
@@ -47,7 +61,7 @@ namespace online_osu_beatmap_editor_client.components.Container
 
         public override void Draw()
         {
-            this.DrawBackground();
+            DrawBackground();
 
             foreach (var element in elements)
             {

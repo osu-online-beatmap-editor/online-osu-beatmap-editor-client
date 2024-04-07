@@ -9,9 +9,13 @@ namespace online_osu_beatmap_editor_client.views.Editor
 {
     internal class EditorView : BaseView
     {
+        private UIContainer navBar;
+        private UIContainer toolbar;
+
         public EditorView(RenderWindow window)
         {
             BaseUIComponent.SetWindow(window);
+            this.GenerateNavBar();
             this.GenerateToolbar();
 
             HitCircle hc = new HitCircle(300, 300, 50);
@@ -19,9 +23,16 @@ namespace online_osu_beatmap_editor_client.views.Editor
             AddComponent(hc);
         }
 
+        private void GenerateNavBar()
+        {
+            navBar = new UIContainer(0, 0, 1920, 50, 10, ContainerOrientation.Horizontal);
+
+            AddComponent(navBar);
+        }
+
         private void GenerateToolbar()
         {
-            UIVerticalContainer verticalContainer = new UIVerticalContainer(0, 0, 95, 1080, 10);
+            toolbar = new UIContainer(0, navBar.height, 95, 1080 - navBar.height, 10, ContainerOrientation.Vertical);
 
             UIButtonIcon button1 = new UIButtonIcon("assets/icons/circle.png");
             UIButtonIcon button2 = new UIButtonIcon("assets/icons/circle.png");
@@ -31,11 +42,11 @@ namespace online_osu_beatmap_editor_client.views.Editor
             button2.Clicked += (sender, e) => Console.WriteLine("Button 2 clicked!");
             button3.Clicked += (sender, e) => Console.WriteLine("Button 3 clicked!");
 
-            verticalContainer.AddElement(button1);
-            verticalContainer.AddElement(button2);
-            verticalContainer.AddElement(button3);
+            toolbar.AddElement(button1);
+            toolbar.AddElement(button2);
+            toolbar.AddElement(button3);
 
-            AddComponent(verticalContainer);
+            AddComponent(toolbar);
         }
     }
 }
