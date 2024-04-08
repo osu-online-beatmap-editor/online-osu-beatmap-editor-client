@@ -5,6 +5,7 @@ using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -98,26 +99,28 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private void SelectTool(Vector2i clickPoint)
         {
-            if (selectedCircle != null && circles[0].IsMouseOver(clickPoint))
+            if (selectedCircle != null && selectedCircle.IsMouseOver(clickPoint))
             {
                 isDraging = true;
                 dragingOffset = selectedCircle.pos - clickPoint;
             }
             else
             {
-                if (circles[0].IsMouseOver(clickPoint))
+                HitCircle clickedCircle = circles.FirstOrDefault(circle => circle.IsMouseOver(clickPoint));
+
+                if (selectedCircle != null)
                 {
-                    selectedCircle = circles[0];
-                    selectedCircle.isSelected = true;
+                    selectedCircle.isSelected = false;
                 }
-                else
+
+                if (clickedCircle == null)
                 {
-                    if (selectedCircle != null)
-                    {
-                        selectedCircle.isSelected = false;
-                        selectedCircle = null;
-                    }
+                    selectedCircle = null;
+                    return;
                 }
+
+                selectedCircle = clickedCircle;
+                selectedCircle.isSelected = true;
             }
         }
 
@@ -135,10 +138,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
                     PlaceCircle(unscaledClickPosOnField);
                     return;
                 default:
-                    foreach (var circle in circles)
-                    {
-                        circle.pos = pos;
-                    }
                     break;
             }
         }
