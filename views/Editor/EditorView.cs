@@ -17,6 +17,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         public EditorView(RenderWindow window)
         {
+            EditorData.gridType = EditorGridType.Large;
             EditorData.CS = 4;
             editorShortcuts = new EditorShortcuts();
             UIContainer mainContainer = new UIContainer(new Vector2i(0, 0), new Vector2i(1920, 1080), 0, ContainerOrientation.Vertical, StyleVariables.colorBg);

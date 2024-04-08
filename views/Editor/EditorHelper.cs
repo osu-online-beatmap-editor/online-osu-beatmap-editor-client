@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System;
+using System.Drawing;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -54,6 +55,27 @@ namespace online_osu_beatmap_editor_client.views.Editor
             Vector2i result = CalculateDraggingPositionBorder(newPosition, new Vector2i(0, 0), pos, size);
             return result;
 
+        }
+
+        public static Vector2i SnapCircleToGrid(Vector2i position)
+        {
+
+            Size Grid = new Size(16, 12);
+            Size HalfGrid = new Size(Grid.Width / 2, Grid.Height / 2);
+
+            int snapX = ((position.X + HalfGrid.Width) / Grid.Width) * Grid.Width;
+            int snapY = ((position.Y + HalfGrid.Height) / Grid.Height) * Grid.Height;
+
+            return new Vector2i(snapX, snapY);
+        }
+
+        public static Vector2i SnapToGrid(Vector2i position, int gridSize)
+        {
+            // Obliczanie nowych współrzędnych zaokrąglonych do najbliższej komórki siatki
+            int snappedX = (int)(Math.Round((float)position.X / gridSize) * gridSize);
+            int snappedY = (int)(Math.Round((float)position.Y / gridSize) * gridSize);
+
+            return new Vector2i(snappedX, snappedY);
         }
     }
 }
