@@ -13,16 +13,19 @@ namespace online_osu_beatmap_editor_client.views.Editor
         protected bool isHovered;
 
         private float scale = 2.3f;
-        private Vector2i baseEditorFielSize = new Vector2i(512, 384); 
+        private Vector2i baseEditorFieldSize = new Vector2i(512, 384);
         private RectangleShape fieldShape;
-        private Color fieldColor = Color.White;
+        private Color fieldColor = new Color(255, 255, 255, 100); // Przezroczysty biały kolor
+        private int gridSize = 16; // Rozmiar kratki w pikselach
+        private Color gridColor = new Color(255, 255, 255, 50); // Przezroczysty biały kolor kratki
+        private List<RectangleShape> gridLines = new List<RectangleShape>(); // Lista linii kratownicy
 
-        private int circleIndex = 1; //@TODO temp
-        private int currentColor = 0; //@TODO temp
+        private int circleIndex = 1;
+        private int currentColor = 0;
         private Color[] colors = new Color[]
         {
             new Color(255, 0, 0),
-            new Color(0, 255, 0), 
+            new Color(0, 255, 0),
             new Color(0, 0, 255)
         };
 
@@ -31,25 +34,49 @@ namespace online_osu_beatmap_editor_client.views.Editor
         public EditorField(int posX, int posY) : base(posX, posY)
         {
             isMouseButtonPressed = false;
-            isHovered = false; 
-            width = (int)(baseEditorFielSize.X * scale);
-            height = (int)(baseEditorFielSize.Y * scale);
+            isHovered = false;
+            width = (int)(baseEditorFieldSize.X * scale);
+            height = (int)(baseEditorFieldSize.Y * scale);
 
             fieldShape = new RectangleShape(new Vector2f(width, height));
-            fieldShape.Origin = new Vector2f(width / 2, height / 2); 
+            fieldShape.Origin = new Vector2f(width / 2, height / 2);
             fieldShape.Position = new Vector2f(posX, posY);
             fieldShape.FillColor = fieldColor;
+
+            GenerateGrid();
+        }
+
+        private void GenerateGrid()
+        {
+            for (int x = 0; x <= baseEditorFieldSize.X; x += gridSize)
+            {
+                RectangleShape line = new RectangleShape(new Vector2f(1, height));
+                line.Position = new Vector2f(posX - width / 2 + x * scale, posY - height / 2);
+                line.FillColor = gridColor;
+                gridLines.Add(line);
+            }
+
+            for (int y = 0; y <= baseEditorFieldSize.Y; y += gridSize)
+            {
+                RectangleShape line = new RectangleShape(new Vector2f(width, 1));
+                line.Position = new Vector2f(posX - width / 2, posY - height / 2 + y * scale);
+                line.FillColor = gridColor;
+                gridLines.Add(line);
+            }
         }
 
         public override void Draw()
         {
             window.Draw(fieldShape);
+            foreach (var line in gridLines)
+            {
+                window.Draw(line);
+            }
             foreach (var circle in circles)
             {
                 circle.Draw();
             }
         }
-
 
         private void PlaceCircle(Vector2i clickPoint)
         {
@@ -63,8 +90,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 }
             }
             Color circleColor = colors[currentColor];
-            Vector2i newHitCirlcePos = EditorHelper.CalculateCirclePosition(posX, posY, width, height, clickPoint, scale);
-            HitCircle newHitCircle = new HitCircle(newHitCirlcePos.X, newHitCirlcePos.Y, circleIndex, EditorData.CS, circleColor);
+            Vector2i newHitCirclePos = EditorHelper.CalculateCirclePosition(posX, posY, width, height, clickPoint, scale);
+            HitCircle newHitCircle = new HitCircle(newHitCirclePos.X, newHitCirclePos.Y, circleIndex, EditorData.CS, circleColor);
 
             circles.Add(newHitCircle);
             circleIndex++;
@@ -74,7 +101,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private void HandleClick(Vector2i clickPoint)
         {
             EditorTools currentlySelectedEditorTool = EditorData.currentlySelectedEditorTool;
-            switch (currentlySelectedEditorTool) {
+            switch (currentlySelectedEditorTool)
+            {
                 case EditorTools.Circle:
                     PlaceCircle(clickPoint);
                     return;
