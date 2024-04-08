@@ -141,7 +141,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
             }
 
             return result;
-            return EditorHelper.CalculateCirclePositionBorder(result, dragingOffset, pos, size);
         }
 
         private void PlaceCircle()
