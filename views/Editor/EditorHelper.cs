@@ -24,7 +24,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             return clickPos;
         }
 
-        public static Vector2i CalculateDraggingPositionBorder(Vector2i mousePosition, Vector2i dragingOffset, Vector2i pos, Vector2i size)
+        public static Vector2i CalculateCirclePositionBorder(Vector2i mousePosition, Vector2i dragingOffset, Vector2i pos, Vector2i size)
         {
             Vector2i mousePositionWithOffset = mousePosition + dragingOffset;
 
@@ -52,7 +52,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 newPosition = (Vector2i)new Vector2f(anchorPos.X + delta.X, anchorPos.Y + delta.Y);
             }
 
-            Vector2i result = CalculateDraggingPositionBorder(newPosition, new Vector2i(0, 0), pos, size);
+            Vector2i result = CalculateCirclePositionBorder(newPosition, new Vector2i(0, 0), pos, size);
             return result;
 
         }

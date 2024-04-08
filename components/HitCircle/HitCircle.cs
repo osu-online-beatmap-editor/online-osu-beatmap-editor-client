@@ -51,7 +51,7 @@ namespace online_osu_beatmap_editor_client.components
         public override void Draw()
         {
             backgrond.Draw();
-            //numberText.Draw();
+            numberText.Draw();
 
             if (isSelected)
             {
