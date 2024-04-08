@@ -17,15 +17,16 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private bool isDraging = false;
         private Vector2i dragingOffset;
 
-        private float scale = 2.3f;
+        private float scale = 2f;
         private Vector2i baseEditorFieldSize = new Vector2i(512, 384);
         private Color fieldColor = new Color(255, 255, 255, 100);
-        private int gridSize = 16; 
         private Color gridColor = new Color(255, 255, 255, 50); 
         private List<RectangleShape> gridLines = new List<RectangleShape>();
 
         private int selectedCircleIndex;
         private HitCircle selectedCircle;
+
+        private HitCircle circlePreview;
 
         private int circleIndex = 1;
         private int currentColor = 0;
@@ -45,22 +46,32 @@ namespace online_osu_beatmap_editor_client.views.Editor
             this.size = new Vector2i((int)(baseEditorFieldSize.X * scale), (int)(baseEditorFieldSize.Y * scale));
 
             GenerateGrid();
+
+            circlePreview = new HitCircle(pos, 1, EditorData.CS, colors[0]);
         }
 
         private void GenerateGrid()
         {
-            for (int x = 0; x <= baseEditorFieldSize.X; x += gridSize)
+            gridLines.Clear();
+
+            int gridDivider = GridTypeMapper.GetGridValue(EditorData.gridType);
+
+            int gridSize = size.X / gridDivider;
+
+            Console.WriteLine(gridSize);
+
+            for (int x = 0; x <= size.X; x += gridSize)
             {
                 RectangleShape line = new RectangleShape(new Vector2f(1, size.Y));
-                line.Position = new Vector2f(pos.X - size.X / 2 + x * scale, pos.Y - size.Y / 2);
+                line.Position = new Vector2f(pos.X - size.X / 2 + x, pos.Y - size.Y / 2);
                 line.FillColor = gridColor;
                 gridLines.Add(line);
             }
 
-            for (int y = 0; y <= baseEditorFieldSize.Y; y += gridSize)
+            for (int y = 0; y <= size.Y; y += gridSize)
             {
                 RectangleShape line = new RectangleShape(new Vector2f(size.X, 1));
-                line.Position = new Vector2f(pos.X - size.X / 2, pos.Y - size.Y / 2 + y * scale);
+                line.Position = new Vector2f(pos.X - size.X / 2, pos.Y - size.Y / 2 + y);
                 line.FillColor = gridColor;
                 gridLines.Add(line);
             }
@@ -68,6 +79,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         public override void Draw()
         {
+            
             foreach (var line in gridLines)
             {
                 window.Draw(line);
@@ -76,9 +88,62 @@ namespace online_osu_beatmap_editor_client.views.Editor
             {
                 circle.Draw();
             }
+
+            if (IsMouseOver() && EditorData.currentlySelectedEditorTool == EditorTools.Circle)
+            {
+                circlePreview.Draw();
+            }
         }
 
-        private void PlaceCircle(Vector2i clickPoint)
+        private Vector2i GetUnscaledMousePosOnField ()
+        {
+            Vector2i mousePosition2 = Mouse.GetPosition(window);
+            Vector2i rawClickPosOnField = EditorHelper.GetRawClickPosOnField(mousePosition2, pos, size);
+            Vector2i unscaledClickPosOnField = EditorHelper.GetUnscaledClickPosOnField(rawClickPosOnField, scale);
+
+            return unscaledClickPosOnField;
+        }
+
+        private Vector2i GetCirclePosition()
+        {
+            Vector2i result;
+            Vector2i mousePosition = Mouse.GetPosition(window);
+            if (EditorData.isDistanceSnapActive)
+            {
+                if(selectedCircleIndex > 0)
+                {
+                    result = EditorHelper.GetNewCircleDraggingPositionWithSnaping(mousePosition, dragingOffset, pos, size, 200, circles[selectedCircleIndex - 1].pos);
+                }
+                else if(circles.Count > 0)
+                {
+                    result = EditorHelper.GetNewCircleDraggingPositionWithSnaping(mousePosition, dragingOffset, pos, size, 200, circles[circles.Count - 1].pos);
+                }
+                else
+                {
+                    result = mousePosition;
+                }
+            }
+            else if (EditorData.isGridSnapActive)
+            {
+                Vector2i rawClickPosOnField = EditorHelper.GetRawClickPosOnField(mousePosition, pos, size);
+                Vector2i unscaledClickPosOnField = EditorHelper.GetUnscaledClickPosOnField(rawClickPosOnField, scale);
+
+                int gridDivider = GridTypeMapper.GetGridValue(EditorData.gridType);
+                int gridSize = (int)(size.X / gridDivider / scale);
+
+                Vector2i snap = EditorHelper.SnapToGrid(unscaledClickPosOnField, gridSize);
+
+                result = pos - size / 2 + new Vector2i((int)(snap.X * scale), (int)(snap.Y * scale));
+            }
+            else
+            {
+                result = mousePosition;
+            }
+
+            return result;
+        }
+
+        private void PlaceCircle()
         {
             if (EditorData.isNewComboActive)
             {
@@ -90,7 +155,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 }
             }
             Color circleColor = colors[currentColor];
-            Vector2i newHitCirclePos = EditorHelper.CalculateCirclePosition(pos, size, clickPoint, scale);
+            Vector2i newHitCirclePos = GetCirclePosition();
+
             HitCircle newHitCircle = new HitCircle(newHitCirclePos, circleIndex, EditorData.CS, circleColor);
 
             circles.Add(newHitCircle);
@@ -135,9 +201,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
                     SelectTool(clickPoint);
                     return;
                 case EditorTools.Circle:
-                    Vector2i rawClickPosOnField = EditorHelper.GetRawClickPosOnField(clickPoint, pos, size);
-                    Vector2i unscaledClickPosOnField = EditorHelper.GetUnscaledClickPosOnField(rawClickPosOnField, scale);
-                    PlaceCircle(unscaledClickPosOnField);
+                    PlaceCircle();
                     return;
                 default:
                     break;
@@ -171,16 +235,21 @@ namespace online_osu_beatmap_editor_client.views.Editor
             }
             if (isDraging && selectedCircle != null)
             {
-                Vector2i mousePosition = Mouse.GetPosition(window);
+                selectedCircle.pos = GetCirclePosition();
 
+                /*
                 if (EditorData.isDistanceSnapActive && selectedCircleIndex > 0)
                 {
                     selectedCircle.pos = EditorHelper.GetNewCircleDraggingPositionWithSnaping(mousePosition, dragingOffset, pos, size, 200, circles[selectedCircleIndex - 1].pos);
                 } 
                 else 
                 {
-                    selectedCircle.pos = EditorHelper.CalculateDraggingPositionBorder(mousePosition, dragingOffset, pos, size);
-                }
+                    selectedCircle.pos = GetCirclePosition();
+                }*/
+            }
+            if (EditorData.currentlySelectedEditorTool == EditorTools.Circle)
+            {
+                circlePreview.pos = GetCirclePosition();
             }
         }
 

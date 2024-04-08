@@ -4,6 +4,8 @@
     {
         public static EditorTools currentlySelectedEditorTool;
 
+        public static EditorGridType gridType;
+
         public static bool isNewComboActive = false;
         public static bool isWhistleActive = false;
         public static bool isFinishActive = false;

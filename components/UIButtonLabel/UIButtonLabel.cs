@@ -9,7 +9,7 @@ namespace online_osu_beatmap_editor_client.components.Button
 {
     public class UIButtonLabel : ClickableUIObject
     {
-        private int paddingX = 10;
+        private int paddingX = 3;
 
         private UIText buttonText;
         private RectangleShape buttonShape;
@@ -33,7 +33,7 @@ namespace online_osu_beatmap_editor_client.components.Button
             buttonShape.FillColor = currentColor;
 
             int labelWidth = (int)buttonText.size.X + paddingX * 2;
-            buttonShape.Size = new Vector2f(labelWidth + paddingX * 2, 50);
+            buttonShape.Size = new Vector2f(labelWidth + paddingX * 2, 15);
         }
 
         private void GenerateButtonText()

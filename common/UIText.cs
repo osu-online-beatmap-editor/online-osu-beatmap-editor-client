@@ -10,7 +10,7 @@ namespace online_osu_beatmap_editor_client.common
     {
         private Text text;
 
-        public UIText(string label, Vector2i pos, uint size = 20)
+        public UIText(string label, Vector2i pos, uint size = 16)
             : base(pos)
         {
             text = new Text(label, StyleVariables.mainFont);

@@ -3,6 +3,7 @@ using online_osu_beatmap_editor_client.common;
 using online_osu_beatmap_editor_client.config;
 using online_osu_beatmap_editor_client.views.Editor;
 using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
 
 namespace online_osu_beatmap_editor_client
@@ -18,13 +19,16 @@ namespace online_osu_beatmap_editor_client
 
         static void Main()
         {
-            RenderWindow app = new RenderWindow(new VideoMode(1920, 1080), "Online osu beatmap editor!");
+            RenderWindow app = new RenderWindow(new VideoMode(640 * 2, 480 * 2), "Online osu beatmap editor!");
 
             BaseUIComponent.SetWindow(app);
 
             app.Closed += new EventHandler(OnClose);
 
             Color windowColor = StyleVariables.colorBg;
+
+            View viewPort = new View(new FloatRect(0, 0, 640 * 2, 480 * 2));
+            app.SetView(viewPort);
 
             BaseView view = new EditorView(app);
 
@@ -36,6 +40,9 @@ namespace online_osu_beatmap_editor_client
 
                 view.Draw();
                 view.Update();
+
+                Vector2i mousePosition = Mouse.GetPosition(app);
+                Vector2f worldMousePosition = app.MapPixelToCoords(mousePosition);
 
                 app.Display();
             }

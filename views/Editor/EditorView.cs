@@ -17,13 +17,14 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         public EditorView(RenderWindow window)
         {
+            EditorData.gridType = EditorGridType.Large;
             EditorData.CS = 4;
             editorShortcuts = new EditorShortcuts();
-            UIContainer mainContainer = new UIContainer(new Vector2i(0, 0), new Vector2i(1920, 1080), 0, ContainerOrientation.Vertical, StyleVariables.colorBg);
+            UIContainer mainContainer = new UIContainer(new Vector2i(0, 0), new Vector2i(640 * 2, 480 * 2), 0, ContainerOrientation.Vertical, StyleVariables.colorBg);
 
             AddComponent(mainContainer);
 
-            InitNavBar(mainContainer);
+            //InitNavBar(mainContainer);
             InitToolBar(mainContainer);
             InitEditorField();
         }
@@ -44,7 +45,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private void InitEditorField ()
         {
-            editorField = new EditorField(new Vector2i(1920 / 2, 1080 / 2));
+            editorField = new EditorField(new Vector2i(640 * 2 / 2, 480 * 2 / 2));
 
             AddComponent(editorField);
         }
