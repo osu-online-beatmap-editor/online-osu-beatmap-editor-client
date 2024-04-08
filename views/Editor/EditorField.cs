@@ -1,9 +1,9 @@
 ﻿using online_osu_beatmap_editor_client.common;
-using online_osu_beatmap_editor_client.Engine;
+using online_osu_beatmap_editor_client.components;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using System;
+using System.Collections.Generic;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -16,6 +16,10 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private Vector2i baseEditorFielSize = new Vector2i(512, 384); 
         private RectangleShape fieldShape;
         private Color fieldColor = Color.White;
+
+        private int circleIndex = 1; //@TODO temp
+
+        private List<HitCircle> circles = new List<HitCircle>();
 
         public EditorField(int posX, int posY) : base(posX, posY)
         {
@@ -33,12 +37,36 @@ namespace online_osu_beatmap_editor_client.views.Editor
         public override void Draw()
         {
             window.Draw(fieldShape);
+            foreach (var circle in circles)
+            {
+                circle.Draw();
+            }
         }
 
 
+        private void PlaceCircle(Vector2i clickPoint)
+        {
+            if (EditorData.isNewComboActive)
+            {
+                circleIndex = 1;
+            }
+
+            Vector2i newHitCirlcePos = EditorHelper.CalculateCirclePosition(posX, posY, width, height, clickPoint, scale);
+            HitCircle newHitCircle = new HitCircle(newHitCirlcePos.X, newHitCirlcePos.Y, circleIndex, EditorData.CS);
+
+            circles.Add(newHitCircle);
+            circleIndex++;
+            EditorData.isNewComboActive = false;
+        }
+
         private void HandleClick(Vector2i clickPoint)
         {
-            Console.WriteLine(clickPoint);
+            EditorTools currentlySelectedEditorTool = EditorData.currentlySelectedEditorTool;
+            switch (currentlySelectedEditorTool) {
+                case EditorTools.Circle:
+                    PlaceCircle(clickPoint);
+                    return;
+            }
         }
 
         private void AddClickListener()

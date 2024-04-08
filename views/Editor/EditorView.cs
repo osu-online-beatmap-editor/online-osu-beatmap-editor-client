@@ -16,6 +16,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         public EditorView(RenderWindow window)
         {
+            EditorData.CS = 4;
             editorShortcuts = new EditorShortcuts();
             UIContainer mainContainer = new UIContainer(0, 0, 1920, 1080, 0, ContainerOrientation.Vertical, StyleVariables.colorBg);
 
@@ -24,10 +25,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
             InitNavBar(mainContainer);
             InitToolBar(mainContainer);
             InitEditorField();
-
-            HitCircle hc = new HitCircle(150, 150, 1, 2);
-
-            AddComponent(hc);
         }
 
         private void InitNavBar(UIContainer mainContainer)
