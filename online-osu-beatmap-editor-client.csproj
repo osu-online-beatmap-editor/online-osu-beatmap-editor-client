@@ -63,6 +63,7 @@
     <Compile Include="common\UIText.cs" />
     <Compile Include="components\ButtonIcon\UIButtonIcon.cs" />
     <Compile Include="components\HitCircle\HitCircle.cs" />
+    <Compile Include="components\SelectionOutline\SelectionOutline.cs" />
     <Compile Include="components\Spacer\UISpacer.cs" />
     <Compile Include="components\UIButtonLabel\UIButtonLabel.cs" />
     <Compile Include="components\UIContainer\UIContainer.cs" />
