@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img src="readme/logo.png" alt="OME"></a>
+ <img src="readme/logo.png" alt="OME" width="150px"></a>
 </p>
 
 # (OME) Osu online beatmap editor
