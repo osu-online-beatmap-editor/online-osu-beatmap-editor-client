@@ -8,11 +8,14 @@ namespace online_osu_beatmap_editor_client.views.Editor
 {
     internal class EditorView : BaseView
     {
+        private EditorShortcuts editorShortcuts;
+
         private EditorNavBar navBar;
         private EditorToolBar toolBar;
 
         public EditorView(RenderWindow window)
         {
+            editorShortcuts = new EditorShortcuts();
             UIContainer mainContainer = new UIContainer(0, 0, 1920, 1080, 0, ContainerOrientation.Vertical, StyleVariables.colorBg);
 
             AddComponent(mainContainer);
@@ -42,6 +45,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         public override void Update()
         {
             base.Update();
+            editorShortcuts.CheckShortcuts();
             toolBar.Update();
         }
     }
