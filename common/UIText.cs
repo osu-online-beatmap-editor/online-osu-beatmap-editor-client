@@ -15,9 +15,9 @@ namespace online_osu_beatmap_editor_client.common
             text.CharacterSize = size;
             text.FillColor = Color.White;
             text.Origin = new Vector2f(text.GetGlobalBounds().Width / 2, text.GetGlobalBounds().Height / 2);
-            text.Position = new Vector2f(posX, posY);
             this.width = (int)text.GetGlobalBounds().Width;
             this.height = (int)text.GetGlobalBounds().Height;
+            text.Position = new Vector2f(posX - width / 2, posY - height / 2);
         }
 
         public override void Draw()

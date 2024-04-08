@@ -1,18 +1,22 @@
 ﻿using online_osu_beatmap_editor_client.common;
-using SFML.Graphics;
-using SFML.System;
+using online_osu_beatmap_editor_client.Engine;
 
 namespace online_osu_beatmap_editor_client.components
 {
     public class HitCircle : BaseUIComponent
     {
-        private CircleShape circle;
+        private UIImage backgrond;
+        private UIText numberText;
 
-        public HitCircle(int posX, int posY, float radius) : base(posX, posY)
+        public HitCircle(int posX, int posY, int number, float CS) : base(posX, posY)
         {
-            circle = new CircleShape(radius);
-            circle.Origin = new Vector2f(radius, radius);
-            circle.FillColor = Color.White;
+            int size = (int)(OsuMath.GetCircleWidthByCS(CS) * 2.3f);
+
+            this.width = size;
+            this.height = size;
+
+            backgrond = new UIImage("assets/baseSkin/hitcircle.png", posX, posY, size, size);
+            numberText = new UIText(number.ToString(), posX, posY + (int)(5 * 2.3f), (uint)(size / 2.5f));
         }
 
         public override void Update()
@@ -22,8 +26,8 @@ namespace online_osu_beatmap_editor_client.components
 
         public override void Draw()
         {
-            circle.Position = new Vector2f(posX, posY);
-            window.Draw(circle);
+            backgrond.Draw();
+            numberText.Draw();
         }
     }
 }

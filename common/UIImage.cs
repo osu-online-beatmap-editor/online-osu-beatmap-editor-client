@@ -38,7 +38,7 @@ namespace online_osu_beatmap_editor_client.common
 
             sprite = new Sprite(texture);
             sprite.Scale = new Vector2f((float)this.width / texture.Size.X, (float)this.height / texture.Size.Y);
-            sprite.Position = new Vector2f(posX, posY);
+            sprite.Position = new Vector2f(posX - width / 2, posY - width / 2);
             this.opacity = opacity;
         }
 
