@@ -8,19 +8,25 @@ namespace online_osu_beatmap_editor_client.common
     {
         private Sprite sprite;
         private Texture texture;
-        private float _opacity;
+        private Color _color;
 
-        public float opacity
+        public Color color
         {
-            get { return _opacity; }
+            get
+            {
+                return _color;
+            }
             set
             {
-                int opacity = (int)(value * 255);
-                sprite.Color = new Color(255, 255, 255, (byte)opacity);
+                if (value != _color)
+                {
+                    _color = value;
+                    sprite.Color = value;
+                }
             }
         }
 
-        public UIImage(string imagePath, int posX, int posY, [Optional]int width, [Optional] int height, float opacity = 1)
+        public UIImage(string imagePath, int posX, int posY, [Optional]int width, [Optional] int height, [Optional]Color color)
             : base(posX, posY)
         {
             texture = new Texture(imagePath);
@@ -39,7 +45,9 @@ namespace online_osu_beatmap_editor_client.common
             sprite = new Sprite(texture);
             sprite.Scale = new Vector2f((float)this.width / texture.Size.X, (float)this.height / texture.Size.Y);
             sprite.Position = new Vector2f(posX - width / 2, posY - width / 2);
-            this.opacity = opacity;
+
+            this.color = color;
+
         }
 
         public override void Draw()

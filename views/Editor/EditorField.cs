@@ -18,6 +18,13 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private Color fieldColor = Color.White;
 
         private int circleIndex = 1; //@TODO temp
+        private int currentColor = 0; //@TODO temp
+        private Color[] colors = new Color[]
+        {
+            new Color(255, 0, 0),
+            new Color(0, 255, 0), 
+            new Color(0, 0, 255)
+        };
 
         private List<HitCircle> circles = new List<HitCircle>();
 
@@ -49,10 +56,15 @@ namespace online_osu_beatmap_editor_client.views.Editor
             if (EditorData.isNewComboActive)
             {
                 circleIndex = 1;
+                currentColor++;
+                if (currentColor >= colors.Length)
+                {
+                    currentColor = 0;
+                }
             }
-
+            Color circleColor = colors[currentColor];
             Vector2i newHitCirlcePos = EditorHelper.CalculateCirclePosition(posX, posY, width, height, clickPoint, scale);
-            HitCircle newHitCircle = new HitCircle(newHitCirlcePos.X, newHitCirlcePos.Y, circleIndex, EditorData.CS);
+            HitCircle newHitCircle = new HitCircle(newHitCirlcePos.X, newHitCirlcePos.Y, circleIndex, EditorData.CS, circleColor);
 
             circles.Add(newHitCircle);
             circleIndex++;
