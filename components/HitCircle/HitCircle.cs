@@ -58,5 +58,13 @@ namespace online_osu_beatmap_editor_client.components
                 selectionOutline.Draw();
             }
         }
+
+        public bool IsMouseOver(Vector2i mousePosition)
+        {
+            bool isInsideX = mousePosition.X >= pos.X - size.X / 2 && mousePosition.X <= pos.X + size.X - size.X / 2;
+            bool isInsideY = mousePosition.Y >= pos.Y - size.Y / 2 && mousePosition.Y <= pos.Y + size.Y - size.Y / 2;
+
+            return isInsideX && isInsideY;
+        }
     }
 }
