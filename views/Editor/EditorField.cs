@@ -14,11 +14,10 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private float scale = 2.3f;
         private Vector2i baseEditorFieldSize = new Vector2i(512, 384);
-        private RectangleShape fieldShape;
-        private Color fieldColor = new Color(255, 255, 255, 100); // Przezroczysty biały kolor
-        private int gridSize = 16; // Rozmiar kratki w pikselach
-        private Color gridColor = new Color(255, 255, 255, 50); // Przezroczysty biały kolor kratki
-        private List<RectangleShape> gridLines = new List<RectangleShape>(); // Lista linii kratownicy
+        private Color fieldColor = new Color(255, 255, 255, 100);
+        private int gridSize = 16; 
+        private Color gridColor = new Color(255, 255, 255, 50); 
+        private List<RectangleShape> gridLines = new List<RectangleShape>(); 
 
         private int circleIndex = 1;
         private int currentColor = 0;
@@ -36,11 +35,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
             isMouseButtonPressed = false;
             isHovered = false;
             this.size = new Vector2i((int)(baseEditorFieldSize.X * scale), (int)(baseEditorFieldSize.Y * scale));
-
-            fieldShape = new RectangleShape((Vector2f)size);
-            fieldShape.Origin = new Vector2f(size.X / 2, size.Y / 2);
-            fieldShape.Position = (Vector2f)pos;
-            fieldShape.FillColor = fieldColor;
 
             GenerateGrid();
         }
@@ -66,7 +60,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         public override void Draw()
         {
-            window.Draw(fieldShape);
             foreach (var line in gridLines)
             {
                 window.Draw(line);
