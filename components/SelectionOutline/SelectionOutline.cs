@@ -11,9 +11,6 @@ namespace online_osu_beatmap_editor_client.components
     {
         private RectangleShape border;
 
-        private Color borderColor = StyleVariables.colorPrimary;
-        private float borderWidth = 2f;
-
         public SelectionOutline(Vector2i pos, Vector2i size) : base(pos)
         {
             this.size = size;
@@ -22,8 +19,8 @@ namespace online_osu_beatmap_editor_client.components
             border.Origin = new Vector2f(size.X / 2, size.Y / 2);
             border.Position = (Vector2f)pos;
             border.FillColor = Color.Transparent;
-            border.OutlineColor = borderColor;
-            border.OutlineThickness = borderWidth;
+            border.OutlineColor = StyleVariables.colorPrimary;
+            border.OutlineThickness = StyleVariables.selectionOutlineThickness;
         }
 
         public override void HandleSizeUpdate(Vector2i size)
