@@ -164,10 +164,15 @@ namespace online_osu_beatmap_editor_client.views.Editor
             if (isDraging && selectedCircle != null)
             {
                 Vector2i mousePosition = Mouse.GetPosition(window);
-                int x = Math.Max(Math.Min(mousePosition.X + dragingOffset.X, pos.X + size.X / 2), pos.X - size.X / 2);
-                int y = Math.Max(Math.Min(mousePosition.Y + dragingOffset.Y, pos.Y + size.Y / 2), pos.Y - size.Y / 2);
 
-                selectedCircle.pos = new Vector2i(x, y);
+                if (EditorData.isDistanceSnapActive)
+                {
+                    selectedCircle.pos = EditorHelper.GetNewCircleDraggingPositionWithSnaping(mousePosition, dragingOffset, pos, size, 200, circles[0].pos);
+                } 
+                else 
+                {
+                    selectedCircle.pos = EditorHelper.CalculateDraggingPositionBorder(mousePosition, dragingOffset, pos, size);
+                }
             }
         }
 

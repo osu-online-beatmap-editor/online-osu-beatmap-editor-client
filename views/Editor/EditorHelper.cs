@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using System;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -20,6 +21,46 @@ namespace online_osu_beatmap_editor_client.views.Editor
         {
             Vector2i clickPos = new Vector2i((int)(rawClickPoint.X / scale), (int)(rawClickPoint.Y / scale));
             return clickPos;
+        }
+
+        public static Vector2i CalculateDraggingPositionBorder(Vector2i mousePosition, Vector2i dragingOffset, Vector2i pos, Vector2i size)
+        {
+            Vector2i mousePositionWithOffset = mousePosition + dragingOffset;
+
+            int x = Math.Max(Math.Min(mousePositionWithOffset.X, pos.X + size.X / 2), pos.X - size.X / 2);
+            int y = Math.Max(Math.Min(mousePositionWithOffset.Y, pos.Y + size.Y / 2), pos.Y - size.Y / 2);
+
+            return new Vector2i(x, y);
+        }
+
+        public static Vector2i GetNewCircleDraggingPositionWithSnaping(Vector2i mousePosition, Vector2i dragingOffset, Vector2i pos, Vector2i size, float radius, Vector2i? prevousCirclePos)
+        {
+            Vector2i mousePositionWithOffset = mousePosition + dragingOffset;
+
+            Vector2i newPosition = mousePositionWithOffset;
+
+            if (prevousCirclePos != null)
+            {
+                Vector2i anchorPos = prevousCirclePos.Value;
+
+                System.Numerics.Vector2 delta = new System.Numerics.Vector2(mousePositionWithOffset.X + dragingOffset.X, mousePositionWithOffset.Y + dragingOffset.Y) - new System.Numerics.Vector2(anchorPos.X, anchorPos.Y);
+                float distance = delta.Length();
+
+                if (distance > radius)
+                {
+                    delta *= radius / distance;
+
+                    newPosition = (Vector2i)new Vector2f(anchorPos.X + delta.X, anchorPos.Y + delta.Y);
+                }
+                else
+                {
+                    newPosition = mousePositionWithOffset;
+                }
+            }
+
+            Vector2i result = CalculateDraggingPositionBorder(newPosition, new Vector2i(0,0), pos, size);
+
+            return result;
         }
     }
 }
