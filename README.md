@@ -15,6 +15,8 @@ The program allows multiple users to create beatmaps for osu! simultaneously. It
 
 ## Download
 
+https://github.com/mateuszbuturla/online-osu-beatmap-editor-client/releases
+
 ## Installation
 
 Download [sfml](https://https://www.sfml-dev.org) compatible with the architecture you are using. [32 bit](https://www.sfml-dev.org/files/SFML.Net-2.4-32-bit.zip) [64 bit](https://www.sfml-dev.org/files/SFML.Net-2.4-64-bit.zip).
