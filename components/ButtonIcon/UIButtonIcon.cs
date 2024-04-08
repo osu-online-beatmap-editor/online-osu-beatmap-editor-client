@@ -2,6 +2,7 @@
 using SFML.Graphics;
 using SFML.System;
 using System;
+using System.Runtime.InteropServices;
 
 namespace online_osu_beatmap_editor_client.components.Button
 {
@@ -15,20 +16,19 @@ namespace online_osu_beatmap_editor_client.components.Button
 
         private RectangleShape buttonShape;
 
-        public UIButtonIcon(string iconPath, int posX = 0, int posY = 0, bool isActive = false)
-            : base(posX, posY, StyleVariables.colorBgTertiary, StyleVariables.colorPrimary, isActive)
+        public UIButtonIcon(string iconPath, [Optional]Vector2i pos)
+            : base(pos, StyleVariables.colorBgTertiary, StyleVariables.colorPrimary)
         {
-            this.GenerateBaseButtonShape();
-            this.GenerateIcon(iconPath);
+            GenerateBaseButtonShape();
+            GenerateIcon(iconPath);
 
-            width = (int)buttonSize.X;
-            height = (int)buttonSize.Y;
+            size = new Vector2i((int)buttonSize.X, (int)buttonSize.Y);
         }
 
         private void GenerateBaseButtonShape()
         {
             buttonShape = new RectangleShape(buttonSize);
-            buttonShape.Position = new Vector2f(posX, posY);
+            buttonShape.Position = (Vector2f)pos;
             buttonShape.FillColor = currentColor;
         }
 
@@ -39,13 +39,14 @@ namespace online_osu_beatmap_editor_client.components.Button
             iconSprite.Scale = new Vector2f(iconSize.X / iconTexture.Size.X, iconSize.Y / iconTexture.Size.Y);
             FloatRect iconBounds = iconSprite.GetLocalBounds();
             iconSprite.Origin = new Vector2f(iconBounds.Left + iconBounds.Width / 2, iconBounds.Top + iconBounds.Height / 2);
-            iconSprite.Position = new Vector2f(posX + buttonShape.Size.X / 2, posY + buttonShape.Size.Y / 2);
+            iconSprite.Position = new Vector2f(pos.X + buttonShape.Size.X / 2, pos.Y + buttonShape.Size.Y / 2);
         }
 
-        public override void HandlePositionUpdate(int posX, int posY)
+        public override void HandlePositionUpdate(Vector2i pos)
         {
-            buttonShape.Position = new Vector2f(posX, posY);
-            iconSprite.Position = new Vector2f(posX + buttonShape.Size.X / 2, posY + buttonShape.Size.Y / 2);
+            base.HandlePositionUpdate(pos);
+            buttonShape.Position = (Vector2f)pos;
+            iconSprite.Position = new Vector2f(pos.X + buttonShape.Size.X / 2, pos.Y + buttonShape.Size.Y / 2);
         }
 
         public override void Draw()

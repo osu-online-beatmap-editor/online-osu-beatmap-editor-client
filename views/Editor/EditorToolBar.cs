@@ -2,14 +2,13 @@
 using online_osu_beatmap_editor_client.components;
 using online_osu_beatmap_editor_client.components.Button;
 using online_osu_beatmap_editor_client.components.Container;
-using System;
+using SFML.System;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
     internal class EditorToolBar
     {
         private UIContainer toolbar;
-
 
         private UIButtonIcon buttonSelect;
         private UIButtonIcon buttonCircle;
@@ -22,16 +21,16 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private UIButtonIcon buttonWhistle;
         private UIButtonIcon buttonFinish;
         private UIButtonIcon buttonClap;
-        private UIButtonIcon buttonDistanceSnap;
         private UIButtonIcon buttonGridSnap;
+        private UIButtonIcon buttonDistanceSnap;
 
         public EditorToolBar()
         {
-            toolbar = new UIContainer(0, 50, 95, 1080 - 50, 10, ContainerOrientation.Vertical);
+            toolbar = new UIContainer(new Vector2i(0, 50), new Vector2i(95, 1080 - 50), 10, ContainerOrientation.Vertical);
 
             CreateToolButtons();
 
-            toolBarSeparator = new UISpacer(0, 0, 0, 50);
+            toolBarSeparator = new UISpacer(new Vector2i(0, 0), new Vector2i(0, 50));
             toolbar.AddElement(toolBarSeparator);
 
             CreateToogleButtons();
@@ -66,19 +65,19 @@ namespace online_osu_beatmap_editor_client.views.Editor
             buttonWhistle = new UIButtonIcon("assets/icons/whistle.png");
             buttonFinish = new UIButtonIcon("assets/icons/finish.png");
             buttonClap = new UIButtonIcon("assets/icons/finish.png"); //@TODO find clap icon
-            buttonDistanceSnap = new UIButtonIcon("assets/icons/distanceSnap.png");
             buttonGridSnap = new UIButtonIcon("assets/icons/gridSnap.png");
+            buttonDistanceSnap = new UIButtonIcon("assets/icons/distanceSnap.png");
 
             buttonNewCombo.Clicked += (sender, e) => EditorData.isNewComboActive = !EditorData.isNewComboActive;
             buttonWhistle.Clicked += (sender, e) => EditorData.isWhistleActive = !EditorData.isWhistleActive;
             buttonFinish.Clicked += (sender, e) => EditorData.isFinishActive = !EditorData.isFinishActive;
             buttonClap.Clicked += (sender, e) => EditorData.isClapActive = !EditorData.isClapActive;
-            buttonDistanceSnap.Clicked += (sender, e) => EditorData.isDistanceSnapActive = !EditorData.isDistanceSnapActive;
             buttonGridSnap.Clicked += (sender, e) => EditorData.isGridSnapActive = !EditorData.isGridSnapActive;
+            buttonDistanceSnap.Clicked += (sender, e) => EditorData.isDistanceSnapActive = !EditorData.isDistanceSnapActive;
 
             var buttons = new[]
             {
-                buttonNewCombo, buttonWhistle, buttonFinish, buttonClap, buttonDistanceSnap, buttonGridSnap
+                buttonNewCombo, buttonWhistle, buttonFinish, buttonClap, buttonGridSnap, buttonDistanceSnap
             };
 
             foreach (var button in buttons)

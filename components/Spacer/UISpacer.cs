@@ -1,13 +1,13 @@
 ﻿using online_osu_beatmap_editor_client.common;
+using SFML.System;
 
 namespace online_osu_beatmap_editor_client.components
 {
     public class UISpacer : BaseUIComponent
     {
-        public UISpacer(int posX, int posY, int width, int height) : base(posX, posY)
+        public UISpacer(Vector2i pos, Vector2i size) : base(pos)
         {
-            this.width = width;
-            this.height = height;   
+            this.size = size; 
         }
         public override void Update()
         {

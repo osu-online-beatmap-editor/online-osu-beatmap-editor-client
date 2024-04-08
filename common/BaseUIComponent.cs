@@ -1,13 +1,52 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 
 namespace online_osu_beatmap_editor_client.common
 {
     public abstract class BaseUIComponent
     {
-        public int posX;
-        public int posY;
-        public int width;
-        public int height;
+        private Vector2i _pos;
+        private Vector2i _size;
+        private Vector2f _origin = new Vector2f(0, 0);
+
+        public Vector2i pos
+        {
+            get { return _pos; }
+            set
+            {
+                if (value != _pos)
+                {
+                    _pos = value;
+                    HandlePositionUpdate(_pos);
+                }
+            }
+        }
+
+        public Vector2i size
+        {
+            get { return _size; }
+            set
+            {
+                if (value != _size)
+                {
+                    _size = value;
+                    HandleSizeUpdate(_size);
+                }
+            }
+        }
+
+        public Vector2f origin
+        {
+            get { return _origin; }
+            set
+            {
+                if (value != _origin)
+                {
+                    _origin = value;
+                    HandleOriginUpdate(_origin);
+                }
+            }
+        }
 
         protected static RenderWindow window;
 
@@ -16,20 +55,15 @@ namespace online_osu_beatmap_editor_client.common
             window = _window;
         }
 
-        public BaseUIComponent(int posX, int posY)
+        public BaseUIComponent(Vector2i pos)
         {
-            this.posX = posX;
-            this.posY = posY;
+            this.pos = new Vector2i(0, 0);
+            this.pos = pos;
         }
 
-        public void SetPosition(int posX, int posY)
-        {
-            this.posX = posX;
-            this.posY = posY;
-            HandlePositionUpdate(posX, posY);
-        }
-
-        public virtual void HandlePositionUpdate(int posX, int poxY) { }
+        public virtual void HandlePositionUpdate(Vector2i pos) { }
+        public virtual void HandleSizeUpdate(Vector2i size) { }
+        public virtual void HandleOriginUpdate(Vector2f origin) { }
 
         public abstract void Update();
 

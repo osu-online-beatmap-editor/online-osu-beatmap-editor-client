@@ -3,7 +3,6 @@ using SFML.System;
 using SFML.Window;
 using online_osu_beatmap_editor_client.common;
 using SFML.Graphics;
-using online_osu_beatmap_editor_client.config;
 
 namespace online_osu_beatmap_editor_client.components
 {
@@ -35,7 +34,7 @@ namespace online_osu_beatmap_editor_client.components
             }
         }
 
-        public ClickableUIObject(int posX, int posY, Color defaultColor, Color activeColor, bool isActive = false) : base(posX, posY)
+        public ClickableUIObject(Vector2i pos, Color defaultColor, Color activeColor) : base(pos)
         {
             this.defaultColor = defaultColor;
             this.activeColor = activeColor;
@@ -73,8 +72,8 @@ namespace online_osu_beatmap_editor_client.components
         private bool IsMouseOver()
         {
             Vector2i mousePosition = Mouse.GetPosition(window);
-            return (mousePosition.X >= posX && mousePosition.X <= posX + width &&
-                    mousePosition.Y >= posY && mousePosition.Y <= posY + height);
+            return (mousePosition.X >= pos.X && mousePosition.X <= pos.X + size.X &&
+                    mousePosition.Y >= pos.Y && mousePosition.Y <= pos.Y + size.Y);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace online_osu_beatmap_editor_client.components.Container
         private ContainerOrientation orientation;
         private RectangleShape background;
 
-        public UIContainer(int posX, int posY, int width, int height, int spacing, ContainerOrientation orientation, [Optional]Color bgColor) : base(posX, posY)
+        public UIContainer(Vector2i pos, Vector2i size, int spacing, ContainerOrientation orientation, [Optional]Color bgColor) : base(pos)
         {
             if (bgColor != new Color(0,0,0,0))
             {
@@ -31,8 +31,7 @@ namespace online_osu_beatmap_editor_client.components.Container
             
             this.orientation = orientation;
             this.spacing = spacing;
-            this.width = width;
-            this.height = height;
+            this.size = size;
 
             InitBackground();
         }
@@ -45,33 +44,34 @@ namespace online_osu_beatmap_editor_client.components.Container
 
         private void RepositionElements()
         {
-            int currentX = posX + spacing;
-            int currentY = posY + spacing;
+            int currentX = pos.X + spacing;
+            int currentY = pos.Y + spacing;
             foreach (var element in elements)
             {
-                int elementPosX = orientation == ContainerOrientation.Horizontal ? currentX : posX + spacing;
-                int elementPosY = orientation == ContainerOrientation.Vertical ? currentY : posY + spacing;
-                element.SetPosition(elementPosX, elementPosY);
+                int elementPosX = orientation == ContainerOrientation.Horizontal ? currentX : pos.X + spacing;
+                int elementPosY = orientation == ContainerOrientation.Vertical ? currentY : pos.Y + spacing;
+                element.pos = new Vector2i(elementPosX, elementPosY);
 
                 if (orientation == ContainerOrientation.Horizontal)
-                    currentX += element.width + spacing;
+                    currentX += element.size.X + spacing;
                 else
-                    currentY += element.height + spacing;
+                    currentY += element.size.Y + spacing;
             }
         }
 
         private void InitBackground()
         {
-            background = new RectangleShape(new Vector2f(width, height));
-            background.Position = new Vector2f(posX, posY);
+            background = new RectangleShape((Vector2f)size);
+            background.Position = (Vector2f)pos;
             background.FillColor = bgColor;
         }
 
-        public override void HandlePositionUpdate(int posX, int posY)
+        public override void HandlePositionUpdate(Vector2i pos)
         {
-            this.posX = posX;
-            this.posY = posY;
-            background.Position = new Vector2f(posX, posY);
+            if (background != null)
+            {
+                background.Position = (Vector2f)pos;
+            }
             RepositionElements();
         }
 

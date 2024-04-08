@@ -3,6 +3,7 @@ using online_osu_beatmap_editor_client.components;
 using online_osu_beatmap_editor_client.components.Container;
 using online_osu_beatmap_editor_client.config;
 using SFML.Graphics;
+using SFML.System;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -18,7 +19,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         {
             EditorData.CS = 4;
             editorShortcuts = new EditorShortcuts();
-            UIContainer mainContainer = new UIContainer(0, 0, 1920, 1080, 0, ContainerOrientation.Vertical, StyleVariables.colorBg);
+            UIContainer mainContainer = new UIContainer(new Vector2i(0, 0), new Vector2i(1920, 1080), 0, ContainerOrientation.Vertical, StyleVariables.colorBg);
 
             AddComponent(mainContainer);
 
@@ -43,7 +44,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private void InitEditorField ()
         {
-            editorField = new EditorField(1920 / 2, 1080 / 2);
+            editorField = new EditorField(new Vector2i(1920 / 2, 1080 / 2));
 
             AddComponent(editorField);
         }

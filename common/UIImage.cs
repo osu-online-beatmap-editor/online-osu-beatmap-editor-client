@@ -26,28 +26,39 @@ namespace online_osu_beatmap_editor_client.common
             }
         }
 
-        public UIImage(string imagePath, int posX, int posY, [Optional]int width, [Optional] int height, [Optional]Color color)
-            : base(posX, posY)
+        public UIImage(string imagePath, Vector2i pos, [Optional]Vector2i size, [Optional]Color color)
+            : base(pos)
         {
             texture = new Texture(imagePath);
-            this.width = (int)texture.Size.X;
-            this.height = (int)texture.Size.Y;
 
-            if (width != 0)
+            this.size = new Vector2i((int)texture.Size.X, (int)texture.Size.Y);
+            if (size != null)
             {
-                this.width = width;
-            }
-
-            if (height != 0) {
-                this.height = height;
+                this.size = size;
             }
 
             sprite = new Sprite(texture);
-            sprite.Scale = new Vector2f((float)this.width / texture.Size.X, (float)this.height / texture.Size.Y);
-            sprite.Position = new Vector2f(posX - width / 2, posY - width / 2);
+            sprite.Scale = new Vector2f((float)this.size.X / texture.Size.X, (float)this.size.Y / texture.Size.Y);
+            sprite.Origin = new Vector2f(sprite.GetLocalBounds().Width * this.origin.X, sprite.GetLocalBounds().Height * this.origin.Y);
+            sprite.Position = (Vector2f)pos;
 
             this.color = color;
 
+        }
+
+        public override void HandlePositionUpdate(Vector2i pos)
+        {
+            base.HandlePositionUpdate(pos);
+            if (sprite != null)
+            {
+                sprite.Position = (Vector2f)pos;
+            }
+        }
+
+        public override void HandleOriginUpdate(Vector2f origin)
+        {
+            base.HandleOriginUpdate(origin);
+            sprite.Origin = new Vector2f(sprite.GetLocalBounds().Width * this.origin.X, sprite.GetLocalBounds().Height * this.origin.Y);
         }
 
         public override void Draw()
