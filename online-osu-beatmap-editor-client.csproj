@@ -60,6 +60,7 @@
     <Compile Include="common\BaseView.cs" />
     <Compile Include="common\ClickableUIObject.cs" />
     <Compile Include="common\UIImage.cs" />
+    <Compile Include="common\UIText.cs" />
     <Compile Include="components\ButtonIcon\UIButtonIcon.cs" />
     <Compile Include="components\HitCircle\HitCircle.cs" />
     <Compile Include="components\Spacer\UISpacer.cs" />

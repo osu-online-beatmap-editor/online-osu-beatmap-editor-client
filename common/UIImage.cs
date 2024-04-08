@@ -49,7 +49,7 @@ namespace online_osu_beatmap_editor_client.common
 
         public override void Update()
         {
-            // Implement if needed
+
         }
     }
 }
