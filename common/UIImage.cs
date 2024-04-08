@@ -1,6 +1,5 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System;
 using System.Runtime.InteropServices;
 
 namespace online_osu_beatmap_editor_client.common
