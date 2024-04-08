@@ -15,11 +15,6 @@ namespace online_osu_beatmap_editor_client
             window.Close();
         }
 
-        static void OnButtonClick(object sender, EventArgs e)
-        {
-            Console.WriteLine("Button clicked!");
-        }
-
 
         static void Main()
         {

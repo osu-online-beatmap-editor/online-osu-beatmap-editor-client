@@ -12,9 +12,11 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private EditorNavBar navBar;
         private EditorToolBar toolBar;
+        private EditorField editorField;
 
         public EditorView(RenderWindow window)
         {
+            EditorData.CS = 4;
             editorShortcuts = new EditorShortcuts();
             UIContainer mainContainer = new UIContainer(0, 0, 1920, 1080, 0, ContainerOrientation.Vertical, StyleVariables.colorBg);
 
@@ -22,10 +24,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             InitNavBar(mainContainer);
             InitToolBar(mainContainer);
-
-            HitCircle hc = new HitCircle(300, 300, 50);
-
-            AddComponent(hc);
+            InitEditorField();
         }
 
         private void InitNavBar(UIContainer mainContainer)
@@ -40,6 +39,13 @@ namespace online_osu_beatmap_editor_client.views.Editor
             toolBar = new EditorToolBar();
             BaseUIComponent toolBarComponent = toolBar.GetComponent();
             mainContainer.AddElement(toolBarComponent);
+        }
+
+        private void InitEditorField ()
+        {
+            editorField = new EditorField(1920 / 2, 1080 / 2);
+
+            AddComponent(editorField);
         }
 
         public override void Update()

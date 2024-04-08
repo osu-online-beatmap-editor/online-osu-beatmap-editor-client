@@ -10,5 +10,7 @@
         public static bool isClapActive = false;
         public static bool isDistanceSnapActive = false;
         public static bool isGridSnapActive = false;
+
+        public static float CS;
     }
 }
