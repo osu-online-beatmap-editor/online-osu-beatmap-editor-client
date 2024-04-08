@@ -163,6 +163,12 @@ namespace online_osu_beatmap_editor_client.views.Editor
         public override void Update()
         {
             AddClickListener();
+            if (EditorData.currentlySelectedEditorTool != EditorTools.Select && selectedCircle != null)
+            {
+                selectedCircle.isSelected = false;
+                selectedCircle = null;
+                selectedCircleIndex = -1;
+            }
             if (isDraging && selectedCircle != null)
             {
                 Vector2i mousePosition = Mouse.GetPosition(window);
