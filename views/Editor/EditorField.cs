@@ -121,9 +121,9 @@ namespace online_osu_beatmap_editor_client.views.Editor
             {
                 isMouseButtonPressed = true;
                 Vector2i mousePosition = Mouse.GetPosition(window);
-                Vector2i clickPoint = new Vector2i(mousePosition.X - pos.X + size.X / 2, mousePosition.Y - pos.Y + size.Y / 2);
-                Vector2i unScaledClickPoint = new Vector2i((int)(clickPoint.X / scale), (int)(clickPoint.Y / scale));
-                HandleClick(unScaledClickPoint);
+                Vector2i rawClickPosOnField = EditorHelper.GetRawClickPosOnField(mousePosition, pos, size);
+                Vector2i unscaledClickPosOnField = EditorHelper.GetUnscaledClickPosOnField(rawClickPosOnField, scale);
+                HandleClick(unscaledClickPosOnField);
             }
             else if (isMouseButtonPressed && !Mouse.IsButtonPressed(Mouse.Button.Left))
             {
