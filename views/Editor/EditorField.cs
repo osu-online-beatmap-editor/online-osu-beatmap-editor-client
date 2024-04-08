@@ -3,7 +3,9 @@ using online_osu_beatmap_editor_client.components;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -12,12 +14,17 @@ namespace online_osu_beatmap_editor_client.views.Editor
         protected bool isMouseButtonPressed;
         protected bool isHovered;
 
+        private bool isDraging = false;
+        private Vector2i dragingOffset;
+
         private float scale = 2.3f;
         private Vector2i baseEditorFieldSize = new Vector2i(512, 384);
         private Color fieldColor = new Color(255, 255, 255, 100);
         private int gridSize = 16; 
         private Color gridColor = new Color(255, 255, 255, 50); 
-        private List<RectangleShape> gridLines = new List<RectangleShape>(); 
+        private List<RectangleShape> gridLines = new List<RectangleShape>();
+
+        private HitCircle selectedCircle;
 
         private int circleIndex = 1;
         private int currentColor = 0;
@@ -90,19 +97,47 @@ namespace online_osu_beatmap_editor_client.views.Editor
             EditorData.isNewComboActive = false;
         }
 
+        private void SelectTool(Vector2i clickPoint)
+        {
+            if (selectedCircle != null && selectedCircle.IsMouseOver(clickPoint))
+            {
+                isDraging = true;
+                dragingOffset = selectedCircle.pos - clickPoint;
+            }
+            else
+            {
+                HitCircle clickedCircle = circles.FirstOrDefault(circle => circle.IsMouseOver(clickPoint));
+
+                if (selectedCircle != null)
+                {
+                    selectedCircle.isSelected = false;
+                }
+
+                if (clickedCircle == null)
+                {
+                    selectedCircle = null;
+                    return;
+                }
+
+                selectedCircle = clickedCircle;
+                selectedCircle.isSelected = true;
+            }
+        }
+
         private void HandleClick(Vector2i clickPoint)
         {
             EditorTools currentlySelectedEditorTool = EditorData.currentlySelectedEditorTool;
             switch (currentlySelectedEditorTool)
             {
+                case EditorTools.Select:
+                    SelectTool(clickPoint);
+                    return;
                 case EditorTools.Circle:
-                    PlaceCircle(clickPoint);
+                    Vector2i rawClickPosOnField = EditorHelper.GetRawClickPosOnField(clickPoint, pos, size);
+                    Vector2i unscaledClickPosOnField = EditorHelper.GetUnscaledClickPosOnField(rawClickPosOnField, scale);
+                    PlaceCircle(unscaledClickPosOnField);
                     return;
                 default:
-                    foreach (var circle in circles)
-                    {
-                        circle.pos = pos;
-                    }
                     break;
             }
         }
@@ -114,19 +149,26 @@ namespace online_osu_beatmap_editor_client.views.Editor
             {
                 isMouseButtonPressed = true;
                 Vector2i mousePosition = Mouse.GetPosition(window);
-                Vector2i rawClickPosOnField = EditorHelper.GetRawClickPosOnField(mousePosition, pos, size);
-                Vector2i unscaledClickPosOnField = EditorHelper.GetUnscaledClickPosOnField(rawClickPosOnField, scale);
-                HandleClick(unscaledClickPosOnField);
+                HandleClick(mousePosition);
             }
             else if (isMouseButtonPressed && !Mouse.IsButtonPressed(Mouse.Button.Left))
             {
                 isMouseButtonPressed = false;
+                isDraging = false;
             }
         }
 
         public override void Update()
         {
             AddClickListener();
+            if (isDraging && selectedCircle != null)
+            {
+                Vector2i mousePosition = Mouse.GetPosition(window);
+                int x = Math.Max(Math.Min(mousePosition.X + dragingOffset.X, pos.X + size.X / 2), pos.X - size.X / 2);
+                int y = Math.Max(Math.Min(mousePosition.Y + dragingOffset.Y, pos.Y + size.Y / 2), pos.Y - size.Y / 2);
+
+                selectedCircle.pos = new Vector2i(x, y);
+            }
         }
 
         private bool IsMouseOver()

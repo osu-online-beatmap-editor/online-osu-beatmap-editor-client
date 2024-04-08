@@ -7,8 +7,10 @@ namespace online_osu_beatmap_editor_client.components
 {
     public class HitCircle : BaseUIComponent
     {
+        private SelectionOutline selectionOutline;
         private UIImage backgrond;
         private UIText numberText;
+        public bool isSelected = false;
 
         public HitCircle(Vector2i pos, int number, float CS, Color color) : base(pos)
         {
@@ -20,6 +22,8 @@ namespace online_osu_beatmap_editor_client.components
             backgrond.origin = new Vector2f(0.5f, 0.5f);
             numberText = new UIText(number.ToString(), pos, (uint)fontSize);
             numberText.origin = new Vector2f(0.5f, 0.5f);
+
+            selectionOutline = new SelectionOutline(pos, this.size);
         }
 
         public override void Update()
@@ -38,12 +42,29 @@ namespace online_osu_beatmap_editor_client.components
             {
                 numberText.pos = pos;
             }
+            if (selectionOutline != null)
+            {
+                selectionOutline.pos = pos;
+            }
         }
 
         public override void Draw()
         {
             backgrond.Draw();
             numberText.Draw();
+
+            if (isSelected)
+            {
+                selectionOutline.Draw();
+            }
+        }
+
+        public bool IsMouseOver(Vector2i mousePosition)
+        {
+            bool isInsideX = mousePosition.X >= pos.X - size.X / 2 && mousePosition.X <= pos.X + size.X - size.X / 2;
+            bool isInsideY = mousePosition.Y >= pos.Y - size.Y / 2 && mousePosition.Y <= pos.Y + size.Y - size.Y / 2;
+
+            return isInsideX && isInsideY;
         }
     }
 }
