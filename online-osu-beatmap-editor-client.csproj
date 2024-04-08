@@ -69,6 +69,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="views\Editor\EditorData.cs" />
+    <Compile Include="views\Editor\EditorField.cs" />
     <Compile Include="views\Editor\EditorNavBar.cs" />
     <Compile Include="views\Editor\EditorShortcuts.cs" />
     <Compile Include="views\Editor\EditorToolBar.cs" />
