@@ -32,18 +32,21 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>online_osu_beatmap_editor_client.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="sfml-audio">
-      <HintPath>C:\Users\Mateusz-PC\Downloads\SFML.Net-2.4\lib\sfml-audio.dll</HintPath>
+      <HintPath>.\sfml-audio.dll</HintPath>
     </Reference>
     <Reference Include="sfml-graphics">
-      <HintPath>C:\Users\Mateusz-PC\Downloads\SFML.Net-2.4\lib\sfml-graphics.dll</HintPath>
+      <HintPath>.\sfml-graphics.dll</HintPath>
     </Reference>
     <Reference Include="sfml-system">
-      <HintPath>C:\Users\Mateusz-PC\Downloads\SFML.Net-2.4\lib\sfml-system.dll</HintPath>
+      <HintPath>.\sfml-system.dll</HintPath>
     </Reference>
     <Reference Include="sfml-window">
-      <HintPath>C:\Users\Mateusz-PC\Downloads\SFML.Net-2.4\lib\sfml-window.dll</HintPath>
+      <HintPath>.\sfml-window.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -68,6 +71,9 @@
     <Compile Include="components\UIButtonLabel\UIButtonLabel.cs" />
     <Compile Include="components\UIContainer\UIContainer.cs" />
     <Compile Include="config\StyleVariables.cs" />
+    <Compile Include="Engine\GameplayElements\Audio\HitSample.cs" />
+    <Compile Include="Engine\GameplayElements\DifficultySettings.cs" />
+    <Compile Include="Engine\GameplayElements\Objects\HitCircle.cs" />
     <Compile Include="common\ShortcutManager.cs" />
     <Compile Include="Engine\OsuMath.cs" />
     <Compile Include="Program.cs" />
@@ -163,6 +169,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Engine\GameplayElements\Timing\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
