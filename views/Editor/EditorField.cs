@@ -31,16 +31,15 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private List<HitCircle> circles = new List<HitCircle>();
 
-        public EditorField(int posX, int posY) : base(posX, posY)
+        public EditorField(Vector2i pos) : base(pos)
         {
             isMouseButtonPressed = false;
             isHovered = false;
-            width = (int)(baseEditorFieldSize.X * scale);
-            height = (int)(baseEditorFieldSize.Y * scale);
+            this.size = new Vector2i((int)(baseEditorFieldSize.X * scale), (int)(baseEditorFieldSize.Y * scale));
 
-            fieldShape = new RectangleShape(new Vector2f(width, height));
-            fieldShape.Origin = new Vector2f(width / 2, height / 2);
-            fieldShape.Position = new Vector2f(posX, posY);
+            fieldShape = new RectangleShape((Vector2f)size);
+            fieldShape.Origin = new Vector2f(size.X / 2, size.Y / 2);
+            fieldShape.Position = (Vector2f)pos;
             fieldShape.FillColor = fieldColor;
 
             GenerateGrid();
@@ -50,16 +49,16 @@ namespace online_osu_beatmap_editor_client.views.Editor
         {
             for (int x = 0; x <= baseEditorFieldSize.X; x += gridSize)
             {
-                RectangleShape line = new RectangleShape(new Vector2f(1, height));
-                line.Position = new Vector2f(posX - width / 2 + x * scale, posY - height / 2);
+                RectangleShape line = new RectangleShape(new Vector2f(1, size.Y));
+                line.Position = new Vector2f(pos.X - size.X / 2 + x * scale, pos.Y - size.Y / 2);
                 line.FillColor = gridColor;
                 gridLines.Add(line);
             }
 
             for (int y = 0; y <= baseEditorFieldSize.Y; y += gridSize)
             {
-                RectangleShape line = new RectangleShape(new Vector2f(width, 1));
-                line.Position = new Vector2f(posX - width / 2, posY - height / 2 + y * scale);
+                RectangleShape line = new RectangleShape(new Vector2f(size.X, 1));
+                line.Position = new Vector2f(pos.X - size.X / 2, pos.Y - size.Y / 2 + y * scale);
                 line.FillColor = gridColor;
                 gridLines.Add(line);
             }
@@ -90,8 +89,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 }
             }
             Color circleColor = colors[currentColor];
-            Vector2i newHitCirclePos = EditorHelper.CalculateCirclePosition(posX, posY, width, height, clickPoint, scale);
-            HitCircle newHitCircle = new HitCircle(newHitCirclePos.X, newHitCirclePos.Y, circleIndex, EditorData.CS, circleColor);
+            Vector2i newHitCirclePos = EditorHelper.CalculateCirclePosition(pos, size, clickPoint, scale);
+            HitCircle newHitCircle = new HitCircle(newHitCirclePos, circleIndex, EditorData.CS, circleColor);
 
             circles.Add(newHitCircle);
             circleIndex++;
@@ -106,6 +105,12 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 case EditorTools.Circle:
                     PlaceCircle(clickPoint);
                     return;
+                default:
+                    foreach (var circle in circles)
+                    {
+                        circle.pos = pos;
+                    }
+                    break;
             }
         }
 
@@ -116,9 +121,9 @@ namespace online_osu_beatmap_editor_client.views.Editor
             {
                 isMouseButtonPressed = true;
                 Vector2i mousePosition = Mouse.GetPosition(window);
-                Vector2i clickPoint = new Vector2i(mousePosition.X - posX + width / 2, mousePosition.Y - posY + height / 2);
-                Vector2i unScaledClickPoint = new Vector2i((int)(clickPoint.X / scale), (int)(clickPoint.Y / scale));
-                HandleClick(unScaledClickPoint);
+                Vector2i rawClickPosOnField = EditorHelper.GetRawClickPosOnField(mousePosition, pos, size);
+                Vector2i unscaledClickPosOnField = EditorHelper.GetUnscaledClickPosOnField(rawClickPosOnField, scale);
+                HandleClick(unscaledClickPosOnField);
             }
             else if (isMouseButtonPressed && !Mouse.IsButtonPressed(Mouse.Button.Left))
             {
@@ -134,8 +139,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private bool IsMouseOver()
         {
             Vector2i mousePosition = Mouse.GetPosition(window);
-            return (mousePosition.X >= posX - width / 2 && mousePosition.X <= posX + width - width / 2 &&
-                    mousePosition.Y >= posY - height / 2 && mousePosition.Y <= posY + height - height / 2);
+            return (mousePosition.X >= pos.X - size.X / 2 && mousePosition.X <= pos.X + size.X - size.X / 2 &&
+                    mousePosition.Y >= pos.Y - size.Y / 2 && mousePosition.Y <= pos.Y + size.Y - size.Y / 2);
         }
     }
 }

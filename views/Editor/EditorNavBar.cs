@@ -1,6 +1,9 @@
 ﻿using online_osu_beatmap_editor_client.common;
+using online_osu_beatmap_editor_client.components;
 using online_osu_beatmap_editor_client.components.Button;
 using online_osu_beatmap_editor_client.components.Container;
+using SFML.Graphics;
+using SFML.System;
 using System;
 
 namespace online_osu_beatmap_editor_client.views.Editor
@@ -11,7 +14,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         public EditorNavBar ()
         {
-            navBar = new UIContainer(0, 0, 1920, 50, 0, ContainerOrientation.Horizontal);
+            navBar = new UIContainer(new Vector2i(0, 0), new Vector2i(1920, 50), 0, ContainerOrientation.Horizontal);
+            Console.WriteLine(navBar.origin);
 
             UIButtonLabel button1 = new UIButtonLabel("File");
             UIButtonLabel button2 = new UIButtonLabel("Edit");
