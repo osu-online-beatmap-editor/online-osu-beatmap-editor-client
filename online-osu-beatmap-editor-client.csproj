@@ -59,6 +59,7 @@
     <Compile Include="common\BaseUIComponent.cs" />
     <Compile Include="common\BaseView.cs" />
     <Compile Include="common\ClickableUIObject.cs" />
+    <Compile Include="common\UIImage.cs" />
     <Compile Include="components\ButtonIcon\UIButtonIcon.cs" />
     <Compile Include="components\HitCircle\HitCircle.cs" />
     <Compile Include="components\Spacer\UISpacer.cs" />
@@ -80,6 +81,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\baseSkin\hitcircle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\icons\distanceSnap.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

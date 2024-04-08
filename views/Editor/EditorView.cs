@@ -3,6 +3,7 @@ using online_osu_beatmap_editor_client.components;
 using online_osu_beatmap_editor_client.components.Container;
 using online_osu_beatmap_editor_client.config;
 using SFML.Graphics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -25,9 +26,9 @@ namespace online_osu_beatmap_editor_client.views.Editor
             InitToolBar(mainContainer);
             InitEditorField();
 
-            HitCircle hc = new HitCircle(300, 300, 50);
+            UIImage gg = new UIImage("assets/baseSkin/hitcircle.png", 150, 150, 200, 200);
 
-            AddComponent(hc);
+            AddComponent(gg);
         }
 
         private void InitNavBar(UIContainer mainContainer)
