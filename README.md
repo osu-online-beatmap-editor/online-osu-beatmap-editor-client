@@ -28,7 +28,7 @@ cd ./online-osu-beatmap-editor-wrapper
 
 Run `setup.bat`
 
-Open the online osu! beatmap editor client solution, then include references from [sfml](https://https://www.sfml-dev.org) `(SFML.Net-2.4/lib)` and add existing items from `(SFML.Net-2.4/extlibs)`.
+Open the online online-osu-beatmap-editor-client solution, then include references from [sfml](https://https://www.sfml-dev.org) `(SFML.Net-2.4/lib)` and add existing items from `(SFML.Net-2.4/extlibs)`.
 
 ## Licenses
 
