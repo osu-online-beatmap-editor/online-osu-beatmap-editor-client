@@ -24,6 +24,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private Color gridColor = new Color(255, 255, 255, 50); 
         private List<RectangleShape> gridLines = new List<RectangleShape>();
 
+        private int selectedCircleIndex;
         private HitCircle selectedCircle;
 
         private int circleIndex = 1;
@@ -106,20 +107,21 @@ namespace online_osu_beatmap_editor_client.views.Editor
             }
             else
             {
-                HitCircle clickedCircle = circles.FirstOrDefault(circle => circle.IsMouseOver(clickPoint));
+                int clickedCircleIndex = circles.FindIndex(circle => circle.IsMouseOver(clickPoint));
 
                 if (selectedCircle != null)
                 {
                     selectedCircle.isSelected = false;
                 }
 
-                if (clickedCircle == null)
+                if (clickedCircleIndex == -1)
                 {
                     selectedCircle = null;
                     return;
                 }
 
-                selectedCircle = clickedCircle;
+                selectedCircle = circles[clickedCircleIndex];
+                selectedCircleIndex = clickedCircleIndex;
                 selectedCircle.isSelected = true;
             }
         }
@@ -165,9 +167,9 @@ namespace online_osu_beatmap_editor_client.views.Editor
             {
                 Vector2i mousePosition = Mouse.GetPosition(window);
 
-                if (EditorData.isDistanceSnapActive)
+                if (EditorData.isDistanceSnapActive && selectedCircleIndex > 0)
                 {
-                    selectedCircle.pos = EditorHelper.GetNewCircleDraggingPositionWithSnaping(mousePosition, dragingOffset, pos, size, 200, circles[0].pos);
+                    selectedCircle.pos = EditorHelper.GetNewCircleDraggingPositionWithSnaping(mousePosition, dragingOffset, pos, size, 200, circles[selectedCircleIndex - 1].pos);
                 } 
                 else 
                 {

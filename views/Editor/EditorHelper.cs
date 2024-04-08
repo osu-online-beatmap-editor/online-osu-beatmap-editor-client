@@ -44,23 +44,16 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 Vector2i anchorPos = prevousCirclePos.Value;
 
                 System.Numerics.Vector2 delta = new System.Numerics.Vector2(mousePositionWithOffset.X + dragingOffset.X, mousePositionWithOffset.Y + dragingOffset.Y) - new System.Numerics.Vector2(anchorPos.X, anchorPos.Y);
+
                 float distance = delta.Length();
 
-                if (distance > radius)
-                {
-                    delta *= radius / distance;
-
-                    newPosition = (Vector2i)new Vector2f(anchorPos.X + delta.X, anchorPos.Y + delta.Y);
-                }
-                else
-                {
-                    newPosition = mousePositionWithOffset;
-                }
+                delta *= radius / distance;
+                newPosition = (Vector2i)new Vector2f(anchorPos.X + delta.X, anchorPos.Y + delta.Y);
             }
 
-            Vector2i result = CalculateDraggingPositionBorder(newPosition, new Vector2i(0,0), pos, size);
-
+            Vector2i result = CalculateDraggingPositionBorder(newPosition, new Vector2i(0, 0), pos, size);
             return result;
+
         }
     }
 }
