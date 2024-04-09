@@ -19,7 +19,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         public EditorNavBar ()
         {
-            navBar = new UIContainer(new Vector2i(0, 0), new Vector2i(640 * 2, 40), 0, ContainerOrientation.Horizontal);
+            navBar = new UIContainer(new Vector2i(0, 0), new Vector2i(853 * 2, 40), 0, ContainerOrientation.Horizontal);
             Console.WriteLine(navBar.origin);
 
             UIButtonLabel buttonFile = new UIButtonLabel("File");

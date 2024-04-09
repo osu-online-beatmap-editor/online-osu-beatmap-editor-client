@@ -19,7 +19,7 @@ namespace online_osu_beatmap_editor_client
 
         static void Main()
         {
-            RenderWindow app = new RenderWindow(new VideoMode(640 * 2, 480 * 2), "Online osu beatmap editor!");
+            RenderWindow app = new RenderWindow(new VideoMode(853 * 2, 480 * 2), "Online osu beatmap editor!");
 
             BaseUIComponent.SetWindow(app);
 
@@ -27,7 +27,7 @@ namespace online_osu_beatmap_editor_client
 
             Color windowColor = StyleVariables.colorBg;
 
-            View viewPort = new View(new FloatRect(0, 0, 640 * 2, 480 * 2));
+            View viewPort = new View(new FloatRect(0, 0, 853 * 2, 480 * 2));
             app.SetView(viewPort);
 
             BaseView view = new EditorView(app);
