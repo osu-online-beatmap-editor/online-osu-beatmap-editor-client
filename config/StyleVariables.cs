@@ -5,7 +5,8 @@ namespace online_osu_beatmap_editor_client.config
     static class StyleVariables
     {
         public static Font mainFont = new Font("assets/fonts/arial.ttf");
-
+        public static Font mainFontBold = new Font("assets/fonts/arialbd.ttf");
+        
         public static Color colorBg = new Color(30, 30, 30);
         public static Color colorBgSecondary = new Color(35, 35, 35);
         public static Color colorBgTertiary = new Color(44, 44, 44);

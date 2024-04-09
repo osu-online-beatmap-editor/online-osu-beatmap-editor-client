@@ -27,7 +27,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         public static Vector2i CalculateCirclePositionBorder(Vector2i mousePosition, Vector2i dragingOffset, Vector2i pos, Vector2i size)
         {
             Vector2i mousePositionWithOffset = mousePosition + dragingOffset;
-
+            
             int x = Math.Max(Math.Min(mousePositionWithOffset.X, pos.X + size.X / 2), pos.X - size.X / 2);
             int y = Math.Max(Math.Min(mousePositionWithOffset.Y, pos.Y + size.Y / 2), pos.Y - size.Y / 2);
 
@@ -74,6 +74,17 @@ namespace online_osu_beatmap_editor_client.views.Editor
             int snappedY = (int)(Math.Round((float)position.Y / gridSize) * gridSize);
 
             return new Vector2i(snappedX, snappedY);
+        }
+
+        public static int GetDistanceSnapping(float scale)
+        {
+            float value = EditorData.distanceSnapping;
+            int minValue = 5;
+            int maxValue = 500;
+
+            int result = Convert.ToInt32(minValue + value * (maxValue - minValue));
+
+            return (int)(result * scale);
         }
     }
 }

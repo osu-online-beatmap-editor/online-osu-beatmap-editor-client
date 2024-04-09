@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using online_osu_beatmap_editor_client.components;
+using System.ComponentModel;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -8,7 +9,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         #region GridType
 
-        public static EditorGridType _gridType;
+        private static EditorGridType _gridType;
 
         public static event PropertyChangedEventHandler GridTypeChanged;
         public static EditorGridType gridType
@@ -25,6 +26,46 @@ namespace online_osu_beatmap_editor_client.views.Editor
         }
 
         #endregion GridType
+
+        #region BackgroundDim
+
+        private static float _backgroundDim;
+
+        public static event PropertyChangedEventHandler BackgroundDimChanged;
+        public static float backgroundDim
+        {
+            get { return _backgroundDim; }
+            set
+            {
+                if (_backgroundDim != value)
+                {
+                    _backgroundDim = value;
+                    BackgroundDimChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(backgroundDim)));
+                }
+            }
+        }
+
+        #endregion BackgroundDim
+
+        #region DistanceSnapping
+
+        private static float _distanceSnapping;
+
+        public static event PropertyChangedEventHandler DistanceSnappingChanged;
+        public static float distanceSnapping
+        {
+            get { return _distanceSnapping; }
+            set
+            {
+                if (_distanceSnapping != value)
+                {
+                    _distanceSnapping = value;
+                    DistanceSnappingChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(distanceSnapping)));
+                }
+            }
+        }
+
+        #endregion DistanceSnapping
 
         #region IsNewComboActive
 
@@ -45,6 +86,26 @@ namespace online_osu_beatmap_editor_client.views.Editor
         }
 
         #endregion IsNewComboActive
+
+        #region SelectedCircle
+
+        private static HitCircle _selectedCircle;
+
+        public static event PropertyChangedEventHandler SelectedCircleChanged;
+        public static HitCircle selectedCircle
+        {
+            get { return _selectedCircle; }
+            set
+            {
+                if (_selectedCircle != value)
+                {
+                    _selectedCircle = value;
+                    SelectedCircleChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(selectedCircle)));
+                }
+            }
+        }
+
+        #endregion SelectedCircle
 
         public static bool isWhistleActive = false;
         public static bool isFinishActive = false;

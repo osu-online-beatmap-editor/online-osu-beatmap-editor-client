@@ -1,5 +1,5 @@
 ﻿using online_osu_beatmap_editor_client.common;
-using online_osu_beatmap_editor_client.config;
+using online_osu_beatmap_editor_client.views.Editor;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -23,7 +23,10 @@ namespace online_osu_beatmap_editor_client.components.Background
                 if (value != _backgroundDim)
                 {
                     _backgroundDim = value;
-                    backgoundDimRectangle.FillColor = new Color(0, 0, 0, (byte)Convert.ToInt32(value * 255));
+                    if (backgoundDimRectangle != null)
+                    {
+                        backgoundDimRectangle.FillColor = new Color(0, 0, 0, (byte)Convert.ToInt32(value * 255));
+                    }
                 }
             }
         }
@@ -34,10 +37,10 @@ namespace online_osu_beatmap_editor_client.components.Background
                 image = new UIImage(imagePath, new Vector2i(0, 0), new Vector2i(853 * 2, 480 * 2));
                 backgoundDimRectangle = new RectangleShape(new Vector2f(853 * 2, 480 * 2));
                 backgoundDimRectangle.Position = new Vector2f(0, 0);
-                backgroundDim = AppConfig.defaultBackgroundDim;
-                
-
+                backgroundDim = EditorData.backgroundDim;
             } catch { }
+
+            EditorData.BackgroundDimChanged += (sender, e) => backgroundDim = EditorData.backgroundDim;
         }
 
         public override void Draw()

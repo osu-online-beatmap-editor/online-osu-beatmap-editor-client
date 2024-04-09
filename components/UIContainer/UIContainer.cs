@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SFML.Graphics;
 using SFML.System;
 using online_osu_beatmap_editor_client.common;
@@ -17,11 +16,12 @@ namespace online_osu_beatmap_editor_client.components.Container
     public class UIContainer : BaseUIComponent
     {
         private Color bgColor = StyleVariables.colorBgSecondary;
-        private List<BaseUIComponent> elements = new List<BaseUIComponent>();
+        public List<BaseUIComponent> elements = new List<BaseUIComponent>();
         private int spacing;
         private ContainerOrientation orientation;
         private RectangleShape background;
-        private bool isAutoSizing = false;
+        private bool isAutoSizingX = false;
+        private bool isAutoSizingY = false;
 
         public UIContainer(Vector2i pos, Vector2i size, int spacing, ContainerOrientation orientation, [Optional]Color bgColor) : base(pos)
         {
@@ -29,15 +29,17 @@ namespace online_osu_beatmap_editor_client.components.Container
             {
                 this.bgColor = bgColor;
             }
-            if (size != new Vector2i(0, 0))
+
+            this.size = size;
+
+            if (size.X == 0)
             {
-                this.size = size;
-                isAutoSizing = false;
+                isAutoSizingX = true;
             }
-            else
+            
+            if (size.Y == 0)
             {
-                this.size = new Vector2i(100, spacing);
-                isAutoSizing = true;
+                isAutoSizingY = true;
             }
 
             this.orientation = orientation;
@@ -68,17 +70,34 @@ namespace online_osu_beatmap_editor_client.components.Container
         {
             elements.Add(element);
             RepositionElements();
-            if (isAutoSizing)
+
+            Vector2i newSize = new Vector2i(size.X, size.Y);
+
+            if (isAutoSizingY)
             {
                 if (orientation == ContainerOrientation.Vertical)
                 {
-                    size = new Vector2i(FindBiggestElement(ContainerOrientation.Vertical).size.X + spacing * 2, size.Y + element.size.Y + spacing);
+                    newSize.Y = size.Y + element.size.Y + spacing + (spacing / 2);
                 }
                 else
                 {
-                    size = new Vector2i(size.X + element.size.X + spacing, FindBiggestElement(ContainerOrientation.Horizontal).size.Y + spacing * 2);
+                    newSize.Y = FindBiggestElement(ContainerOrientation.Horizontal).size.Y + spacing * 2;
                 }
             }
+
+            if (isAutoSizingX)
+            {
+                if (orientation == ContainerOrientation.Horizontal)
+                {
+                    newSize.X = size.X + element.size.X + spacing + (spacing / 2); ;
+                }
+                else
+                {
+                    newSize.X = FindBiggestElement(ContainerOrientation.Vertical).size.X + spacing * 2;
+                }
+            }
+
+            size = newSize;
         }
 
         private void RepositionElements()

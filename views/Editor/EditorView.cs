@@ -18,19 +18,27 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private UIBackground background;
         private EditorNavBar navBar;
         private EditorToolBar toolBar;
+        private EditorDetailsBar detailsBar;
         private EditorField editorField;
 
         public EditorView(RenderWindow window)
         {
-            InitBackground();
 
             EditorData.gridType = EditorGridType.Large;
             EditorData.CS = 4;
+            EditorData.backgroundDim = AppConfig.defaultBackgroundDim;
+            EditorData.distanceSnapping = 0.3f;
             editorShortcuts = new EditorShortcuts();
+
+            InitBackground();
+
             UIContainer mainContainer = new UIContainer(new Vector2i(0, 0), new Vector2i(853 * 2, 480 * 2), 0, ContainerOrientation.Vertical, new Color(1,1,1,0));
 
             AddComponent(mainContainer);
-            InitNavBar(mainContainer); InitToolBar(mainContainer);
+            InitNavBar(mainContainer);
+            InitToolBar(mainContainer);
+
+            InitDetailsBar();
             InitEditorField();
         }
 
@@ -80,9 +88,14 @@ namespace online_osu_beatmap_editor_client.views.Editor
         {
             toolBar = new EditorToolBar();
             BaseUIComponent toolBarComponent = toolBar.GetComponent();
-            mainContainer.AddElement(toolBarComponent);
+            mainContainer.AddElement(toolBarComponent);   
+        }
 
-           
+        private void InitDetailsBar()
+        {
+            detailsBar = new EditorDetailsBar();
+            BaseUIComponent detailsBarComponent = detailsBar.GetComponent();
+            AddComponent(detailsBarComponent);
         }
 
         private void InitEditorField ()
@@ -99,6 +112,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             toolBar.Update();
             navBar.Update();
             navBar.Draw();
+            detailsBar.Update();
         }
     }
 }
