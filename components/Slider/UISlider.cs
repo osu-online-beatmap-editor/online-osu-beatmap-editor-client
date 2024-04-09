@@ -2,7 +2,7 @@
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using System;
+using System.ComponentModel;
 
 namespace online_osu_beatmap_editor_client.components.Slider
 {
@@ -10,7 +10,21 @@ namespace online_osu_beatmap_editor_client.components.Slider
     {
         private RectangleShape track;
         private RectangleShape knob;
-        private float value = 0.5f;
+        private float _sliderValue = 0.5f;
+
+        public event PropertyChangedEventHandler ValueChanged;
+        public float sliderValue
+        {
+            get { return _sliderValue; }
+            set
+            {
+                if (_sliderValue != value)
+                {
+                    _sliderValue = value;
+                    ValueChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(sliderValue)));
+                }
+            }
+        }
 
         public UISlider(Vector2i pos, int width) : base(pos)
         {
@@ -22,7 +36,7 @@ namespace online_osu_beatmap_editor_client.components.Slider
 
             knob = new RectangleShape(new Vector2f(20, 20));
             knob.FillColor = Color.Blue;
-            knob.Position = new Vector2f(pos.X + value * size.X, pos.Y);
+            knob.Position = new Vector2f(pos.X + sliderValue * size.X, pos.Y);
         }
 
         public override void HandleSizeUpdate(Vector2i size)
@@ -46,7 +60,7 @@ namespace online_osu_beatmap_editor_client.components.Slider
             }
             if (knob != null)
             {
-                knob.Position = new Vector2f(pos.X + value * size.X - 10, pos.Y);
+                knob.Position = new Vector2f(pos.X + sliderValue * size.X - 10, pos.Y);
             }
         }
 
@@ -58,11 +72,10 @@ namespace online_osu_beatmap_editor_client.components.Slider
                 if (mousePos.X >= pos.X && mousePos.X <= pos.X + size.X &&
                     mousePos.Y >= pos.Y && mousePos.Y <= pos.Y + size.Y)
                 {
-                    value = (mousePos.X - pos.X) / (float)size.X;
-                    knob.Position = new Vector2f(pos.X + value * size.X - 10, pos.Y);
+                    sliderValue = (mousePos.X - pos.X) / (float)size.X;
+                    knob.Position = new Vector2f(pos.X + sliderValue * size.X - 10, pos.Y);
                 }
             }
-            Console.WriteLine(value);
         }
 
         public override void Draw()

@@ -26,6 +26,26 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         #endregion GridType
 
+        #region BackgroundDim
+
+        public static float _backgroundDim;
+
+        public static event PropertyChangedEventHandler BackgroundDimChanged;
+        public static float backgroundDim
+        {
+            get { return _backgroundDim; }
+            set
+            {
+                if (_backgroundDim != value)
+                {
+                    _backgroundDim = value;
+                    BackgroundDimChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(backgroundDim)));
+                }
+            }
+        }
+
+        #endregion BackgroundDim
+
         #region IsNewComboActive
 
         public static bool _isNewComboActive = false;
