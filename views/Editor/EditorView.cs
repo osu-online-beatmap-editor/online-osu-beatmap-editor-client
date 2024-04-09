@@ -36,7 +36,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private string GetRandomSeasonalBackground()
         {
-            string path = @"D:\osu!\Data\bg";
+            string path = AppConfig.osuFolderPath + @"\Data\bg";
 
             if (!Directory.Exists(path))
             {

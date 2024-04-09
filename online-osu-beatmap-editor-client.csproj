@@ -69,6 +69,8 @@
     <Compile Include="components\Spacer\UISpacer.cs" />
     <Compile Include="components\UIButtonLabel\UIButtonLabel.cs" />
     <Compile Include="components\UIContainer\UIContainer.cs" />
+    <Compile Include="config\AppConfig.cs" />
+    <Compile Include="config\AppConfigParser.cs" />
     <Compile Include="config\StyleVariables.cs" />
     <Compile Include="common\ShortcutManager.cs" />
     <Compile Include="Engine\OsuMath.cs" />

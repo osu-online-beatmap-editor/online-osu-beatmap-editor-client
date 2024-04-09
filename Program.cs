@@ -16,9 +16,10 @@ namespace online_osu_beatmap_editor_client
             window.Close();
         }
 
-
         static void Main()
         {
+            new AppConfigParser();
+
             RenderWindow app = new RenderWindow(new VideoMode(853 * 2, 480 * 2), "Online osu beatmap editor!");
 
             BaseUIComponent.SetWindow(app);
