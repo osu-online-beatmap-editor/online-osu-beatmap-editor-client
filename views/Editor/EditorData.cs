@@ -6,6 +6,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
     {
         public static EditorTools currentlySelectedEditorTool;
 
+        #region GridType
+
         public static EditorGridType _gridType;
 
         public static event PropertyChangedEventHandler GridTypeChanged;
@@ -17,12 +19,33 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 if (_gridType != value)
                 {
                     _gridType = value;
-                    OnGridTypeChanged();
+                    GridTypeChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(gridType)));
                 }
             }
         }
 
-        public static bool isNewComboActive = false;
+        #endregion GridType
+
+        #region IsNewComboActive
+
+        public static bool _isNewComboActive = false;
+
+        public static event PropertyChangedEventHandler IsNewComboActiveChanged;
+        public static bool isNewComboActive
+        {
+            get { return _isNewComboActive; }
+            set
+            {
+                if (_isNewComboActive != value)
+                {
+                    _isNewComboActive = value;
+                    IsNewComboActiveChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(isNewComboActive)));
+                }
+            }
+        }
+
+        #endregion IsNewComboActive
+
         public static bool isWhistleActive = false;
         public static bool isFinishActive = false;
         public static bool isClapActive = false;
@@ -30,9 +53,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
         public static bool isGridSnapActive = false;
 
         public static float CS;
-        private static void OnGridTypeChanged()
-        {
-            GridTypeChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(gridType)));
-        }
+
     }
 }

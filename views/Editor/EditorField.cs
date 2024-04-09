@@ -50,6 +50,39 @@ namespace online_osu_beatmap_editor_client.views.Editor
             circlePreview = new HitCircle(pos, 1, EditorData.CS, colors[0]);
 
             EditorData.GridTypeChanged += (sender, e) => GenerateGrid();
+            EditorData.IsNewComboActiveChanged += (sender, e) => HandleIsNewComboChange();
+        }
+
+        private Color GetNextCircleColor ()
+        {
+            int currentColorCopy = currentColor + 1;
+            if (currentColorCopy >= colors.Length)
+            {
+                currentColorCopy = 0;
+            }
+
+            return colors[currentColorCopy];
+        }
+
+        private void HandleIsNewComboChange ()
+        {
+            Console.WriteLine(EditorData.isNewComboActive);
+            UpdateCirclePreviewNumberAndColor();
+        }
+
+        private void UpdateCirclePreviewNumberAndColor()
+        {
+            bool isNewCombo = EditorData.isNewComboActive;
+
+            if (isNewCombo)
+            {
+                circlePreview.color = GetNextCircleColor();
+                circlePreview.number = 1;
+                return;
+            }
+
+            circlePreview.color = colors[currentColor];
+            circlePreview.number = circleIndex;
         }
 
         private void GenerateGrid()
@@ -154,6 +187,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             circles.Add(newHitCircle);
             circleIndex++;
             EditorData.isNewComboActive = false;
+            UpdateCirclePreviewNumberAndColor();
         }
 
         private void SelectTool(Vector2i clickPoint)
@@ -228,16 +262,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
             if (isDraging && selectedCircle != null)
             {
                 selectedCircle.pos = GetCirclePosition();
-
-                /*
-                if (EditorData.isDistanceSnapActive && selectedCircleIndex > 0)
-                {
-                    selectedCircle.pos = EditorHelper.GetNewCircleDraggingPositionWithSnaping(mousePosition, dragingOffset, pos, size, 200, circles[selectedCircleIndex - 1].pos);
-                } 
-                else 
-                {
-                    selectedCircle.pos = GetCirclePosition();
-                }*/
             }
             if (EditorData.currentlySelectedEditorTool == EditorTools.Circle)
             {

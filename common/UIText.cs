@@ -10,6 +10,24 @@ namespace online_osu_beatmap_editor_client.common
     {
         private Text text;
 
+        private string _label;
+
+        public string label
+        {
+            get
+            {
+                return _label;
+            }
+            set
+            {
+                if (value != _label)
+                {
+                    _label = value;
+                    text.DisplayedString = _label; 
+                }
+            }
+        }
+
         public UIText(string label, Vector2i pos, uint size = 16)
             : base(pos)
         {
