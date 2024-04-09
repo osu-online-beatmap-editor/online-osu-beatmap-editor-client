@@ -5,5 +5,6 @@ namespace online_osu_beatmap_editor_client.config
     {
 
         public static string osuFolderPath;
+        public static float defaultBackgroundDim;
     }
 }

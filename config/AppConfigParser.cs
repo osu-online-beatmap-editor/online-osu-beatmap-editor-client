@@ -30,6 +30,7 @@ namespace online_osu_beatmap_editor_client.config
                 }
 
                 AppConfig.osuFolderPath = config["osuFolder"];
+                AppConfig.defaultBackgroundDim = float.Parse(config["defaultBackgroundDim"]);
             }
             else
             {
