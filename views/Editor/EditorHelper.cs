@@ -75,5 +75,16 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             return new Vector2i(snappedX, snappedY);
         }
+
+        public static int GetDistanceSnapping(float scale)
+        {
+            float value = EditorData.distanceSnapping;
+            int minValue = 5;
+            int maxValue = 500;
+
+            int result = Convert.ToInt32(minValue + value * (maxValue - minValue));
+
+            return (int)(result * scale);
+        }
     }
 }

@@ -99,11 +99,11 @@ namespace online_osu_beatmap_editor_client.views.Editor
             Vector2i result = value;
             if (selectedCircleIndex > 0)
             {
-                result = EditorHelper.UpdateCirclePositionWithDistanceSnapping(result, dragingOffset, pos, size, 200, circles[selectedCircleIndex - 1].pos);
+                result = EditorHelper.UpdateCirclePositionWithDistanceSnapping(result, dragingOffset, pos, size, EditorHelper.GetDistanceSnapping(scale), circles[selectedCircleIndex - 1].pos);
             }
             else if (circles.Count > 0)
             {
-                result = EditorHelper.UpdateCirclePositionWithDistanceSnapping(result, dragingOffset, pos, size, 200, circles[circles.Count - 1].pos);
+                result = EditorHelper.UpdateCirclePositionWithDistanceSnapping(result, dragingOffset, pos, size, EditorHelper.GetDistanceSnapping(scale), circles[circles.Count - 1].pos);
             }
             return result;
         }

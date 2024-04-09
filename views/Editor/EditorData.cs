@@ -8,7 +8,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         #region GridType
 
-        public static EditorGridType _gridType;
+        private static EditorGridType _gridType;
 
         public static event PropertyChangedEventHandler GridTypeChanged;
         public static EditorGridType gridType
@@ -28,7 +28,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         #region BackgroundDim
 
-        public static float _backgroundDim;
+        private static float _backgroundDim;
 
         public static event PropertyChangedEventHandler BackgroundDimChanged;
         public static float backgroundDim
@@ -45,6 +45,26 @@ namespace online_osu_beatmap_editor_client.views.Editor
         }
 
         #endregion BackgroundDim
+
+        #region DistanceSnapping
+
+        private static float _distanceSnapping;
+
+        public static event PropertyChangedEventHandler DistanceSnappingChanged;
+        public static float distanceSnapping
+        {
+            get { return _distanceSnapping; }
+            set
+            {
+                if (_distanceSnapping != value)
+                {
+                    _distanceSnapping = value;
+                    DistanceSnappingChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(distanceSnapping)));
+                }
+            }
+        }
+
+        #endregion DistanceSnapping
 
         #region IsNewComboActive
 
