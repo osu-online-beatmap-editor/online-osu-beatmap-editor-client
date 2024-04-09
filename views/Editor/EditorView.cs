@@ -38,6 +38,11 @@ namespace online_osu_beatmap_editor_client.views.Editor
         {
             string path = @"D:\osu!\Data\bg";
 
+            if (!Directory.Exists(path))
+            {
+                return null;
+            }
+
             string[] imageFiles = Directory.GetFiles(path, "*.jpg");
             imageFiles = imageFiles.Concat(Directory.GetFiles(path, "*.png")).ToArray();
 
