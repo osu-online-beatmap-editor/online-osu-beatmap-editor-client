@@ -106,26 +106,22 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private Vector2i GetCirclePosition()
         {
-            Vector2i result;
             Vector2i mousePosition = Mouse.GetPosition(window);
+            Vector2i result = mousePosition;
             if (EditorData.isDistanceSnapActive)
             {
                 if(selectedCircleIndex > 0)
                 {
-                    result = EditorHelper.GetNewCircleDraggingPositionWithSnaping(mousePosition, dragingOffset, pos, size, 200, circles[selectedCircleIndex - 1].pos);
+                    result = EditorHelper.GetNewCircleDraggingPositionWithSnaping(result, dragingOffset, pos, size, 200, circles[selectedCircleIndex - 1].pos);
                 }
                 else if(circles.Count > 0)
                 {
-                    result = EditorHelper.GetNewCircleDraggingPositionWithSnaping(mousePosition, dragingOffset, pos, size, 200, circles[circles.Count - 1].pos);
-                }
-                else
-                {
-                    result = mousePosition;
+                    result = EditorHelper.GetNewCircleDraggingPositionWithSnaping(result, dragingOffset, pos, size, 200, circles[circles.Count - 1].pos);
                 }
             }
-            else if (EditorData.isGridSnapActive)
+            if (EditorData.isGridSnapActive)
             {
-                Vector2i rawClickPosOnField = EditorHelper.GetRawClickPosOnField(mousePosition, pos, size);
+                Vector2i rawClickPosOnField = EditorHelper.GetRawClickPosOnField(result, pos, size);
                 Vector2i unscaledClickPosOnField = EditorHelper.GetUnscaledClickPosOnField(rawClickPosOnField, scale);
 
                 int gridDivider = GridTypeMapper.GetGridValue(EditorData.gridType);
@@ -134,10 +130,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 Vector2i snap = EditorHelper.SnapToGrid(unscaledClickPosOnField, gridSize);
 
                 result = pos - size / 2 + new Vector2i((int)(snap.X * scale), (int)(snap.Y * scale));
-            }
-            else
-            {
-                result = mousePosition;
             }
 
             return result;
