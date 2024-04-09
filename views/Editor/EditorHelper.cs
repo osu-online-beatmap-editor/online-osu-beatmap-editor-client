@@ -27,7 +27,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         public static Vector2i CalculateCirclePositionBorder(Vector2i mousePosition, Vector2i dragingOffset, Vector2i pos, Vector2i size)
         {
             Vector2i mousePositionWithOffset = mousePosition + dragingOffset;
-
+            
             int x = Math.Max(Math.Min(mousePositionWithOffset.X, pos.X + size.X / 2), pos.X - size.X / 2);
             int y = Math.Max(Math.Min(mousePositionWithOffset.Y, pos.Y + size.Y / 2), pos.Y - size.Y / 2);
 

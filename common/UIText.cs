@@ -28,6 +28,24 @@ namespace online_osu_beatmap_editor_client.common
             }
         }
 
+        private bool _bold;
+
+        public bool bold
+        {
+            get
+            {
+                return _bold;
+            }
+            set
+            {
+                if (value != _bold)
+                {
+                    _bold = value;
+                    text.Font = value ? StyleVariables.mainFontBold : StyleVariables.mainFont;
+                }
+            }
+        }
+
         public UIText(string label, Vector2i pos, uint size = 16)
             : base(pos)
         {

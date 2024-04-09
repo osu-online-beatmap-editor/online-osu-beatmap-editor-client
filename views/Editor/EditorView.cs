@@ -112,6 +112,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             toolBar.Update();
             navBar.Update();
             navBar.Draw();
+            detailsBar.Update();
         }
     }
 }

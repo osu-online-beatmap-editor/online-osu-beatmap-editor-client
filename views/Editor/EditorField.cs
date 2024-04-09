@@ -22,7 +22,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private List<RectangleShape> gridLines = new List<RectangleShape>();
 
         private int selectedCircleIndex;
-        private HitCircle selectedCircle;
 
         private HitCircle circlePreview;
 
@@ -79,14 +78,14 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private void HandleDeleteCircle ()
         {
-            if (selectedCircle == null || circles.Count <= selectedCircleIndex)
+            if (EditorData.selectedCircle == null || circles.Count <= selectedCircleIndex)
             {
                 return;
             }
 
             circles.RemoveAt(selectedCircleIndex);
-            selectedCircle.isSelected = false;
-            selectedCircle = null;
+            EditorData.selectedCircle.isSelected = false;
+            EditorData.selectedCircle = null;
             selectedCircleIndex = -1;
         }
 
@@ -300,29 +299,29 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private void SelectTool(Vector2i clickPoint)
         {
-            if (selectedCircle != null && selectedCircle.IsMouseOver(clickPoint))
+            if (EditorData.selectedCircle != null && EditorData.selectedCircle.IsMouseOver(clickPoint))
             {
                 isDraging = true;
-                dragingOffset = selectedCircle.pos - clickPoint;
+                dragingOffset = EditorData.selectedCircle.pos - clickPoint;
             }
             else
             {
                 int clickedCircleIndex = circles.FindIndex(circle => circle.IsMouseOver(clickPoint));
 
-                if (selectedCircle != null)
+                if (EditorData.selectedCircle != null)
                 {
-                    selectedCircle.isSelected = false;
+                    EditorData.selectedCircle.isSelected = false;
                 }
 
                 if (clickedCircleIndex == -1)
                 {
-                    selectedCircle = null;
+                    EditorData.selectedCircle = null;
                     return;
                 }
 
-                selectedCircle = circles[clickedCircleIndex];
+                EditorData.selectedCircle = circles[clickedCircleIndex];
                 selectedCircleIndex = clickedCircleIndex;
-                selectedCircle.isSelected = true;
+                EditorData.selectedCircle.isSelected = true;
             }
         }
 
@@ -379,16 +378,16 @@ namespace online_osu_beatmap_editor_client.views.Editor
         {
             AddClickListener();
             UpdateCirclePreviewPos();
-            if (EditorData.currentlySelectedEditorTool != EditorTools.Select && selectedCircle != null)
+            if (EditorData.currentlySelectedEditorTool != EditorTools.Select && EditorData.selectedCircle != null)
             {
-                selectedCircle.isSelected = false;
-                selectedCircle = null;
+                EditorData.selectedCircle.isSelected = false;
+                EditorData.selectedCircle = null;
                 selectedCircleIndex = -1;
                 dragingOffset = new Vector2i(0, 0);
             }
-            if (isDraging && selectedCircle != null)
+            if (isDraging && EditorData.selectedCircle != null)
             {
-                selectedCircle.pos = CalculateCirclePos();
+                EditorData.selectedCircle.pos = CalculateCirclePos();
             }
         }
 

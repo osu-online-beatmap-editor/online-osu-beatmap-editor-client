@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using online_osu_beatmap_editor_client.components;
+using System.ComponentModel;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -85,6 +86,26 @@ namespace online_osu_beatmap_editor_client.views.Editor
         }
 
         #endregion IsNewComboActive
+
+        #region SelectedCircle
+
+        private static HitCircle _selectedCircle;
+
+        public static event PropertyChangedEventHandler SelectedCircleChanged;
+        public static HitCircle selectedCircle
+        {
+            get { return _selectedCircle; }
+            set
+            {
+                if (_selectedCircle != value)
+                {
+                    _selectedCircle = value;
+                    SelectedCircleChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(selectedCircle)));
+                }
+            }
+        }
+
+        #endregion SelectedCircle
 
         public static bool isWhistleActive = false;
         public static bool isFinishActive = false;
