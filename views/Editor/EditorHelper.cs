@@ -34,11 +34,11 @@ namespace online_osu_beatmap_editor_client.views.Editor
             return new Vector2i(x, y);
         }
 
-        public static Vector2i GetNewCircleDraggingPositionWithSnaping(Vector2i mousePosition, Vector2i dragingOffset, Vector2i pos, Vector2i size, float radius, Vector2i? prevousCirclePos)
+        public static Vector2i UpdateCirclePositionWithDistanceSnapping(Vector2i mousePosition, Vector2i dragingOffset, Vector2i pos, Vector2i size, float radius, Vector2i? prevousCirclePos)
         {
             Vector2i mousePositionWithOffset = mousePosition + dragingOffset;
 
-            Vector2i newPosition = mousePositionWithOffset;
+            Vector2i result = mousePositionWithOffset;
 
             if (prevousCirclePos != null)
             {
@@ -49,10 +49,9 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 float distance = delta.Length();
 
                 delta *= radius / distance;
-                newPosition = (Vector2i)new Vector2f(anchorPos.X + delta.X, anchorPos.Y + delta.Y);
+                result = (Vector2i)new Vector2f(anchorPos.X + delta.X, anchorPos.Y + delta.Y);
             }
 
-            Vector2i result = CalculateCirclePositionBorder(newPosition, new Vector2i(0, 0), pos, size);
             return result;
 
         }
@@ -71,7 +70,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         public static Vector2i SnapToGrid(Vector2i position, int gridSize)
         {
-            // Obliczanie nowych współrzędnych zaokrąglonych do najbliższej komórki siatki
             int snappedX = (int)(Math.Round((float)position.X / gridSize) * gridSize);
             int snappedY = (int)(Math.Round((float)position.Y / gridSize) * gridSize);
 
