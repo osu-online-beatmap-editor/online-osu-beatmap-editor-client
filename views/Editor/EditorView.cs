@@ -5,6 +5,9 @@ using online_osu_beatmap_editor_client.components.Container;
 using online_osu_beatmap_editor_client.config;
 using SFML.Graphics;
 using SFML.System;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -31,11 +34,34 @@ namespace online_osu_beatmap_editor_client.views.Editor
             InitEditorField();
         }
 
+        private string GetRandomSeasonalBackground()
+        {
+            string path = @"D:\osu!\Data\bg";
+
+            string[] imageFiles = Directory.GetFiles(path, "*.jpg");
+            imageFiles = imageFiles.Concat(Directory.GetFiles(path, "*.png")).ToArray();
+
+            if (imageFiles.Length > 0)
+            {
+                Random rand = new Random();
+                int randomIndex = rand.Next(0, imageFiles.Length);
+
+                return imageFiles[randomIndex];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         private void InitBackground()
         {
-            string path = @"D:\osu!\Songs\8974 dj TAKA - V2\V2.jpg";
-            background = new UIBackground(path);
-            AddComponent(background);
+            string randomSeasonal = GetRandomSeasonalBackground();
+            if (randomSeasonal != null)
+            {
+                background = new UIBackground(randomSeasonal);
+                AddComponent(background);
+            }
         }
 
         private void InitNavBar(UIContainer mainContainer)
