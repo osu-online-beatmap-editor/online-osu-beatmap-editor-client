@@ -1,4 +1,5 @@
 ﻿using online_osu_beatmap_editor_client.common;
+using online_osu_beatmap_editor_client.config;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -30,12 +31,12 @@ namespace online_osu_beatmap_editor_client.components.Slider
         {
             size = new Vector2i(width, 20);
 
-            track = new RectangleShape(new Vector2f(size.X, 20));
-            track.FillColor = Color.White;
-            track.Position = new Vector2f(pos.X, pos.Y);
+            track = new RectangleShape(new Vector2f(size.X, 10));
+            track.FillColor = StyleVariables.colorBgTertiary;
+            track.Position = new Vector2f(pos.X, pos.Y + 5);
 
             knob = new RectangleShape(new Vector2f(20, 20));
-            knob.FillColor = Color.Blue;
+            knob.FillColor = StyleVariables.colorPrimary;
             knob.Position = new Vector2f(pos.X + sliderValue * size.X, pos.Y);
         }
 
@@ -56,7 +57,7 @@ namespace online_osu_beatmap_editor_client.components.Slider
             base.HandlePositionUpdate(pos);
             if (track != null)
             {
-                track.Position = new Vector2f(pos.X, pos.Y);
+                track.Position = new Vector2f(pos.X, pos.Y + 5);
             }
             if (knob != null)
             {
