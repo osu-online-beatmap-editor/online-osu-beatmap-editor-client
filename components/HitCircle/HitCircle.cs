@@ -12,6 +12,41 @@ namespace online_osu_beatmap_editor_client.components
         private UIText numberText;
         public bool isSelected = false;
 
+        private int _number;
+
+        public int number
+        {
+            get
+            {
+                return _number;
+            }
+            set
+            {
+                if (value != _number)
+                {
+                    _number = value;
+                    numberText.label = value.ToString();
+                }
+            }
+        }
+
+        private Color _color;
+        public Color color
+        {
+            get
+            {
+                return _color;
+            }
+            set
+            {
+                if (value != _color)
+                {
+                    _color = value;
+                    backgrond.color = value;
+                }
+            }
+        }
+
         public HitCircle(Vector2i pos, int number, float CS, Color color) : base(pos)
         {
             int size = (int)(OsuMath.GetCircleWidthByCS(CS) * 2.3f);

@@ -23,8 +23,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
             UIContainer mainContainer = new UIContainer(new Vector2i(0, 0), new Vector2i(853 * 2, 480 * 2), 0, ContainerOrientation.Vertical, StyleVariables.colorBg);
 
             AddComponent(mainContainer);
-
-           
             InitNavBar(mainContainer); InitToolBar(mainContainer);
             InitEditorField();
         }

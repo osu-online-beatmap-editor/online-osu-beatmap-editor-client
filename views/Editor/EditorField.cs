@@ -6,6 +6,7 @@ using SFML.Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -19,7 +20,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private float scale = 2f;
         private Vector2i baseEditorFieldSize = new Vector2i(512, 384);
-        private Color fieldColor = new Color(255, 255, 255, 100);
         private Color gridColor = new Color(255, 255, 255, 50); 
         private List<RectangleShape> gridLines = new List<RectangleShape>();
 
@@ -39,6 +39,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private List<HitCircle> circles = new List<HitCircle>();
 
+        #region Setup
+
         public EditorField(Vector2i pos) : base(pos)
         {
             isMouseButtonPressed = false;
@@ -46,12 +48,153 @@ namespace online_osu_beatmap_editor_client.views.Editor
             this.size = new Vector2i((int)(baseEditorFieldSize.X * scale), (int)(baseEditorFieldSize.Y * scale));
 
             GenerateGrid();
-
-            circlePreview = new HitCircle(pos, 1, EditorData.CS, colors[0]);
-
-            EditorData.GridTypeChanged += (sender, e) => GenerateGrid();
+            InitCirclePreview();
+            InitListeners();
         }
 
+        private void InitCirclePreview()
+        {
+            circlePreview = new HitCircle(pos, 1, EditorData.CS, colors[0]);
+            UpdateCirclePreviewNumberAndColor();
+        }
+
+        private void InitListeners()
+        {
+            EditorData.GridTypeChanged += (sender, e) => HandleGridChange();
+            EditorData.IsNewComboActiveChanged += (sender, e) => HandleIsNewComboChange();
+        }
+
+        #endregion Setup
+
+        #region Listeners
+
+        private void HandleGridChange()
+        {
+            GenerateGrid();
+        }
+
+        private void HandleIsNewComboChange ()
+        {
+            UpdateCirclePreviewNumberAndColor();
+        }
+
+        #endregion Listeners
+
+        #region Calculate circle position
+
+        private Vector2i ApplyDistanceSnappingForCircle(Vector2i value)
+        {
+            Vector2i result = value;
+            if (selectedCircleIndex > 0)
+            {
+                result = EditorHelper.UpdateCirclePositionWithDistanceSnapping(result, dragingOffset, pos, size, 200, circles[selectedCircleIndex - 1].pos);
+            }
+            else if (circles.Count > 0)
+            {
+                result = EditorHelper.UpdateCirclePositionWithDistanceSnapping(result, dragingOffset, pos, size, 200, circles[circles.Count - 1].pos);
+            }
+            return result;
+        }
+
+        private Vector2i ApplyGridSnappingForCircle(Vector2i value)
+        {
+            Vector2i result = value;
+            Vector2i rawClickPosOnField = EditorHelper.GetRawClickPosOnField(result, pos, size);
+            Vector2i unscaledClickPosOnField = EditorHelper.GetUnscaledClickPosOnField(rawClickPosOnField, scale);
+
+            int gridDivider = GridTypeMapper.GetGridValue(EditorData.gridType);
+            int gridSize = (int)(size.X / gridDivider / scale);
+
+            Vector2i snap = EditorHelper.SnapToGrid(unscaledClickPosOnField, gridSize);
+
+            result = pos - size / 2 + new Vector2i((int)(snap.X * scale), (int)(snap.Y * scale));
+
+            return result;
+        }
+
+        private Vector2i ApplyFieldBordersForCircle(Vector2i value)
+        {
+            Vector2i result = value;
+            result = EditorHelper.CalculateCirclePositionBorder(value, dragingOffset, pos, size);
+            return result;
+        }
+
+        private Vector2i CalculateCirclePos()
+        {
+            Vector2i result = Mouse.GetPosition(window);
+
+            if (EditorData.isDistanceSnapActive)
+            {
+                result = ApplyDistanceSnappingForCircle(result);
+            }
+
+            if (EditorData.isGridSnapActive)
+            {
+                result = ApplyGridSnappingForCircle(result);
+            }
+
+            result = ApplyFieldBordersForCircle(result);
+
+            return result;
+        }
+
+        #endregion Calculate circle position
+
+        #region Manage circle data
+
+        private void SetNewCircleColor()
+        {
+            currentColor++;
+            if (currentColor >= colors.Length)
+            {
+                currentColor = 0;
+            }
+        }
+
+        private Color GetCircleColor([Optional]bool next)
+        {
+            int currentColorCopy = currentColor;
+            
+            if (next == true)
+            {
+                currentColorCopy++;
+                if (currentColorCopy >= colors.Length)
+                {
+                    currentColorCopy = 0;
+                }
+            }
+
+            return colors[currentColorCopy];
+        }
+
+        private int GetCircleNumber([Optional]bool isNewCombo)
+        {
+            if (isNewCombo == true)
+            {
+                return 1;
+            }
+
+            return circleIndex;
+        }
+
+        private void ResetCircleIndex()
+        {
+            circleIndex = 1;
+        }
+
+        private void IncreateCircleIndex()
+        {
+            circleIndex++;
+        }
+
+        private float GetCircleSize()
+        {
+            return EditorData.CS;
+        }
+
+        #endregion Manage circle data
+
+        #region Grid 
         private void GenerateGrid()
         {
             gridLines.Clear();
@@ -77,83 +220,70 @@ namespace online_osu_beatmap_editor_client.views.Editor
             }
         }
 
-        public override void Draw()
+        private void DrawGrid()
         {
-            
             foreach (var line in gridLines)
             {
                 window.Draw(line);
             }
-            foreach (var circle in circles)
+        }
+
+        #endregion Grid
+
+        #region Circle preview
+        private void UpdateCirclePreviewNumberAndColor()
+        {
+            bool isNewCombo = EditorData.isNewComboActive;
+
+            if (isNewCombo)
             {
-                circle.Draw();
+                circlePreview.color = GetCircleColor(isNewCombo);
+                circlePreview.number = GetCircleNumber(true);
+                return;
             }
 
-            if (IsMouseOver() && EditorData.currentlySelectedEditorTool == EditorTools.Circle)
+            circlePreview.color = colors[currentColor];
+            circlePreview.number = GetCircleNumber();
+        }
+
+        private void UpdateCirclePreviewPos()
+        {
+            if (EditorData.currentlySelectedEditorTool == EditorTools.Circle)
+            {
+                circlePreview.pos = CalculateCirclePos();
+            }
+        }
+
+        private void DrawCirclePreview()
+        {
+            if (EditorData.currentlySelectedEditorTool == EditorTools.Circle)
             {
                 circlePreview.Draw();
             }
         }
 
-        private Vector2i GetUnscaledMousePosOnField ()
-        {
-            Vector2i mousePosition2 = Mouse.GetPosition(window);
-            Vector2i rawClickPosOnField = EditorHelper.GetRawClickPosOnField(mousePosition2, pos, size);
-            Vector2i unscaledClickPosOnField = EditorHelper.GetUnscaledClickPosOnField(rawClickPosOnField, scale);
+        #endregion Circle preview
 
-            return unscaledClickPosOnField;
-        }
-
-        private Vector2i GetCirclePosition()
-        {
-            Vector2i mousePosition = Mouse.GetPosition(window);
-            Vector2i result = mousePosition;
-            if (EditorData.isDistanceSnapActive)
-            {
-                if(selectedCircleIndex > 0)
-                {
-                    result = EditorHelper.GetNewCircleDraggingPositionWithSnaping(result, dragingOffset, pos, size, 200, circles[selectedCircleIndex - 1].pos);
-                }
-                else if(circles.Count > 0)
-                {
-                    result = EditorHelper.GetNewCircleDraggingPositionWithSnaping(result, dragingOffset, pos, size, 200, circles[circles.Count - 1].pos);
-                }
-            }
-            if (EditorData.isGridSnapActive)
-            {
-                Vector2i rawClickPosOnField = EditorHelper.GetRawClickPosOnField(result, pos, size);
-                Vector2i unscaledClickPosOnField = EditorHelper.GetUnscaledClickPosOnField(rawClickPosOnField, scale);
-
-                int gridDivider = GridTypeMapper.GetGridValue(EditorData.gridType);
-                int gridSize = (int)(size.X / gridDivider / scale);
-
-                Vector2i snap = EditorHelper.SnapToGrid(unscaledClickPosOnField, gridSize);
-
-                result = pos - size / 2 + new Vector2i((int)(snap.X * scale), (int)(snap.Y * scale));
-            }
-
-            return result;
-        }
-
+        #region Tools 
         private void PlaceCircle()
         {
             if (EditorData.isNewComboActive)
             {
-                circleIndex = 1;
-                currentColor++;
-                if (currentColor >= colors.Length)
-                {
-                    currentColor = 0;
-                }
+                SetNewCircleColor();
+                ResetCircleIndex();
             }
-            Color circleColor = colors[currentColor];
-            Vector2i newHitCirclePos = GetCirclePosition();
 
-            HitCircle newHitCircle = new HitCircle(newHitCirclePos, circleIndex, EditorData.CS, circleColor);
+            Color newCircleColor = GetCircleColor();
+            int newCircleIndex = GetCircleNumber();
+            Vector2i newHitCirclePos = CalculateCirclePos();
+            float newCircleSize = GetCircleSize();
 
-            circles.Add(newHitCircle);
-            circleIndex++;
+            HitCircle newHitCircle = new HitCircle(newHitCirclePos, newCircleIndex, newCircleSize, newCircleColor);
+
             EditorData.isNewComboActive = false;
+            circles.Add(newHitCircle);
+            IncreateCircleIndex();
+            UpdateCirclePreviewNumberAndColor();
         }
 
         private void SelectTool(Vector2i clickPoint)
@@ -183,6 +313,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 selectedCircle.isSelected = true;
             }
         }
+
+        #endregion Tools
 
         private void HandleClick(Vector2i clickPoint)
         {
@@ -216,9 +348,25 @@ namespace online_osu_beatmap_editor_client.views.Editor
             }
         }
 
+        private void DrawCircles()
+        {
+            foreach (var circle in circles)
+            {
+                circle.Draw();
+            }
+        }
+
+        public override void Draw()
+        {
+            DrawGrid();
+            DrawCircles();
+            DrawCirclePreview();
+        }
+
         public override void Update()
         {
             AddClickListener();
+            UpdateCirclePreviewPos();
             if (EditorData.currentlySelectedEditorTool != EditorTools.Select && selectedCircle != null)
             {
                 selectedCircle.isSelected = false;
@@ -227,21 +375,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             }
             if (isDraging && selectedCircle != null)
             {
-                selectedCircle.pos = GetCirclePosition();
-
-                /*
-                if (EditorData.isDistanceSnapActive && selectedCircleIndex > 0)
-                {
-                    selectedCircle.pos = EditorHelper.GetNewCircleDraggingPositionWithSnaping(mousePosition, dragingOffset, pos, size, 200, circles[selectedCircleIndex - 1].pos);
-                } 
-                else 
-                {
-                    selectedCircle.pos = GetCirclePosition();
-                }*/
-            }
-            if (EditorData.currentlySelectedEditorTool == EditorTools.Circle)
-            {
-                circlePreview.pos = GetCirclePosition();
+                selectedCircle.pos = CalculateCirclePos();
             }
         }
 
