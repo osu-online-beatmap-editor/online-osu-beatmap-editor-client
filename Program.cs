@@ -26,7 +26,7 @@ namespace online_osu_beatmap_editor_client
 
             app.Closed += new EventHandler(OnClose);
 
-            Color windowColor = StyleVariables.colorBg;
+            Color windowColor = new Color(15, 15, 15);
 
             View viewPort = new View(new FloatRect(0, 0, 853 * 2, 480 * 2));
             app.SetView(viewPort);
