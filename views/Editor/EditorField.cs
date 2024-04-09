@@ -48,6 +48,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
             GenerateGrid();
 
             circlePreview = new HitCircle(pos, 1, EditorData.CS, colors[0]);
+
+            EditorData.GridTypeChanged += (sender, e) => GenerateGrid();
         }
 
         private void GenerateGrid()
@@ -57,8 +59,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
             int gridDivider = GridTypeMapper.GetGridValue(EditorData.gridType);
 
             int gridSize = size.X / gridDivider;
-
-            Console.WriteLine(gridSize);
 
             for (int x = 0; x <= size.X; x += gridSize)
             {

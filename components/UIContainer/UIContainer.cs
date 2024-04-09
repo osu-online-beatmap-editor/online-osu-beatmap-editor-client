@@ -21,6 +21,7 @@ namespace online_osu_beatmap_editor_client.components.Container
         private int spacing;
         private ContainerOrientation orientation;
         private RectangleShape background;
+        private bool isAutoSizing = false;
 
         public UIContainer(Vector2i pos, Vector2i size, int spacing, ContainerOrientation orientation, [Optional]Color bgColor) : base(pos)
         {
@@ -28,18 +29,56 @@ namespace online_osu_beatmap_editor_client.components.Container
             {
                 this.bgColor = bgColor;
             }
-            
+            if (size != new Vector2i(0, 0))
+            {
+                this.size = size;
+                isAutoSizing = false;
+            }
+            else
+            {
+                this.size = new Vector2i(100, spacing);
+                isAutoSizing = true;
+            }
+
             this.orientation = orientation;
             this.spacing = spacing;
-            this.size = size;
 
             InitBackground();
+        }
+
+        private BaseUIComponent FindBiggestElement(ContainerOrientation axis)
+        {
+            BaseUIComponent result = null;
+
+            foreach (var element in elements)
+            {
+                if (result == null || 
+                    (axis == ContainerOrientation.Vertical  && result.size.X < element.size.X) ||
+                    (axis == ContainerOrientation.Horizontal && result.size.Y < element.size.Y)
+                )
+                {
+                    result = element;
+                }
+            }
+
+            return result;
         }
 
         public void AddElement(BaseUIComponent element)
         {
             elements.Add(element);
             RepositionElements();
+            if (isAutoSizing)
+            {
+                if (orientation == ContainerOrientation.Vertical)
+                {
+                    size = new Vector2i(FindBiggestElement(ContainerOrientation.Vertical).size.X + spacing * 2, size.Y + element.size.Y + spacing);
+                }
+                else
+                {
+                    size = new Vector2i(size.X + element.size.X + spacing, FindBiggestElement(ContainerOrientation.Horizontal).size.Y + spacing * 2);
+                }
+            }
         }
 
         private void RepositionElements()
@@ -57,6 +96,15 @@ namespace online_osu_beatmap_editor_client.components.Container
                 else
                     currentY += element.size.Y + spacing;
             }
+        }
+
+        public override void HandleSizeUpdate(Vector2i size)
+        {
+            base.HandleSizeUpdate(size);
+            if (background != null)
+            {
+                background.Size = (Vector2f)size;
+            }   
         }
 
         private void InitBackground()
