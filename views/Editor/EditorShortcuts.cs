@@ -4,8 +4,12 @@ using System;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
-    internal class EditorShortcuts : ShortcutManager
+    public delegate void DeleteCircle(object sender, EventArgs e);
+
+    public class EditorShortcuts : ShortcutManager
     {
+        public event DeleteCircle DeleteCircleEvent;
+
         public EditorShortcuts()
         {
             RegisterShortcut(new Keyboard.Key[] { Keyboard.Key.Num1 }, () => { EditorData.currentlySelectedEditorTool = EditorTools.Select; });
@@ -20,6 +24,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
             RegisterShortcut(new Keyboard.Key[] { Keyboard.Key.R }, () => { EditorData.isClapActive = !EditorData.isClapActive; });
             RegisterShortcut(new Keyboard.Key[] { Keyboard.Key.T }, () => { EditorData.isGridSnapActive = !EditorData.isGridSnapActive; });
             RegisterShortcut(new Keyboard.Key[] { Keyboard.Key.Y }, () => { EditorData.isDistanceSnapActive = !EditorData.isDistanceSnapActive; });
+
+            RegisterShortcut(new Keyboard.Key[] { Keyboard.Key.Delete }, () => { DeleteCircleEvent?.Invoke(null, EventArgs.Empty); });
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace online_osu_beatmap_editor_client.core
 {
-    internal class ShortcutManager
+    public class ShortcutManager
     {
 
         private Dictionary<Keyboard.Key[], Action> shortcuts = new Dictionary<Keyboard.Key[], Action>();

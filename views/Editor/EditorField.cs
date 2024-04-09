@@ -41,7 +41,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         #region Setup
 
-        public EditorField(Vector2i pos) : base(pos)
+        public EditorField(Vector2i pos, EditorShortcuts editorShortcuts) : base(pos)
         {
             isMouseButtonPressed = false;
             isHovered = false;
@@ -49,7 +49,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             GenerateGrid();
             InitCirclePreview();
-            InitListeners();
+            InitListeners(editorShortcuts);
         }
 
         private void InitCirclePreview()
@@ -58,10 +58,11 @@ namespace online_osu_beatmap_editor_client.views.Editor
             UpdateCirclePreviewNumberAndColor();
         }
 
-        private void InitListeners()
+        private void InitListeners(EditorShortcuts editorShortcuts)
         {
             EditorData.GridTypeChanged += (sender, e) => HandleGridChange();
             EditorData.IsNewComboActiveChanged += (sender, e) => HandleIsNewComboChange();
+            editorShortcuts.DeleteCircleEvent += (sender, e) => HandleDeleteCircle();
         }
 
         #endregion Setup
@@ -76,6 +77,19 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private void HandleIsNewComboChange ()
         {
             UpdateCirclePreviewNumberAndColor();
+        }
+
+        private void HandleDeleteCircle ()
+        {
+            if (selectedCircle == null || circles.Count <= selectedCircleIndex)
+            {
+                return;
+            }
+
+            circles.RemoveAt(selectedCircleIndex);
+            selectedCircle.isSelected = false;
+            selectedCircle = null;
+            selectedCircleIndex = -1;
         }
 
         #endregion Listeners
@@ -372,6 +386,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 selectedCircle.isSelected = false;
                 selectedCircle = null;
                 selectedCircleIndex = -1;
+                dragingOffset = new Vector2i(0, 0);
             }
             if (isDraging && selectedCircle != null)
             {

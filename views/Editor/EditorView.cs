@@ -45,7 +45,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private void InitEditorField ()
         {
-            editorField = new EditorField(new Vector2i(853 * 2 / 2, 480 * 2 / 2 + 30));
+            editorField = new EditorField(new Vector2i(853 * 2 / 2, 480 * 2 / 2 + 30), editorShortcuts);
 
             AddComponent(editorField);
         }
