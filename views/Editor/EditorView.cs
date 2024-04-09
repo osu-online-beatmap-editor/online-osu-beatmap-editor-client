@@ -24,8 +24,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             AddComponent(mainContainer);
 
-            //InitNavBar(mainContainer);
-            InitToolBar(mainContainer);
+           
+            InitNavBar(mainContainer); InitToolBar(mainContainer);
             InitEditorField();
         }
 
@@ -41,6 +41,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
             toolBar = new EditorToolBar();
             BaseUIComponent toolBarComponent = toolBar.GetComponent();
             mainContainer.AddElement(toolBarComponent);
+
+           
         }
 
         private void InitEditorField ()
@@ -55,6 +57,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
             base.Update();
             editorShortcuts.CheckShortcuts();
             toolBar.Update();
+            navBar.Update();
+            navBar.Draw();
         }
     }
 }

@@ -78,6 +78,7 @@
     <Compile Include="views\Editor\EditorGridType.cs" />
     <Compile Include="views\Editor\EditorHelper.cs" />
     <Compile Include="views\Editor\EditorNavBar.cs" />
+    <Compile Include="views\Editor\EditorNavTab.cs" />
     <Compile Include="views\Editor\EditorShortcuts.cs" />
     <Compile Include="views\Editor\EditorToolBar.cs" />
     <Compile Include="views\Editor\EditorTools.cs" />
