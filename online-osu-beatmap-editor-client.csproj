@@ -12,6 +12,21 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,18 +47,24 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>online_osu_beatmap_editor_client.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="sfml-audio">
-      <HintPath>C:\Users\Mateusz-PC\Downloads\SFML.Net-2.4\lib\sfml-audio.dll</HintPath>
+      <HintPath>.\sfml-audio.dll</HintPath>
     </Reference>
     <Reference Include="sfml-graphics">
-      <HintPath>C:\Users\Mateusz-PC\Downloads\SFML.Net-2.4\lib\sfml-graphics.dll</HintPath>
+      <HintPath>.\sfml-graphics.dll</HintPath>
     </Reference>
     <Reference Include="sfml-system">
-      <HintPath>C:\Users\Mateusz-PC\Downloads\SFML.Net-2.4\lib\sfml-system.dll</HintPath>
+      <HintPath>.\sfml-system.dll</HintPath>
     </Reference>
     <Reference Include="sfml-window">
-      <HintPath>C:\Users\Mateusz-PC\Downloads\SFML.Net-2.4\lib\sfml-window.dll</HintPath>
+      <HintPath>.\sfml-window.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,7 +94,18 @@
     <Compile Include="config\AppConfig.cs" />
     <Compile Include="config\AppConfigParser.cs" />
     <Compile Include="config\StyleVariables.cs" />
+    <Compile Include="Engine\GameplayElements\Audio\HitSample.cs" />
+    <Compile Include="Engine\GameplayElements\Beatmap\Colours.cs" />
+    <Compile Include="Engine\GameplayElements\Beatmap\Difficulty.cs" />
+    <Compile Include="Engine\GameplayElements\Beatmap\Events.cs" />
+    <Compile Include="Engine\GameplayElements\Beatmap\General.cs" />
+    <Compile Include="Engine\GameplayElements\Beatmap\HitObjects.cs" />
+    <Compile Include="Engine\GameplayElements\Beatmap\Metadata.cs" />
+    <Compile Include="Engine\GameplayElements\Beatmap\TimingPoints.cs" />
+    <Compile Include="Engine\GameplayElements\Colour\Colour.cs" />
+    <Compile Include="Engine\GameplayElements\Objects\HitObject.cs" />
     <Compile Include="common\ShortcutManager.cs" />
+    <Compile Include="Engine\GameplayElements\Timing\TimingPoint.cs" />
     <Compile Include="Engine\OsuMath.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -172,5 +204,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

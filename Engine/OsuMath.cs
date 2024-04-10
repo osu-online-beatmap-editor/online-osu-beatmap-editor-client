@@ -17,5 +17,11 @@
 
             return width;
         }
+
+        // THERE'S NO FUCKING CLAMP FUNCTION IN .NET FRAMEWORK
+        public static int Clamp(int value, int min, int max)
+        {
+            return (value < min) ? min : (value > max) ? max : value;
+        }
     }
 }
