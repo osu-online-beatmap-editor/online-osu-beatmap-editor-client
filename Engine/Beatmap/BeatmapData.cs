@@ -14,7 +14,7 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
         public static Metadata metadata { get; set; } = new();
         public static Difficulty difficulty { get; set; } = new();
         public static Events events { get; set; } = new();
-        public static Dictionary<int, TimingPoint> timingPoints { get; set; } = new();
-        public static Dictionary<int, HitObject> hitObjects { get; set; } = new();
+        public static Dictionary<int, List<TimingPoint>> timingPoints { get; set; } = new();
+        public static Dictionary<int, List<HitObject>> hitObjects { get; set; } = new();
     }
 }

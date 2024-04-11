@@ -29,7 +29,7 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
         public int GridSize{get=>_GridSize;set{var _=_GridSize!=value?new Func<bool>(()=>{_GridSize=value;Utils.C(GridSizeChanged,GridSize);return true;})():false;}}
 
         private float _TimelineZoom;
-        public static event PropertyChangedEventHandler TimelineZomChanged;
-        public float TimelineZoom{get=>_TimelineZoom;set{var _=_TimelineZoom!=value?new Func<bool>(()=>{_TimelineZoom=value;Utils.C(TimelineZomChanged,TimelineZoom);return true;})():false;}}
+        public static event PropertyChangedEventHandler TimelineZoomChanged;
+        public float TimelineZoom{get=>_TimelineZoom;set{var _=_TimelineZoom!=value?new Func<bool>(()=>{_TimelineZoom=value;Utils.C(TimelineZoomChanged,TimelineZoom);return true;})():false;}}
     }
 }
