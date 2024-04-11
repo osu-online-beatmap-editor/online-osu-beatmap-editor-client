@@ -31,7 +31,10 @@ namespace online_osu_beatmap_editor_client.views.Editor
             UISlider timelineSlider = new UISlider(new Vector2i(0,0), (int)(timeLineWidth - 45f - currentTime.GetLocalBounds().Width), 50);
             timelineSlider.sliderValue = (int)OsuMath.RemapNumbers(EditorData.currentTime, 0, EditorData.totalTime, 0, 1);
             timelineSlider.ValueChanged += (s,e) => {
-                EditorData.currentTime = (int)OsuMath.Lerp(0, EditorData.totalTime, timelineSlider.sliderValue);
+                int rawSliderValue = (int)OsuMath.Lerp(0, EditorData.totalTime, timelineSlider.sliderValue);
+                int snappedValue = OsuMath.SnapToTiming(rawSliderValue, 200, 1);
+
+                EditorData.currentTime = snappedValue;
             };
 
             timeline.AddElement(currentTime);
@@ -49,7 +52,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
             background.Draw();
             timeline.Update();
             timeline.Draw();
-            Console.WriteLine(EditorData.currentTime);
         }
     }
 }

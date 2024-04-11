@@ -1,5 +1,6 @@
 ﻿using online_osu_beatmap_editor_client.common;
 using online_osu_beatmap_editor_client.components;
+using online_osu_beatmap_editor_client.Engine;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -38,7 +39,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private List<HitCircle> circles = new List<HitCircle>();
 
         private int bpm = 200;
-        private int timeSnapping = 3;
+        private int timeSnapping = 1;
 
         #region Setup
 
@@ -100,6 +101,11 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private void HandleTimeForward()
         {
+            if (EditorData.currentTime + OsuMath.GetDistanceBetweenTimingTicksInMilliseconds(bpm, timeSnapping) > EditorData.totalTime)
+            {
+                return;
+            }
+
             EditorData.currentTime = EditorHelper.GetNextTickTime(EditorData.currentTime, EditorData.totalTime, bpm, timeSnapping);
         }
 

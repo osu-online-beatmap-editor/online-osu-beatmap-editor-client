@@ -123,7 +123,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             }
         }
 
-        public static int totalTime = 180000;
+        public static int totalTime = 342523;
 
         public static bool isWhistleActive = false;
         public static bool isFinishActive = false;

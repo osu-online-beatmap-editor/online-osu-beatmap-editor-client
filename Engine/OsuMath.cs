@@ -1,4 +1,6 @@
-﻿namespace online_osu_beatmap_editor_client.Engine
+﻿using System;
+
+namespace online_osu_beatmap_editor_client.Engine
 {
     public static class OsuMath
     {
@@ -43,6 +45,15 @@
             double y = y_min + normalized_x * (y_max - y_min);
 
             return y;
+        }
+
+        public static int SnapToTiming(float value, float bpm, int currentSnapping)
+        {
+            float distanceBetweenTicksInMilliseconds = OsuMath.GetDistanceBetweenTimingTicksInMilliseconds(bpm, currentSnapping);
+
+            int snappedValue = (int)(Math.Round(value / distanceBetweenTicksInMilliseconds) * distanceBetweenTicksInMilliseconds);
+
+            return snappedValue;
         }
     }
 }
