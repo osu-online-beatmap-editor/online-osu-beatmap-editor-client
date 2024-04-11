@@ -34,5 +34,7 @@
             float distanceBetweenWhiteTicks = GetDistanceBetweenWhiteTimingTicks(bpm);
             return distanceBetweenWhiteTicks / currentSnapping;
         }
+
+        public static double Lerp(double a, double b, double t) => t < 0 ? a : (t > 1 ? b : a + (b - a) * t);
     }
 }
