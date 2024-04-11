@@ -2,6 +2,7 @@
 using online_osu_beatmap_editor_client.components;
 using online_osu_beatmap_editor_client.components.Button;
 using online_osu_beatmap_editor_client.components.Container;
+using online_osu_beatmap_editor_client.config;
 using SFML.System;
 
 namespace online_osu_beatmap_editor_client.views.Editor
@@ -26,7 +27,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         public EditorToolBar()
         {
-            toolbar = new UIContainer(new Vector2i(0, 50), new Vector2i(95, 1080 - 50), 10, ContainerOrientation.Vertical);
+            toolbar = new UIContainer(new Vector2i(0, 50), new Vector2i(95, 1080 - 50), 10, ContainerOrientation.Vertical, StyleVariables.colorBg);
 
             CreateToolButtons();
 
