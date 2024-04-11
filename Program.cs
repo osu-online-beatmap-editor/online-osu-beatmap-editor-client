@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using online_osu_beatmap_editor_client.common;
 using online_osu_beatmap_editor_client.config;
+using online_osu_beatmap_editor_client.core;
 using online_osu_beatmap_editor_client.gameplay_elements.Objects;
 using online_osu_beatmap_editor_client.views.Editor;
 using SFML.Graphics;
@@ -26,6 +27,7 @@ namespace online_osu_beatmap_editor_client
             RenderWindow app = new RenderWindow(new VideoMode(853 * 2, 480 * 2), "Online osu beatmap editor!");
 
             BaseUIComponent.SetWindow(app);
+            ShortcutManager.SetWindow(app);
 
             app.Closed += new EventHandler(OnClose);
 

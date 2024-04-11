@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using online_osu_beatmap_editor_client.Engine;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Drawing;
@@ -86,5 +87,30 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             return (int)(result * scale);
         }
+
+        public static int GetNextTickTime(int currentTime, int totalTime, float bpm, int currentSnapping)
+        {
+            float distanceBetweenTicks = OsuMath.GetDistanceBetweenTimingTicksInMilliseconds(bpm, currentSnapping);
+            int ticksCount = (int)(totalTime / (distanceBetweenTicks * currentSnapping));
+
+            int currentTick = (int)(currentTime / distanceBetweenTicks) % ticksCount;
+            int nextTick = (currentTick + 1) % ticksCount;
+
+            int nextTickTime = (int)(nextTick * distanceBetweenTicks);
+            return nextTickTime;
+        }
+
+        public static int GetPreviousTickTime(int currentTime, int totalTime, float bpm, int currentSnapping)
+        {
+            float distanceBetweenTicks = OsuMath.GetDistanceBetweenTimingTicksInMilliseconds(bpm, currentSnapping);
+            int ticksCount = (int)(totalTime / (distanceBetweenTicks * currentSnapping));
+
+            int currentTick = (int)(currentTime / distanceBetweenTicks) % ticksCount;
+            int previousTick = (currentTick - 1 + ticksCount) % ticksCount;
+
+            int previousTickTime = (int)(previousTick * distanceBetweenTicks);
+            return previousTickTime;
+        }
+
     }
 }

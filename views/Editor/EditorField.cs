@@ -1,11 +1,11 @@
 ﻿using online_osu_beatmap_editor_client.common;
 using online_osu_beatmap_editor_client.components;
+using online_osu_beatmap_editor_client.Engine;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace online_osu_beatmap_editor_client.views.Editor
@@ -38,10 +38,14 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private List<HitCircle> circles = new List<HitCircle>();
 
+        private int bpm = 200;
+        private int timeSnapping = 1;
+
         #region Setup
 
         public EditorField(Vector2i pos, EditorShortcuts editorShortcuts) : base(pos)
         {
+            EditorData.currentTime = 15;
             isMouseButtonPressed = false;
             isHovered = false;
             this.size = new Vector2i((int)(baseEditorFieldSize.X * scale), (int)(baseEditorFieldSize.Y * scale));
@@ -62,6 +66,10 @@ namespace online_osu_beatmap_editor_client.views.Editor
             EditorData.GridTypeChanged += (sender, e) => HandleGridChange();
             EditorData.IsNewComboActiveChanged += (sender, e) => HandleIsNewComboChange();
             editorShortcuts.DeleteCircleEvent += (sender, e) => HandleDeleteCircle();
+            editorShortcuts.TimeForwardEvent += (sender, e) => HandleTimeForward();
+            editorShortcuts.TimeBackwardEvent += (sender, e) => HandleTimeBackward();
+            editorShortcuts.ScrollUpEvent += (sender, e) => HandleTimeBackward();
+            editorShortcuts.ScrollDownEvent += (sender, e) => HandleTimeForward();
         }
 
         #endregion Setup
@@ -89,6 +97,26 @@ namespace online_osu_beatmap_editor_client.views.Editor
             EditorData.selectedCircle.isSelected = false;
             EditorData.selectedCircle = null;
             selectedCircleIndex = -1;
+        }
+
+        private void HandleTimeForward()
+        {
+            if (EditorData.currentTime + OsuMath.GetDistanceBetweenTimingTicksInMilliseconds(bpm, timeSnapping) > EditorData.totalTime)
+            {
+                return;
+            }
+
+            EditorData.currentTime = EditorHelper.GetNextTickTime(EditorData.currentTime, EditorData.totalTime, bpm, timeSnapping);
+        }
+
+        private void HandleTimeBackward()
+        {
+            if (EditorData.currentTime <= 15)
+            {
+                return;
+            }
+
+            EditorData.currentTime = EditorHelper.GetPreviousTickTime(EditorData.currentTime, EditorData.totalTime, bpm, timeSnapping);
         }
 
         #endregion Listeners

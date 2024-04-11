@@ -83,6 +83,7 @@
     <Compile Include="common\BaseView.cs" />
     <Compile Include="common\ClickableUIObject.cs" />
     <Compile Include="common\UIImage.cs" />
+    <Compile Include="common\UIRectangle.cs" />
     <Compile Include="common\UIText.cs" />
     <Compile Include="common\Utils.cs" />
     <Compile Include="components\Background\UIBackground.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="common\ShortcutManager.cs" />
     <Compile Include="Engine\GameplayElements\Timing\TimingPoint.cs" />
     <Compile Include="Engine\OsuMath.cs" />
+    <Compile Include="Engine\TimeConverter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="views\Editor\EditorData.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="views\Editor\EditorNavBar.cs" />
     <Compile Include="views\Editor\EditorNavTab.cs" />
     <Compile Include="views\Editor\EditorShortcuts.cs" />
+    <Compile Include="views\Editor\EditorTimeline.cs" />
     <Compile Include="views\Editor\EditorToolBar.cs" />
     <Compile Include="views\Editor\EditorTools.cs" />
     <Compile Include="views\Editor\EditorView.cs" />
