@@ -7,6 +7,7 @@
         Edit, 
         View,
         Timing,
-        Grid
+        Grid,
+        BackgroundDim
     }
 }

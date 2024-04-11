@@ -22,7 +22,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
             detailsBar = new UIContainer(new Vector2i(853 * 2 - 200, 40), new Vector2i(200, 480 * 2 - 40), 10, ContainerOrientation.Vertical, StyleVariables.colorBg);
 
             CreateInspectorSection(detailsBar);
-            CreateBackgroundDimSection(detailsBar);
             CreateDistanceSnappingSection(detailsBar);
         }
         
@@ -57,22 +56,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             detailsBar.AddElement(inspectorContainer);
         }
-        private void CreateBackgroundDimSection(UIContainer detailsBar)
-        {
-            UIContainer backgroundDimContainer = new UIContainer(new Vector2i(0, 0), new Vector2i(0, 0), 10, ContainerOrientation.Vertical, StyleVariables.colorBgSecondary);
-
-            UIText sliderLabel = new UIText("Background dim", new Vector2i(0, 0));
-
-            UISlider slider = new UISlider(new Vector2i(0, 0), 160);
-            slider.sliderValue = EditorData.backgroundDim;
-            slider.ValueChanged += (sender, e) => { EditorData.backgroundDim = slider.sliderValue; };
-
-            backgroundDimContainer.AddElement(sliderLabel);
-            backgroundDimContainer.AddElement(slider);
-
-            detailsBar.AddElement(backgroundDimContainer);
-        }
-
         private void CreateDistanceSnappingSection(UIContainer detailsBar)
         {
             UIContainer dispanceSnappingContainer = new UIContainer(new Vector2i(0, 0), new Vector2i(0, 0), 10, ContainerOrientation.Vertical, StyleVariables.colorBgSecondary);
