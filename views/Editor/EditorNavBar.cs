@@ -1,6 +1,7 @@
 ﻿using online_osu_beatmap_editor_client.common;
 using online_osu_beatmap_editor_client.components.Button;
 using online_osu_beatmap_editor_client.components.Container;
+using online_osu_beatmap_editor_client.components.Slider;
 using online_osu_beatmap_editor_client.config;
 using online_osu_beatmap_editor_client.Engine;
 using SFML.System;
@@ -16,6 +17,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private UIContainer fileTab;
         private UIContainer editTab;
         private UIContainer gridTab;
+        private UIContainer bacgrkoundDimTab;
 
         private EditorNavTab currentTab = EditorNavTab.None;
 
@@ -29,22 +31,26 @@ namespace online_osu_beatmap_editor_client.views.Editor
             UIButtonLabel buttonView = new UIButtonLabel("View");
             UIButtonLabel buttonTiming = new UIButtonLabel("Timing");
             UIButtonLabel buttonGrid = new UIButtonLabel("Grid");
+            UIButtonLabel buttonBackgroundDim = new UIButtonLabel("Background dim");
 
             navBar.AddElement(buttonFile);
             navBar.AddElement(buttonEdit);
             navBar.AddElement(buttonView);
             navBar.AddElement(buttonTiming);
             navBar.AddElement(buttonGrid);
+            navBar.AddElement(buttonBackgroundDim);
 
             CreateMenuItemsForFileTab(buttonFile);
             CreateMenuItemsForEditTab(buttonEdit);
             CreateMenuItemsForGridTab(buttonGrid);
+            CreateMenuItemsForBackgroundDim(buttonBackgroundDim);
 
             buttonFile.Clicked += (sender, e) => HandleTabButtonClick(EditorNavTab.File);
             buttonEdit.Clicked += (sender, e) => HandleTabButtonClick(EditorNavTab.Edit);
             buttonView.Clicked += (sender, e) => HandleTabButtonClick(EditorNavTab.View);
             buttonTiming.Clicked += (sender, e) => HandleTabButtonClick(EditorNavTab.Timing);
             buttonGrid.Clicked += (sender, e) => HandleTabButtonClick(EditorNavTab.Grid);
+            buttonBackgroundDim.Clicked += (sender, e) => HandleTabButtonClick(EditorNavTab.BackgroundDim);
         }
 
         private void HandleTabButtonClick (EditorNavTab tab)
@@ -124,6 +130,20 @@ namespace online_osu_beatmap_editor_client.views.Editor
             }
         }
 
+        private void CreateMenuItemsForBackgroundDim(UIButtonLabel buttonBackgroundDim)
+        {
+            bacgrkoundDimTab = new UIContainer(buttonBackgroundDim.pos + new Vector2i(0, 40), new Vector2i(0, 0), 10, ContainerOrientation.Vertical, StyleVariables.colorBg);
+
+            UIText sliderLabel = new UIText("Background Dim", new Vector2i(0, 0));
+
+            UISlider slider = new UISlider(new Vector2i(0, 0), 160);
+            slider.sliderValue = EditorData.backgroundDim;
+            slider.ValueChanged += (sender, e) => { EditorData.backgroundDim = slider.sliderValue; };
+
+            bacgrkoundDimTab.AddElement(sliderLabel);
+            bacgrkoundDimTab.AddElement(slider);
+        }
+
         public BaseUIComponent GetComponent()
         {
             return navBar;
@@ -134,6 +154,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             if (currentTab == EditorNavTab.File) { fileTab.Draw(); }
             if (currentTab == EditorNavTab.Edit) { editTab.Draw(); }
             if (currentTab == EditorNavTab.Grid) { gridTab.Draw(); }
+            if (currentTab == EditorNavTab.BackgroundDim) { bacgrkoundDimTab.Draw(); }
         }
 
         public void Update()
@@ -141,6 +162,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             if (currentTab == EditorNavTab.File) { fileTab.Update(); }
             if (currentTab == EditorNavTab.Edit) { editTab.Update(); }
             if (currentTab == EditorNavTab.Grid) { gridTab.Update(); }
+            if (currentTab == EditorNavTab.BackgroundDim) { bacgrkoundDimTab.Update(); }
         }
     }
 }
