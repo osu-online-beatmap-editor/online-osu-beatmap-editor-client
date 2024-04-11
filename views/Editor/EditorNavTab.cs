@@ -8,6 +8,7 @@
         View,
         Timing,
         Grid,
-        BackgroundDim
+        BackgroundDim,
+        BeatmapSettings
     }
 }

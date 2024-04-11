@@ -18,6 +18,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private UIContainer editTab;
         private UIContainer gridTab;
         private UIContainer bacgrkoundDimTab;
+        private UIContainer beatmapSettingsTab;
 
         private EditorNavTab currentTab = EditorNavTab.None;
 
@@ -32,6 +33,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             UIButtonLabel buttonTiming = new UIButtonLabel("Timing");
             UIButtonLabel buttonGrid = new UIButtonLabel("Grid");
             UIButtonLabel buttonBackgroundDim = new UIButtonLabel("Background dim");
+            UIButtonLabel buttonBeatmapSettings = new UIButtonLabel("Beatmap settings");
 
             navBar.AddElement(buttonFile);
             navBar.AddElement(buttonEdit);
@@ -39,11 +41,13 @@ namespace online_osu_beatmap_editor_client.views.Editor
             navBar.AddElement(buttonTiming);
             navBar.AddElement(buttonGrid);
             navBar.AddElement(buttonBackgroundDim);
+            navBar.AddElement(buttonBeatmapSettings);
 
             CreateMenuItemsForFileTab(buttonFile);
             CreateMenuItemsForEditTab(buttonEdit);
             CreateMenuItemsForGridTab(buttonGrid);
             CreateMenuItemsForBackgroundDim(buttonBackgroundDim);
+            CreateMenuItemsForBeatmapSettings(buttonBeatmapSettings);
 
             buttonFile.Clicked += (sender, e) => HandleTabButtonClick(EditorNavTab.File);
             buttonEdit.Clicked += (sender, e) => HandleTabButtonClick(EditorNavTab.Edit);
@@ -51,6 +55,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             buttonTiming.Clicked += (sender, e) => HandleTabButtonClick(EditorNavTab.Timing);
             buttonGrid.Clicked += (sender, e) => HandleTabButtonClick(EditorNavTab.Grid);
             buttonBackgroundDim.Clicked += (sender, e) => HandleTabButtonClick(EditorNavTab.BackgroundDim);
+            buttonBeatmapSettings.Clicked += (sender, e) => HandleTabButtonClick(EditorNavTab.BeatmapSettings);
         }
 
         private void HandleTabButtonClick (EditorNavTab tab)
@@ -144,6 +149,34 @@ namespace online_osu_beatmap_editor_client.views.Editor
             bacgrkoundDimTab.AddElement(slider);
         }
 
+        private void CreateMenuItemsForBeatmapSettings(UIButtonLabel buttonBeatmapSettings)
+        {
+            beatmapSettingsTab = new UIContainer(buttonBeatmapSettings.pos + new Vector2i(0, 40), new Vector2i(0, 0), 10, ContainerOrientation.Vertical, StyleVariables.colorBg);
+
+            BaseUIComponent sliderHPLabel = new UIText("HP Drain Rate", new Vector2i(0, 0));
+            UISlider sliderHP = new UISlider(new Vector2i(0, 0), 160);
+
+            UIText sliderCircleSizeLabel = new UIText("Circle Size", new Vector2i(0, 0));
+            UISlider sliderCircleSize = new UISlider(new Vector2i(0, 0), 160);
+
+            UIText sliderApproachRateLabel = new UIText("Approach Rate", new Vector2i(0, 0));
+            UISlider sliderApproachRate = new UISlider(new Vector2i(0, 0), 160);
+
+            UIText sliderOverallDifficultyLabel = new UIText("HP Drain Rate", new Vector2i(0, 0));
+            UISlider sliderOverallDifficulty = new UISlider(new Vector2i(0, 0), 160);
+
+
+            var elements = new[]
+            {
+                sliderHPLabel, sliderHP, sliderCircleSizeLabel, sliderCircleSize,sliderApproachRateLabel,sliderApproachRate,sliderOverallDifficultyLabel,sliderOverallDifficulty
+            };
+
+            foreach (var button in elements)
+            {
+                beatmapSettingsTab.AddElement(button);
+            }
+        }
+
         public BaseUIComponent GetComponent()
         {
             return navBar;
@@ -155,6 +188,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             if (currentTab == EditorNavTab.Edit) { editTab.Draw(); }
             if (currentTab == EditorNavTab.Grid) { gridTab.Draw(); }
             if (currentTab == EditorNavTab.BackgroundDim) { bacgrkoundDimTab.Draw(); }
+            if (currentTab == EditorNavTab.BeatmapSettings) { beatmapSettingsTab.Draw(); }
         }
 
         public void Update()
@@ -163,6 +197,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             if (currentTab == EditorNavTab.Edit) { editTab.Update(); }
             if (currentTab == EditorNavTab.Grid) { gridTab.Update(); }
             if (currentTab == EditorNavTab.BackgroundDim) { bacgrkoundDimTab.Update(); }
+            if (currentTab == EditorNavTab.BeatmapSettings) { beatmapSettingsTab.Update(); }
         }
     }
 }
