@@ -82,6 +82,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
             editorShortcuts.DeleteCircleEvent += (sender, e) => HandleDeleteCircle();
             editorShortcuts.TimeForwardEvent += (sender, e) => HandleTimeForward();
             editorShortcuts.TimeBackwardEvent += (sender, e) => HandleTimeBackward();
+            editorShortcuts.ScrollUpEvent += (sender, e) => HandleTimeForward();
+            editorShortcuts.ScrollDownEvent += (sender, e) => HandleTimeBackward();
         }
 
         #endregion Setup
