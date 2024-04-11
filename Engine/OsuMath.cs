@@ -36,5 +36,13 @@
         }
 
         public static double Lerp(double a, double b, double t) => t < 0 ? a : (t > 1 ? b : a + (b - a) * t);
+
+        public static double RemapNumbers(double x, double x_min, double x_max, double y_min, double y_max)
+        {
+            double normalized_x = (x - x_min) / (x_max - x_min);
+            double y = y_min + normalized_x * (y_max - y_min);
+
+            return y;
+        }
     }
 }
