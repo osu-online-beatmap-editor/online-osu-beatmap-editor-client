@@ -1,7 +1,9 @@
-﻿using SFML.Graphics;
+﻿using online_osu_beatmap_editor_client.common;
+using SFML.Graphics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,5 +57,12 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
         { 
             BreakPeriods.Add($"Break,{start},{end}"); 
         }
+
+        private string _StoryboardLayerDump;
+        public static event PropertyChangedEventHandler StoryboardLayerDumpChanged;
+        /// <summary>
+        /// Dump for everything in events after break periods.
+        /// </summary>
+        public string StoryboardLayerDump{get=>_StoryboardLayerDump;set{var _=_StoryboardLayerDump!=value?new Func<bool>(()=>{_StoryboardLayerDump=value;Utils.C(StoryboardLayerDumpChanged,StoryboardLayerDump);return true;})():false;}}
     }
 }
