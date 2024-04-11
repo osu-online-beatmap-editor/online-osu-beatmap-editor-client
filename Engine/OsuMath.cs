@@ -23,5 +23,16 @@
         {
             return (value < min) ? min : (value > max) ? max : value;
         }
+
+        public static float GetDistanceBetweenWhiteTimingTicks(float bpm)
+        {
+            return 60000f / bpm;
+        }
+
+        public static float GetDistanceBetweenTimingTicksInMilliseconds(float bpm, int currentSnapping)
+        {
+            float distanceBetweenWhiteTicks = GetDistanceBetweenWhiteTimingTicks(bpm);
+            return distanceBetweenWhiteTicks / currentSnapping;
+        }
     }
 }

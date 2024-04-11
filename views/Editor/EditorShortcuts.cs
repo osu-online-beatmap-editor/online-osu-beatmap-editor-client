@@ -5,10 +5,14 @@ using System;
 namespace online_osu_beatmap_editor_client.views.Editor
 {
     public delegate void DeleteCircle(object sender, EventArgs e);
+    public delegate void TimeForward(object sender, EventArgs e);
+    public delegate void TimeBackward(object sender, EventArgs e);
 
     public class EditorShortcuts : ShortcutManager
     {
         public event DeleteCircle DeleteCircleEvent;
+        public event TimeForward TimeForwardEvent;
+        public event TimeBackward TimeBackwardEvent;
 
         public EditorShortcuts()
         {
@@ -26,6 +30,9 @@ namespace online_osu_beatmap_editor_client.views.Editor
             RegisterShortcut(new Keyboard.Key[] { Keyboard.Key.Y }, () => { EditorData.isDistanceSnapActive = !EditorData.isDistanceSnapActive; });
 
             RegisterShortcut(new Keyboard.Key[] { Keyboard.Key.Delete }, () => { DeleteCircleEvent?.Invoke(null, EventArgs.Empty); });
+
+            RegisterShortcut(new Keyboard.Key[] { Keyboard.Key.Right }, () => { TimeForwardEvent?.Invoke(null, EventArgs.Empty); });
+            RegisterShortcut(new Keyboard.Key[] { Keyboard.Key.Left }, () => { TimeBackwardEvent?.Invoke(null, EventArgs.Empty); });
         }
     }
 }
