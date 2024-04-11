@@ -36,6 +36,13 @@ namespace online_osu_beatmap_editor_client
 
             BaseView view = new EditorView(app);
 
+            HitObject h = new();
+            var watch = Stopwatch.StartNew();
+            h.x = 1;
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Console.WriteLine(elapsedMs);
+
             while (app.IsOpen)
             {
                 app.DispatchEvents();
