@@ -9,9 +9,12 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
 {
     public static class BeatmapData
     {
-        public static General general { get; private set; } = new General();
-        public static Metadata metadata { get; private set; } = new Metadata();
-        public static Dictionary<int, HitObject> hitObjects { get; private set; } = new();
-        public static Dictionary<int, TimingPoint> timingPoints { get; private set; } = new();
+        public static General general { get; set; } = new();
+        public static Editor editor { get; set; } = new();
+        public static Metadata metadata { get; set; } = new();
+        public static Difficulty difficulty { get; set; } = new();
+        public static Events events { get; set; } = new();
+        public static Dictionary<int, TimingPoint> timingPoints { get; set; } = new();
+        public static Dictionary<int, HitObject> hitObjects { get; set; } = new();
     }
 }

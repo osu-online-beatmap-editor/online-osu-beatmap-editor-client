@@ -1,4 +1,5 @@
-﻿using System;
+﻿using online_osu_beatmap_editor_client.config;
+using System;
 using System.IO;
 using System.Windows.Forms;
 
@@ -14,6 +15,7 @@ namespace online_osu_beatmap_editor_client.Engine
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             openFileDialog.Filter = $"Osu beatmap file (*{beatmapFileExtension})|*{beatmapFileExtension}";
+            openFileDialog.InitialDirectory = Path.Combine(AppConfig.osuFolderPath, "songs");
 
             DialogResult result = openFileDialog.ShowDialog();
 
