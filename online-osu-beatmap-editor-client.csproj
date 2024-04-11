@@ -84,6 +84,7 @@
     <Compile Include="common\ClickableUIObject.cs" />
     <Compile Include="common\UIImage.cs" />
     <Compile Include="common\UIText.cs" />
+    <Compile Include="common\Utils.cs" />
     <Compile Include="components\Background\UIBackground.cs" />
     <Compile Include="components\ButtonIcon\UIButtonIcon.cs" />
     <Compile Include="components\HitCircle\HitCircle.cs" />
@@ -97,13 +98,12 @@
     <Compile Include="config\StyleVariables.cs" />
     <Compile Include="Engine\BeatmapLoader.cs" />
     <Compile Include="Engine\GameplayElements\Audio\HitSample.cs" />
-    <Compile Include="Engine\GameplayElements\Beatmap\Colours.cs" />
+    <Compile Include="Engine\GameplayElements\Beatmap\BeatmapData.cs" />
     <Compile Include="Engine\GameplayElements\Beatmap\Difficulty.cs" />
+    <Compile Include="Engine\GameplayElements\Beatmap\Editor.cs" />
     <Compile Include="Engine\GameplayElements\Beatmap\Events.cs" />
     <Compile Include="Engine\GameplayElements\Beatmap\General.cs" />
-    <Compile Include="Engine\GameplayElements\Beatmap\HitObjects.cs" />
     <Compile Include="Engine\GameplayElements\Beatmap\Metadata.cs" />
-    <Compile Include="Engine\GameplayElements\Beatmap\TimingPoints.cs" />
     <Compile Include="Engine\GameplayElements\Colour\Colour.cs" />
     <Compile Include="Engine\GameplayElements\Objects\HitObject.cs" />
     <Compile Include="common\ShortcutManager.cs" />
@@ -206,17 +206,5 @@
     </Content>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
