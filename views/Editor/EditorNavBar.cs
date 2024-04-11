@@ -2,8 +2,10 @@
 using online_osu_beatmap_editor_client.components.Button;
 using online_osu_beatmap_editor_client.components.Container;
 using online_osu_beatmap_editor_client.config;
+using online_osu_beatmap_editor_client.Engine;
 using SFML.System;
 using System;
+using System.Windows.Forms;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -50,13 +52,19 @@ namespace online_osu_beatmap_editor_client.views.Editor
             currentTab = tab == currentTab ? EditorNavTab.None : tab;
         }
 
+        private void LoadBeatmapFromFile()
+        {
+            BeatmapLoader bl = new BeatmapLoader();
+            bl.OpenBeatmapLoadingDialog();
+        }
+
         private void CreateMenuItemsForFileTab(UIButtonLabel buttonFile)
         {
             fileTab = new UIContainer(buttonFile.pos + new Vector2i(0, 40), new Vector2i(0, 0), 2, ContainerOrientation.Vertical, StyleVariables.colorBgTertiary);
 
-            UIButtonLabel buttonSave = new UIButtonLabel("Save");
+            UIButtonLabel buttonSave = new UIButtonLabel("Open beatmap");
 
-            buttonSave.Clicked += (sender, e) => { Console.WriteLine("Save"); };
+            buttonSave.Clicked += (sender, e) => { LoadBeatmapFromFile(); };
 
             var buttons = new[]
             {

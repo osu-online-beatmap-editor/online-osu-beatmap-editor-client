@@ -16,6 +16,7 @@ namespace online_osu_beatmap_editor_client
             window.Close();
         }
 
+        [STAThread]
         static void Main()
         {
             new AppConfigParser();
