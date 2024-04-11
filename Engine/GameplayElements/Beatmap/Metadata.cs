@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
 {
-    public static class Metadata
+    public class Metadata
     {
         //Metadata
-        public static string Title;
-        public static string TitleUnicode;
-        public static string Artist;
-        public static string ArtistUnicode;
-        public static string Creator;
-        public static string Version;  //Version in .osz
-        public static string Source;
-        public static string Tags;
-        public static int BeatmapID;
-        public static int BeatmapSetID;
+        public string Title;
+        public string TitleUnicode;
+        public string Artist;
+        public string ArtistUnicode;
+        public string Creator;
+        public string Version;  //diffName
+        public string Source;
+        public string Tags;
+        public int BeatmapID;
+        public int BeatmapSetID;
     }
 }

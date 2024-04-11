@@ -1,6 +1,7 @@
 ﻿using online_osu_beatmap_editor_client.gameplay_elements.Audio;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,35 +13,42 @@ namespace online_osu_beatmap_editor_client.gameplay_elements.Objects
         /// <summary>
         /// Position of the object on the playfield.
         /// </summary>
-        public int x;
-        public int y;
+        private int _x;
+        public static event PropertyChangedEventHandler xChanged;
+        public int x{get=>_x;set{var _=_x!=value?(object)(()=>{_x=value;xChanged?.Invoke(null,new PropertyChangedEventArgs(nameof(x)));return true;}):false;}}
+
+        private int _y;
+        public static event PropertyChangedEventHandler yChanged; 
+        public int y{get=>_y;set{var _=_y!=value?new Func<bool>(()=>{_y=value;yChanged?.Invoke(null,new PropertyChangedEventArgs(nameof(y)));return true;})():false;}}
 
         /// <summary>
         /// The time at which the HitObject starts.
         /// </summary>
+        private int _startTime;
+        public static event PropertyChangedEventHandler StartTimeChanged;
         public int StartTime
         {
             get => StartTime;
             set => StartTime = value;
         }
 
-        public int Type { get; private set; } = 0;
+        public int _type { get; private set; } = 0;
         public void SetType(params int[] flags)
         {
-            Type = 0;
+            _type = 0;
             foreach (int flag in flags)
             {
-                Type |= flag;
+                _type |= flag;
             }
         }
 
-        public int HitSound { get; private set; } = 0;
+        public int _hitSound { get; private set; } = 0;
         public void SetHitSound(params int[] flags)
         {
-            HitSound = 0;
+            _hitSound = 0;
             foreach (int flag in flags)
             {
-                HitSound |= flag;
+                _hitSound |= flag;
             }
         }
 
