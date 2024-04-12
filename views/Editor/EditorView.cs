@@ -27,6 +27,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             EditorData.gridType = EditorGridType.Large;
             EditorData.CS = 4;
+            EditorData.AR = 10;
             EditorData.backgroundDim = AppConfig.defaultBackgroundDim;
             EditorData.distanceSnapping = 0.3f;
             editorShortcuts = new EditorShortcuts();

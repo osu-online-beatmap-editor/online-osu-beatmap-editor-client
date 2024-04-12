@@ -12,6 +12,8 @@ namespace online_osu_beatmap_editor_client.gameplay_elements.Objects
 {
     public class HitObject
     {
+        public int Id;
+
         /// <summary>
         /// Position of the object on the playfield.
         /// </summary>

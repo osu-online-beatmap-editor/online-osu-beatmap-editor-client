@@ -132,6 +132,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         public static bool isGridSnapActive = false;
 
         public static float CS;
+        public static float AR;
 
     }
 }

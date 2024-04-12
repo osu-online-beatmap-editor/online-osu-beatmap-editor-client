@@ -55,5 +55,14 @@ namespace online_osu_beatmap_editor_client.Engine
 
             return snappedValue;
         }
+
+        public static double CalculateHitObjectDuration(double arLevel)
+        {
+            double baseDuration;
+
+            baseDuration = arLevel < 5 ? 1800 - (arLevel * 120) : 1200 - ((arLevel - 5) * 150);
+
+            return Math.Max(baseDuration, 450);
+        }
     }
 }
