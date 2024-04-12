@@ -25,7 +25,7 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
         /// <param name="offsetY">Offset in osu! pixels from the centre of the screen.</param>
         public void SetBackground(string fileName, int offsetX = 0, int offsetY = 0)
         {
-            Background = $"0,0,\"{fileName}\",{offsetX},{offsetY}";
+            Background = $"0,0,{fileName},{offsetX},{offsetY}";
         }
 
 
@@ -36,11 +36,11 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
         /// <summary>
         /// Sets the video string to the correct format, including offset.
         /// </summary>
-        /// <param name="fileName">The name of the file to set as video. (Allowed formats: mp4,?)</param>
+        /// <param name="fileName">The name of the file to set as video. (Allowed formats: mp4,flv,?)</param>
         /// <param name="offset">The offset when the video should start playing. Can be negative.</param>
         public void SetVideo(string fileName, int offset = 0)
         {
-            Video = $"Video,{offset}\",{fileName}\"";
+            Video = $"Video,{offset},{fileName}";
         }
 
 

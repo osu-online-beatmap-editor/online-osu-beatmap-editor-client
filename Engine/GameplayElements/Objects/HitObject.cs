@@ -8,10 +8,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace online_osu_beatmap_editor_client.gameplay_elements.Objects
+namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Objects
 {
     public class HitObject
     {
+        public HitObject(int x, int y, int time, int type, int hitSound, HitSample hitSample, 
+            int spinnerEndTime = 0, SliderParams sliderParams = null)
+        {
+            X = x;
+            Y = y;
+            Time = time;
+            TypeFlags = (ObjectFlags)type; SetTypeAndBoolsFromFlags();
+            HitSoundTypeFlags = (HitSoundFlags)hitSound; SetHitsoundBoolsFromFlags();
+            Sample = hitSample;
+            SpinnerEndTime = spinnerEndTime;
+            SliderParameters = sliderParams;
+        }
+
         /// <summary>
         /// Position of the object on the playfield.
         /// </summary>
@@ -26,33 +39,83 @@ namespace online_osu_beatmap_editor_client.gameplay_elements.Objects
         /// <summary>
         /// The time at which the HitObject starts.
         /// </summary>
-        private int _StartTime;
-        public static event PropertyChangedEventHandler StartTimeChanged;
-        public int StartTime{get=>_StartTime;set{var _=_StartTime!=value?new Func<bool>(()=>{_StartTime=value;Utils.C(StartTimeChanged,StartTime);return true;})():false;}}
+        private int _Time;
+        public static event PropertyChangedEventHandler TimeChanged;
+        public int Time{get=>_Time;set{var _=_Time!=value?new Func<bool>(()=>{_Time=value;Utils.C(TimeChanged,Time);return true;})():false;}}
 
         /// <summary>
         /// Set with SetTypeFlags(ObjectFlags[]).
         /// </summary>
-        public int TypeFlags { get; private set; } = 0;
-        public void SetTypeFlags(params int[] flags)
+        public ObjectFlags TypeFlags { get; private set; } = 0;
+        public void SetTypeFlags(params ObjectFlags[] flags)
         {
             TypeFlags = 0;
-            foreach (int flag in flags)
+            foreach (ObjectFlags flag in flags)
             {
                 TypeFlags |= flag;
+            }
+        }
+        public void SetTypeAndBoolsFromFlags()
+        {
+            if(TypeFlags.HasFlag(ObjectFlags.NEWCOMBO))
+            {
+                IsNewCombo = true;
+            }
+            if (TypeFlags.HasFlag(ObjectFlags.CIRCLE))
+            {
+                Type = ObjectType.CIRCLE;
+            }
+            else if (TypeFlags.HasFlag(ObjectFlags.SLIDER))
+            {
+                Type = ObjectType.SLIDER;
+            }
+            else if (TypeFlags.HasFlag(ObjectFlags.SPINNER))
+            {
+                Type = ObjectType.SPINNER;
+            }
+            if(TypeFlags.HasFlag(ObjectFlags.COLOURHAX3))
+            {
+                ColourHax += 4;
+            }
+            if(TypeFlags.HasFlag(ObjectFlags.COLOURHAX2))
+            {
+                ColourHax += 2;
+            }
+            if(TypeFlags.HasFlag(ObjectFlags.COLOURHAX1))
+            {
+                ColourHax += 1;
             }
         }
 
         /// <summary>
         /// Set with SetHitSoundTypeFlags(HitSoundFlags[]).
         /// </summary>
-        public int HitSoundTypeFlags { get; private set; } = 0;
-        public void SetHitSoundTypeFlags(params int[] flags)
+        public HitSoundFlags HitSoundTypeFlags { get; private set; } = 0;
+        public void SetHitSoundTypeFlags(params HitSoundFlags[] flags)
         {
             HitSoundTypeFlags = 0;
-            foreach (int flag in flags)
+            foreach (HitSoundFlags flag in flags)
             {
                 HitSoundTypeFlags |= flag;
+            }
+        }
+        public void SetHitsoundBoolsFromFlags()
+        {
+            if(HitSoundTypeFlags.HasFlag(HitSoundFlags.NORMAL))
+            {
+                HasNormalHitsound = true;
+            }
+            if (HitSoundTypeFlags.HasFlag(HitSoundFlags.WHISTLE))
+            {
+                HasWhistleHitsound = true;
+            }
+            if (HitSoundTypeFlags.HasFlag(HitSoundFlags.FINISH))
+            {
+                HasFinishHitsound = true;
+            }
+            if (HitSoundTypeFlags.HasFlag(HitSoundFlags.CLAP))
+            {
+                HasClapHitsound = true;
             }
         }
 
@@ -64,23 +127,27 @@ namespace online_osu_beatmap_editor_client.gameplay_elements.Objects
         public static event PropertyChangedEventHandler typeChanged;
         public ObjectType Type{get=>_Type;set{var _=_Type!=value?new Func<bool>(()=>{_Type =value;Utils.C(typeChanged,Type);return true;})():false;}}
 
-        private List<HitSoundType> _HitSoundTypes;
-        public static event PropertyChangedEventHandler HitSoundTypesChanged;
-        public List<HitSoundType> HitSoundTypes{get=>_HitSoundTypes;set{var _=_HitSoundTypes!=value?new Func<bool>(()=>{_HitSoundTypes=value;Utils.C(HitSoundTypesChanged,HitSoundTypes);return true;})():false;}}
+        private bool _HasNormalHitsound;
+        public static event PropertyChangedEventHandler HasNormalHitsoundChanged;
+        public bool HasNormalHitsound{get=>_HasNormalHitsound;set{var _=_HasNormalHitsound!=value?new Func<bool>(()=>{_HasNormalHitsound=value;Utils.C(HasNormalHitsoundChanged,HasNormalHitsound);return true;})():false;}}
+
+        private bool _HasWhistleHitsound;
+        public static event PropertyChangedEventHandler HasWhistleHitsoundChanged;
+        public bool HasWhistleHitsound{get=>_HasWhistleHitsound;set{var _=_HasWhistleHitsound!=value?new Func<bool>(()=>{_HasWhistleHitsound=value;Utils.C(HasWhistleHitsoundChanged,HasWhistleHitsound);return true;})():false;}}
+
+        private bool _HasFinishHitsound;
+        public static event PropertyChangedEventHandler HasFinishHitsoundChanged;
+        public bool HasFinishHitsound{get=>_HasFinishHitsound;set{var _=_HasFinishHitsound!=value?new Func<bool>(()=>{_HasFinishHitsound=value;Utils.C(HasFinishHitsoundChanged,HasFinishHitsound);return true;})():false;}}
+
+        private bool _HasClapHitsound;
+        public static event PropertyChangedEventHandler HasClapHitsoundChanged;
+        public bool HasClapHitsound{get=>_HasClapHitsound;set{var _=_HasClapHitsound!=value?new Func<bool>(()=>{_HasClapHitsound=value;Utils.C(HasClapHitsoundChanged,HasClapHitsound);return true;})():false;}}
 
         public enum ObjectType
         {
             CIRCLE,
             SLIDER,
             SPINNER
-        }
-
-        public enum HitSoundType
-        {
-            NORMAL,
-            WHISTLE,
-            FINISH,
-            CLAP
         }
 
         /// <summary>
@@ -117,22 +184,30 @@ namespace online_osu_beatmap_editor_client.gameplay_elements.Objects
         public static event PropertyChangedEventHandler SpinnerEndTimeChanged;
         public double SpinnerEndTime{get=>_SpinnerEndTime;set{var _=_SpinnerEndTime!=value?new Func<bool>(()=>{_SpinnerEndTime=value;Utils.C(SpinnerEndTimeChanged, SpinnerEndTime);return true;})():false;}}
 
-        private List<HitSample> _HitSamples;
-        public static event PropertyChangedEventHandler HitSamplesChanged;
-        public List<HitSample> HitSamples{get=>_HitSamples;set{var _=_HitSamples!=value?new Func<bool>(()=>{_HitSamples=value;Utils.C(HitSamplesChanged, HitSamples);return true;})():false;}}
+        private HitSample _Sample;
+        public static event PropertyChangedEventHandler SampleChanged;
+        public HitSample Sample{get=>_Sample;set{var _=_Sample!=value?new Func<bool>(()=>{_Sample=value;Utils.C(SampleChanged, Sample);return true;})():false;}}
+    
+        private int _ColourHax;
+        public static event PropertyChangedEventHandler ColourHaxChanged;
+        public int ColourHax{get=>_ColourHax;set{var _=_ColourHax!=value?new Func<bool>(()=>{_ColourHax=value;Utils.C(ColourHaxChanged, ColourHax);return true;})():false;}}
+    
+        private SliderParams _SliderParameters;
+        public static event PropertyChangedEventHandler SliderParametersChanged;
+        public SliderParams SliderParameters{get=>_SliderParameters;set{var _=_SliderParameters!=value?new Func<bool>(()=>{_SliderParameters=value;Utils.C(SliderParametersChanged, SliderParameters);return true;})():false;}}
     }
 
     public class SliderParams
     {
-        public SliderParams(Curve curveType, List<Tuple<int, int>> curvePoints, 
-            List<int> edgeSounds, List<string> edgeSets, int slides = 1) 
+        public SliderParams(Curve curveType, List<CurvePoint> curvePoints, int slides,
+            float length, List<int> edgeSounds, List<string> edgeSets) 
         {
             CurveType = curveType;
             CurvePoints = curvePoints;
+            Slides = slides;
+            Length = length;    //how do you calculate this (needed for calc slider length in ms apparently)
             EdgeSounds = edgeSounds;
             EdgeSets = edgeSets;
-            Slides = slides;
-            Length = 0;    //how do you calculate this (and why is this needed)
         }
 
         private Curve _CurveType;
@@ -141,18 +216,18 @@ namespace online_osu_beatmap_editor_client.gameplay_elements.Objects
 
         public enum Curve
         {
-            B,  //bezier
-            C,  //catmull
-            L,  //linear
-            P   //perfect circle
+            B = 'B',  //bezier
+            C = 'C',  //catmull
+            L = 'L',  //linear
+            P = 'P'   //perfect circle
         }
 
         /// <summary>
         /// Anchor points used to construct the slider. Each point is in the format x:y.
         /// </summary>
-        private List<Tuple<int, int>> _CurvePoints;
+        private List<CurvePoint> _CurvePoints;
         public static event PropertyChangedEventHandler CurvePointsChanged;
-        public List<Tuple<int, int>> CurvePoints{get=>_CurvePoints;set{var _=_CurvePoints!=value?new Func<bool>(()=>{_CurvePoints=value;Utils.C(CurvePointsChanged, CurvePoints);return true;})():false;}}
+        public List<CurvePoint> CurvePoints{get=>_CurvePoints;set{var _=_CurvePoints!=value?new Func<bool>(()=>{_CurvePoints=value;Utils.C(CurvePointsChanged, CurvePoints);return true;})():false;}}
 
         /// <summary>
         /// Amount of times the player has to follow the slider's curve back-and-forth before the slider is complete. 

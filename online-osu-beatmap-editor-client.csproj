@@ -105,9 +105,10 @@
     <Compile Include="Engine\GameplayElements\Beatmap\Events.cs" />
     <Compile Include="Engine\GameplayElements\Beatmap\General.cs" />
     <Compile Include="Engine\GameplayElements\Beatmap\Metadata.cs" />
-    <Compile Include="Engine\GameplayElements\Colour\Colour.cs" />
+    <Compile Include="Engine\GameplayElements\Colours\Colour.cs" />
     <Compile Include="Engine\GameplayElements\Objects\HitObject.cs" />
     <Compile Include="common\ShortcutManager.cs" />
+    <Compile Include="Engine\GameplayElements\Objects\CurvePoint.cs" />
     <Compile Include="Engine\GameplayElements\Timing\TimingPoint.cs" />
     <Compile Include="Engine\OsuMath.cs" />
     <Compile Include="Program.cs" />

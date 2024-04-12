@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using online_osu_beatmap_editor_client.common;
 using online_osu_beatmap_editor_client.config;
-using online_osu_beatmap_editor_client.gameplay_elements.Objects;
+using online_osu_beatmap_editor_client.Engine.GameplayElements.Objects;
 using online_osu_beatmap_editor_client.views.Editor;
 using SFML.Graphics;
 using SFML.System;

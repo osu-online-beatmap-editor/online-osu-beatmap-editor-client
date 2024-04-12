@@ -12,9 +12,9 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
 {
     public class Editor
     {
-        private Dictionary<int,int> _Bookmarks;
+        private List<int> _Bookmarks;
         public static event PropertyChangedEventHandler BookmarksChanged;
-        public Dictionary<int,int> Bookmarks{get=>_Bookmarks;set{var _=_Bookmarks!=value?new Func<bool>(()=>{_Bookmarks=value;Utils.C(BookmarksChanged,Bookmarks);return true;})():false;}}
+        public List<int> Bookmarks{get=>_Bookmarks;set{var _=_Bookmarks!=value?new Func<bool>(()=>{_Bookmarks=value;Utils.C(BookmarksChanged,Bookmarks);return true;})():false;}}
 
         private float _DistanceSpacing;
         public static event PropertyChangedEventHandler DistanceSpacingChanged;

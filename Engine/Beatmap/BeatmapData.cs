@@ -1,4 +1,6 @@
-﻿using online_osu_beatmap_editor_client.gameplay_elements.Objects;
+﻿using online_osu_beatmap_editor_client.Engine.GameplayElements.Colours;
+using online_osu_beatmap_editor_client.Engine.GameplayElements.Timing;
+using online_osu_beatmap_editor_client.Engine.GameplayElements.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
         public static Metadata metadata { get; set; } = new();
         public static Difficulty difficulty { get; set; } = new();
         public static Events events { get; set; } = new();
+        public static List<Colour> colours { get; set; } = new();
         public static Dictionary<int, List<TimingPoint>> timingPoints { get; set; } = new();
         public static Dictionary<int, List<HitObject>> hitObjects { get; set; } = new();
     }
