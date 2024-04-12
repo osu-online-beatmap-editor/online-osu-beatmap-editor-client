@@ -322,8 +322,9 @@ namespace online_osu_beatmap_editor_client.views.Editor
         {
             circles.Clear();
 
-            int timeMin = EditorData.currentTime - 1500;
+            double hitObjectDuration = OsuMath.CalculateHitObjectDuration(EditorData.AR);
             int timeMax = EditorData.currentTime;
+            int timeMin = (int)(timeMax - hitObjectDuration);
 
             List<HitObject> valuesInRange = BeatmapData.GetHitObjectsInRange(timeMin, timeMax);
 
