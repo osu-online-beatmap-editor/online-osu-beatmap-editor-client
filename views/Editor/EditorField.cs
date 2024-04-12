@@ -340,7 +340,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             foreach (var hitObject in currenltyVisibleHitObjects)
             {
-                Console.WriteLine(hitObject.StartTime);
                 HitCircle circle = new HitCircle(new Vector2i(hitObject.X, hitObject.Y), 1, GetCircleSize(), Color.Red)
                 {
                     id = hitObject.Id,

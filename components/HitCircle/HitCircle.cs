@@ -49,13 +49,21 @@ namespace online_osu_beatmap_editor_client.components
                 if (value != _color)
                 {
                     _color = value;
-                    backgrond.color = value;
+                    if (backgrond != null)
+                    {
+                        backgrond.color = value;
+                    }
+                    if (approachCircle != null)
+                    {
+                        approachCircle.color = value;
+                    }
                 }
             }
         }
 
         public HitCircle(Vector2i pos, int number, float CS, Color color) : base(pos)
         {
+            this.color = color;
             int size = (int)(OsuMath.GetCircleWidthByCS(CS) * 2.3f);
             this.size = new Vector2i(size, size);
 
@@ -64,7 +72,7 @@ namespace online_osu_beatmap_editor_client.components
             backgrond.origin = new Vector2f(0.5f, 0.5f);
             numberText = new UIText(number.ToString(), pos, (uint)fontSize);
             numberText.origin = new Vector2f(0.5f, 0.5f);
-            approachCircle = new UIImage("assets/baseSkin/hitcircle.png", pos, this.size, Color.Blue);
+            approachCircle = new UIImage("assets/baseSkin/approachcircle.png", pos, this.size, color);
             approachCircle.origin = new Vector2f(0.5f, 0.5f);
 
             selectionOutline = new SelectionOutline(pos, this.size);
@@ -75,7 +83,10 @@ namespace online_osu_beatmap_editor_client.components
             int minTime = (int)(StartTime - OsuMath.CalculateHitObjectDuration(EditorData.AR));
             int maxTime = StartTime;
             int size = (int)OsuMath.RemapNumbers(EditorData.currentTime, minTime, maxTime, this.size.X * maxApproachCircleSizeMultiplier, this.size.X);
+            int opacity = (int)OsuMath.RemapNumbers(EditorData.currentTime, minTime, maxTime, 0, 255);
             approachCircle.size = new Vector2i(size, size);
+
+            color = new Color(color.R, color.G, color.B, (byte)opacity);
         }
 
         public override void HandlePositionUpdate(Vector2i pos)
