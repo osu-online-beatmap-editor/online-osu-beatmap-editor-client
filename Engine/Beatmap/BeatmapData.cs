@@ -31,6 +31,7 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
 
         public static List<HitObject> GetHitObjectsInRange(int timeMin, int timeMax)
         {
+            Console.WriteLine($"{timeMin} {timeMax}");
             return hitObjects.Where(i => i.Key >= timeMin && i.Key <= timeMax)
                              .SelectMany(i => i.Value)
                              .ToList();

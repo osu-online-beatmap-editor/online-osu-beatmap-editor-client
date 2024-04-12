@@ -48,7 +48,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private List<HitObject> currenltyVisibleHitObjects = new();
 
         private int bpm = 200;
-        private int timeSnapping = 1;
+        private int timeSnapping = 4;
 
         #region Setup
 
@@ -328,8 +328,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
             circles.Clear();
 
             double hitObjectDuration = OsuMath.CalculateHitObjectDuration(EditorData.AR);
-            int timeMax = EditorData.currentTime;
-            int timeMin = (int)(timeMax - hitObjectDuration);
+            int timeMin = EditorData.currentTime;
+            int timeMax = (int)(EditorData.currentTime + hitObjectDuration);
 
             currenltyVisibleHitObjects = BeatmapData.GetHitObjectsInRange(timeMin, timeMax);
 
@@ -340,6 +340,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             foreach (var hitObject in currenltyVisibleHitObjects)
             {
+                Console.WriteLine(hitObject.StartTime);
                 HitCircle circle = new HitCircle(new Vector2i(hitObject.X, hitObject.Y), 1, GetCircleSize(), Color.Red)
                 {
                     id = hitObject.Id,
@@ -440,6 +441,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         {
             foreach (var circle in circles)
             {
+                circle.Update();
                 circle.Draw();
             }
         }

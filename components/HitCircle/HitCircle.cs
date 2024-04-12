@@ -1,7 +1,9 @@
 ﻿using online_osu_beatmap_editor_client.common;
 using online_osu_beatmap_editor_client.Engine;
+using online_osu_beatmap_editor_client.views.Editor;
 using SFML.Graphics;
 using SFML.System;
+using System;
 
 namespace online_osu_beatmap_editor_client.components
 {
@@ -12,7 +14,10 @@ namespace online_osu_beatmap_editor_client.components
         private SelectionOutline selectionOutline;
         private UIImage backgrond;
         private UIText numberText;
+        private UIImage approachCircle;
         public bool isSelected = false;
+
+        private float maxApproachCircleSizeMultiplier = 2f;
 
         private int _number;
 
@@ -59,13 +64,18 @@ namespace online_osu_beatmap_editor_client.components
             backgrond.origin = new Vector2f(0.5f, 0.5f);
             numberText = new UIText(number.ToString(), pos, (uint)fontSize);
             numberText.origin = new Vector2f(0.5f, 0.5f);
+            approachCircle = new UIImage("assets/baseSkin/hitcircle.png", pos, this.size, Color.Blue);
+            approachCircle.origin = new Vector2f(0.5f, 0.5f);
 
             selectionOutline = new SelectionOutline(pos, this.size);
         }
 
         public override void Update()
         {
-
+            int minTime = (int)(StartTime - OsuMath.CalculateHitObjectDuration(EditorData.AR));
+            int maxTime = StartTime;
+            int size = (int)OsuMath.RemapNumbers(EditorData.currentTime, minTime, maxTime, this.size.X * maxApproachCircleSizeMultiplier, this.size.X);
+            approachCircle.size = new Vector2i(size, size);
         }
 
         public override void HandlePositionUpdate(Vector2i pos)
@@ -83,12 +93,17 @@ namespace online_osu_beatmap_editor_client.components
             {
                 selectionOutline.pos = pos;
             }
+            if (approachCircle != null)
+            {
+                approachCircle.pos = pos;
+            }
         }
 
         public override void Draw()
         {
             backgrond.Draw();
             numberText.Draw();
+            approachCircle.Draw();
 
             if (isSelected)
             {
