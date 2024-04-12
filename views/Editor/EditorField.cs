@@ -343,6 +343,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 HitCircle circle = new HitCircle(new Vector2i(hitObject.X, hitObject.Y), 1, GetCircleSize(), Color.Red)
                 {
                     id = hitObject.Id,
+                    StartTime = hitObject.StartTime
                 };
                 circles.Add(circle);
             }
@@ -363,6 +364,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 X = newHitCirclePos.X,
                 Y = newHitCirclePos.Y,
                 Id = circleIndex,
+                StartTime = EditorData.currentTime,
             };
 
             BeatmapData.AppendHitObject(EditorData.currentTime, newHitObject);
@@ -442,6 +444,23 @@ namespace online_osu_beatmap_editor_client.views.Editor
             }
         }
 
+        private void UpdateSelectedCirclePosition ()
+        {
+            Vector2i newPos = CalculateCirclePos();
+
+            if (isDraging && EditorData.selectedCircle != null && EditorData.selectedCircle.pos != newPos)
+            {
+                EditorData.selectedCircle.pos = newPos;
+
+                HitObject updatedHitObject = BeatmapData.GetHitObjectByTimeAndId(EditorData.selectedCircle.id, EditorData.selectedCircle.StartTime);
+                if (updatedHitObject != null)
+                {
+                    updatedHitObject.X = newPos.X;
+                    updatedHitObject.Y = newPos.Y;
+                }
+            }
+        }
+
         public override void Draw()
         {
             DrawGrid();
@@ -453,16 +472,13 @@ namespace online_osu_beatmap_editor_client.views.Editor
         {
             AddClickListener();
             UpdateCirclePreviewPos();
+            UpdateSelectedCirclePosition();
             if (EditorData.currentlySelectedEditorTool != EditorTools.Select && EditorData.selectedCircle != null)
             {
                 EditorData.selectedCircle.isSelected = false;
                 EditorData.selectedCircle = null;
                 selectedCircleIndex = -1;
                 dragingOffset = new Vector2i(0, 0);
-            }
-            if (isDraging && EditorData.selectedCircle != null)
-            {
-                EditorData.selectedCircle.pos = CalculateCirclePos();
             }
         }
 

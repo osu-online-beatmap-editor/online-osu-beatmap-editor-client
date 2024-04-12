@@ -7,6 +7,8 @@ namespace online_osu_beatmap_editor_client.components
 {
     public class HitCircle : BaseUIComponent
     {
+        public int id;
+        public int StartTime;
         private SelectionOutline selectionOutline;
         private UIImage backgrond;
         private UIText numberText;

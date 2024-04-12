@@ -35,5 +35,27 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
                              .SelectMany(i => i.Value)
                              .ToList();
         }
+
+        public static void RemoveHitObjectById(int id)
+        {
+            foreach (var i in hitObjects)
+            {
+                i.Value.RemoveAll(hitObject => hitObject.Id == id);
+            }
+        }
+
+        public static HitObject GetHitObjectByTimeAndId(int id, int time)
+        {
+            var hitObjectList = hitObjects[time];
+            for (int j = 0; j < hitObjectList.Count; j++)
+            {
+                if (hitObjectList[j].Id == id)
+                {
+                    return hitObjectList[j];
+                }
+            }
+
+            return null;
+        }
     }
 }
