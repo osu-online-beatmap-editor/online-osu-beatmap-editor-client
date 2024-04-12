@@ -1,12 +1,19 @@
 ﻿using online_osu_beatmap_editor_client.common;
 using online_osu_beatmap_editor_client.components;
+using online_osu_beatmap_editor_client.components.Container;
 using online_osu_beatmap_editor_client.Engine;
+using online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap;
+using online_osu_beatmap_editor_client.gameplay_elements.Objects;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using static SFML.Window.Joystick;
+using System.Xml.Linq;
+using System.Collections;
+using System.Linq;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -70,6 +77,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             editorShortcuts.TimeBackwardEvent += (sender, e) => HandleTimeBackward();
             editorShortcuts.ScrollUpEvent += (sender, e) => HandleTimeBackward();
             editorShortcuts.ScrollDownEvent += (sender, e) => HandleTimeForward();
+            EditorData.CurrentTimeChanged += (sender, e) => HandleTimeChange();
         }
 
         #endregion Setup
@@ -117,6 +125,11 @@ namespace online_osu_beatmap_editor_client.views.Editor
             }
 
             EditorData.currentTime = EditorHelper.GetPreviousTickTime(EditorData.currentTime, EditorData.totalTime, bpm, timeSnapping);
+        }
+
+        private void HandleTimeChange()
+        {
+            PrepareCirclesToRender();
         }
 
         #endregion Listeners
@@ -305,6 +318,27 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         #endregion Circle preview
 
+        private void PrepareCirclesToRender()
+        {
+            circles.Clear();
+
+            int timeMin = EditorData.currentTime - 1500;
+            int timeMax = EditorData.currentTime;
+
+            List<HitObject> valuesInRange = BeatmapData.GetHitObjectsInRange(timeMin, timeMax);
+
+            if (valuesInRange == null)
+            {
+                return;
+            }
+
+            foreach (var hitObject in valuesInRange)
+            {
+                HitCircle circle = new HitCircle(new Vector2i(hitObject.X, hitObject.Y), 1, GetCircleSize(), Color.Red);
+                circles.Add(circle);
+            }
+        }
+
         #region Tools 
         private void PlaceCircle()
         {
@@ -314,17 +348,18 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 ResetCircleIndex();
             }
 
-            Color newCircleColor = GetCircleColor();
-            int newCircleIndex = GetCircleNumber();
             Vector2i newHitCirclePos = CalculateCirclePos();
-            float newCircleSize = GetCircleSize();
 
-            HitCircle newHitCircle = new HitCircle(newHitCirclePos, newCircleIndex, newCircleSize, newCircleColor);
+            HitObject newHitObject = new HitObject() {
+                X = newHitCirclePos.X,
+                Y = newHitCirclePos.Y,
+            };
 
+            BeatmapData.AppendHitObject(EditorData.currentTime, newHitObject);
             EditorData.isNewComboActive = false;
-            circles.Add(newHitCircle);
             IncreateCircleIndex();
             UpdateCirclePreviewNumberAndColor();
+            PrepareCirclesToRender();
         }
 
         private void SelectTool(Vector2i clickPoint)
