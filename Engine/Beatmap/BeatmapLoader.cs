@@ -1,4 +1,5 @@
 ﻿using online_osu_beatmap_editor_client.config;
+using online_osu_beatmap_editor_client.Engine.Beatmap;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -33,12 +34,7 @@ namespace online_osu_beatmap_editor_client.Engine
                 return;
             }
 
-            string[] lines = File.ReadAllLines(filePath);
-
-            for (int i = 0; i < lines.Length; i++)
-            {
-                Console.WriteLine(lines[i]);    
-            }
+            BeatmapParser.ParseBeatmap(File.ReadAllLines(filePath));
         }
     }
 }
