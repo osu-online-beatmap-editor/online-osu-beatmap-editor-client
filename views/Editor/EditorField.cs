@@ -1,12 +1,19 @@
 ﻿using online_osu_beatmap_editor_client.common;
 using online_osu_beatmap_editor_client.components;
+using online_osu_beatmap_editor_client.components.Container;
+using online_osu_beatmap_editor_client.Engine;
+using online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap;
+using online_osu_beatmap_editor_client.gameplay_elements.Objects;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
+using static SFML.Window.Joystick;
+using System.Xml.Linq;
+using System.Collections;
+using System.Linq;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -38,10 +45,16 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private List<HitCircle> circles = new List<HitCircle>();
 
+        private List<HitObject> currenltyVisibleHitObjects = new();
+
+        private int bpm = 200;
+        private int timeSnapping = 4;
+
         #region Setup
 
         public EditorField(Vector2i pos, EditorShortcuts editorShortcuts) : base(pos)
         {
+            EditorData.currentTime = 15;
             isMouseButtonPressed = false;
             isHovered = false;
             this.size = new Vector2i((int)(baseEditorFieldSize.X * scale), (int)(baseEditorFieldSize.Y * scale));
@@ -62,6 +75,11 @@ namespace online_osu_beatmap_editor_client.views.Editor
             EditorData.GridTypeChanged += (sender, e) => HandleGridChange();
             EditorData.IsNewComboActiveChanged += (sender, e) => HandleIsNewComboChange();
             editorShortcuts.DeleteCircleEvent += (sender, e) => HandleDeleteCircle();
+            editorShortcuts.TimeForwardEvent += (sender, e) => HandleTimeForward();
+            editorShortcuts.TimeBackwardEvent += (sender, e) => HandleTimeBackward();
+            editorShortcuts.ScrollUpEvent += (sender, e) => HandleTimeBackward();
+            editorShortcuts.ScrollDownEvent += (sender, e) => HandleTimeForward();
+            EditorData.CurrentTimeChanged += (sender, e) => HandleTimeChange();
         }
 
         #endregion Setup
@@ -85,10 +103,38 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 return;
             }
 
-            circles.RemoveAt(selectedCircleIndex);
+            BeatmapData.RemoveHitObjectById(EditorData.selectedCircle.id);
+
             EditorData.selectedCircle.isSelected = false;
             EditorData.selectedCircle = null;
             selectedCircleIndex = -1;
+
+            PrepareCirclesToRender();
+        }
+
+        private void HandleTimeForward()
+        {
+            if (EditorData.currentTime + OsuMath.GetDistanceBetweenTimingTicksInMilliseconds(bpm, timeSnapping) > EditorData.totalTime)
+            {
+                return;
+            }
+
+            EditorData.currentTime = EditorHelper.GetNextTickTime(EditorData.currentTime, EditorData.totalTime, bpm, timeSnapping);
+        }
+
+        private void HandleTimeBackward()
+        {
+            if (EditorData.currentTime <= 15)
+            {
+                return;
+            }
+
+            EditorData.currentTime = EditorHelper.GetPreviousTickTime(EditorData.currentTime, EditorData.totalTime, bpm, timeSnapping);
+        }
+
+        private void HandleTimeChange()
+        {
+            PrepareCirclesToRender();
         }
 
         #endregion Listeners
@@ -192,7 +238,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         private void ResetCircleIndex()
         {
-            circleIndex = 1;
+           // circleIndex = 1;
         }
 
         private void IncreateCircleIndex()
@@ -277,6 +323,32 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         #endregion Circle preview
 
+        private void PrepareCirclesToRender()
+        {
+            circles.Clear();
+
+            double hitObjectDuration = OsuMath.CalculateHitObjectDuration(EditorData.AR);
+            int timeMin = EditorData.currentTime;
+            int timeMax = (int)(EditorData.currentTime + hitObjectDuration);
+
+            currenltyVisibleHitObjects = BeatmapData.GetHitObjectsInRange(timeMin, timeMax);
+
+            if (currenltyVisibleHitObjects == null)
+            {
+                return;
+            }
+
+            foreach (var hitObject in currenltyVisibleHitObjects)
+            {
+                HitCircle circle = new HitCircle(new Vector2i(hitObject.X, hitObject.Y), 1, GetCircleSize(), Color.Red)
+                {
+                    id = hitObject.Id,
+                    StartTime = hitObject.StartTime
+                };
+                circles.Add(circle);
+            }
+        }
+
         #region Tools 
         private void PlaceCircle()
         {
@@ -286,17 +358,20 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 ResetCircleIndex();
             }
 
-            Color newCircleColor = GetCircleColor();
-            int newCircleIndex = GetCircleNumber();
             Vector2i newHitCirclePos = CalculateCirclePos();
-            float newCircleSize = GetCircleSize();
 
-            HitCircle newHitCircle = new HitCircle(newHitCirclePos, newCircleIndex, newCircleSize, newCircleColor);
+            HitObject newHitObject = new HitObject() {
+                X = newHitCirclePos.X,
+                Y = newHitCirclePos.Y,
+                Id = circleIndex,
+                StartTime = EditorData.currentTime,
+            };
 
+            BeatmapData.AppendHitObject(EditorData.currentTime, newHitObject);
             EditorData.isNewComboActive = false;
-            circles.Add(newHitCircle);
             IncreateCircleIndex();
             UpdateCirclePreviewNumberAndColor();
+            PrepareCirclesToRender();
         }
 
         private void SelectTool(Vector2i clickPoint)
@@ -365,7 +440,25 @@ namespace online_osu_beatmap_editor_client.views.Editor
         {
             foreach (var circle in circles)
             {
+                circle.Update();
                 circle.Draw();
+            }
+        }
+
+        private void UpdateSelectedCirclePosition ()
+        {
+            Vector2i newPos = CalculateCirclePos();
+
+            if (isDraging && EditorData.selectedCircle != null && EditorData.selectedCircle.pos != newPos)
+            {
+                EditorData.selectedCircle.pos = newPos;
+
+                HitObject updatedHitObject = BeatmapData.GetHitObjectByTimeAndId(EditorData.selectedCircle.id, EditorData.selectedCircle.StartTime);
+                if (updatedHitObject != null)
+                {
+                    updatedHitObject.X = newPos.X;
+                    updatedHitObject.Y = newPos.Y;
+                }
             }
         }
 
@@ -380,16 +473,13 @@ namespace online_osu_beatmap_editor_client.views.Editor
         {
             AddClickListener();
             UpdateCirclePreviewPos();
+            UpdateSelectedCirclePosition();
             if (EditorData.currentlySelectedEditorTool != EditorTools.Select && EditorData.selectedCircle != null)
             {
                 EditorData.selectedCircle.isSelected = false;
                 EditorData.selectedCircle = null;
                 selectedCircleIndex = -1;
                 dragingOffset = new Vector2i(0, 0);
-            }
-            if (isDraging && EditorData.selectedCircle != null)
-            {
-                EditorData.selectedCircle.pos = CalculateCirclePos();
             }
         }
 

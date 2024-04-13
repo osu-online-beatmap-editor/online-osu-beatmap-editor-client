@@ -1,4 +1,5 @@
 ﻿using online_osu_beatmap_editor_client.components;
+using System;
 using System.ComponentModel;
 
 namespace online_osu_beatmap_editor_client.views.Editor
@@ -107,6 +108,23 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
         #endregion SelectedCircle
 
+        private static int _currentTime;
+        public static event PropertyChangedEventHandler CurrentTimeChanged;
+        public static int currentTime
+        {
+            get { return _currentTime; }
+            set
+            {
+                if (_currentTime != value)
+                {
+                    _currentTime = value <= 15 ? 15 : value;
+                    CurrentTimeChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(currentTime)));
+                }
+            }
+        }
+
+        public static int totalTime = 342523;
+
         public static bool isWhistleActive = false;
         public static bool isFinishActive = false;
         public static bool isClapActive = false;
@@ -114,6 +132,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         public static bool isGridSnapActive = false;
 
         public static float CS;
+        public static float AR;
 
     }
 }
