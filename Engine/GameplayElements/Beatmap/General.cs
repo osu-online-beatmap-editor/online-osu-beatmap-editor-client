@@ -34,9 +34,9 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
         public static event PropertyChangedEventHandler SampleSetChanged;
         public string SampleSet{get=>_SampleSet;set{var _=_SampleSet!=value?new Func<bool>(()=>{_SampleSet=value;Utils.C(SampleSetChanged,SampleSet);return true;})():false;}}
 
-        private int _StackLeniency;
+        private float _StackLeniency;
         public static event PropertyChangedEventHandler StackLeniencyChanged;
-        public int StackLeniency{get=>_StackLeniency;set{var _=_StackLeniency!=value?new Func<bool>(()=>{_StackLeniency=value;Utils.C(StackLeniencyChanged,StackLeniency);return true;})():false;}}
+        public float StackLeniency{get=>_StackLeniency;set{var _=_StackLeniency!=value?new Func<bool>(()=>{_StackLeniency=value;Utils.C(StackLeniencyChanged,StackLeniency);return true;})():false;}}
 
         private int _Mode;
         public static event PropertyChangedEventHandler ModeChanged;

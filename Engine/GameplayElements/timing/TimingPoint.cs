@@ -5,12 +5,25 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 
-namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
+namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Timing
 {
-    public class TimingPoint (int time, float beatLength, int volume, int uninherited = 1, int meter = 4, int sampleSet = 0, 
-        int SampleIndex = 0, int effects = 0)
+    public class TimingPoint 
     {
+        public TimingPoint(int time, float beatLength, int volume, bool uninherited = true, int meter = 4, int sampleSet = 0, 
+        int sampleIndex = 0, int effects = 0)
+        {
+            Time = time;
+            BeatLength = beatLength;
+            Volume = volume;
+            Uninherited = uninherited;
+            Meter = meter;
+            SampleSet = sampleSet;
+            SampleIndex = sampleIndex;
+            Effects = effects;
+        }
+
         private int _Time;
         public static event PropertyChangedEventHandler TimeChanged;
         /// <summary>
@@ -58,12 +71,12 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
         /// </summary>
         public int Volume{get=>_Volume;set{var _=_Volume!=value?new Func<bool>(()=>{_Volume=value;Utils.C(VolumeChanged,Volume);return true;})():false;}}
 
-        private int _Uninherited;
+        private bool _Uninherited;
         public static event PropertyChangedEventHandler UninheritedChanged;
         /// <summary>
         /// (0 or 1): Whether or not the timing point is uninherited.
         /// </summary>
-        public int Uninherited{get=>_Uninherited;set{var _=_Uninherited!=value?new Func<bool>(()=>{_Uninherited=value;Utils.C(UninheritedChanged,Uninherited);return true;})():false;}}
+        public bool Uninherited{get=>_Uninherited;set{var _=_Uninherited!=value?new Func<bool>(()=>{_Uninherited=value;Utils.C(UninheritedChanged,Uninherited);return true;})():false;}}
 
         private int _Effects;
         public static event PropertyChangedEventHandler EffectsChanged;

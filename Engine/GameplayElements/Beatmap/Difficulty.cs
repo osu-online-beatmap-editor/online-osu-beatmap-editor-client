@@ -31,8 +31,8 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements
         public static event PropertyChangedEventHandler SliderMultiplierChanged;
         public float SliderMultiplier{get=>_SliderMultiplier;set{var _=_SliderMultiplier!=value?new Func<bool>(()=>{_SliderMultiplier=(float)Math.Round(value, 1);Utils.C(SliderMultiplierChanged,SliderMultiplier);return true;})():false;}}
 
-        private float _SliderTickRate;
-        public static event PropertyChangedEventHandler SliderTickRateChanged;
-        public float SliderTickRate{get=>_SliderTickRate;set{var _=_SliderTickRate!=value?new Func<bool>(()=>{_SliderTickRate=(float)Math.Round(value, 1);Utils.C(SliderTickRateChanged,SliderTickRate);return true;})():false;}}
+        private float _SliderTickrate;
+        public static event PropertyChangedEventHandler SliderTickrateChanged;
+        public float SliderTickrate{get=>_SliderTickrate;set{var _=_SliderTickrate!=value?new Func<bool>(()=>{_SliderTickrate=(float)Math.Round(value, 1);Utils.C(SliderTickrateChanged,SliderTickrate);return true;})():false;}}
     }
 }
