@@ -4,6 +4,7 @@ using online_osu_beatmap_editor_client.Engine.GameplayElements.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel;
 
 namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
 {
@@ -16,7 +17,23 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
         public static Events events { get; set; } = new();
         public static List<Colour> colours { get; set; } = new();
         public static Dictionary<int, List<TimingPoint>> timingPoints { get; set; } = new();
-        public static Dictionary<int, List<HitObject>> hitObjects { get; set; } = new();
+
+
+        public static event PropertyChangedEventHandler HitObjectsChanged;
+        private static Dictionary<int, List<HitObject>> _hitObjects = new();
+
+        public static Dictionary<int, List<HitObject>> hitObjects
+        {
+            get { return _hitObjects; }
+            set
+            {
+                if (_hitObjects != value)
+                {
+                    _hitObjects = value;
+                    HitObjectsChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(hitObjects)));
+                }
+            }
+        }
 
         public static void AppendHitObject (int time, HitObject hitObject)
         {
