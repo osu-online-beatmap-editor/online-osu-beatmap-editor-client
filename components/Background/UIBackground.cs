@@ -1,4 +1,5 @@
 ﻿using online_osu_beatmap_editor_client.common;
+using online_osu_beatmap_editor_client.Engine;
 using online_osu_beatmap_editor_client.views.Editor;
 using SFML.Graphics;
 using SFML.System;
@@ -25,7 +26,7 @@ namespace online_osu_beatmap_editor_client.components.Background
                     _backgroundDim = value;
                     if (backgoundDimRectangle != null)
                     {
-                        backgoundDimRectangle.FillColor = new Color(0, 0, 0, (byte)Convert.ToInt32(value * 255));
+                        backgoundDimRectangle.FillColor = new Color(0, 0, 0, (byte)OsuMath.Lerp(0, 255, value));
                     }
                 }
             }

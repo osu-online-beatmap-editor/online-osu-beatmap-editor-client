@@ -75,6 +75,11 @@ namespace online_osu_beatmap_editor_client.common
             text.Origin = new Vector2f(text.GetLocalBounds().Width * this.origin.X, text.GetLocalBounds().Height * this.origin.Y); ;
         }
 
+        public FloatRect GetLocalBounds()
+        {
+            return text.GetLocalBounds();
+        }
+
         public override void Draw()
         {
             window.Draw(text);

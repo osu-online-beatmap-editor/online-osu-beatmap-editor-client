@@ -1,4 +1,6 @@
-﻿namespace online_osu_beatmap_editor_client.Engine
+﻿using System;
+
+namespace online_osu_beatmap_editor_client.Engine
 {
     public static class OsuMath
     {
@@ -22,6 +24,45 @@
         public static int Clamp(int value, int min, int max)
         {
             return (value < min) ? min : (value > max) ? max : value;
+        }
+
+        public static float GetDistanceBetweenWhiteTimingTicks(float bpm)
+        {
+            return 60000f / bpm;
+        }
+
+        public static float GetDistanceBetweenTimingTicksInMilliseconds(float bpm, int currentSnapping)
+        {
+            float distanceBetweenWhiteTicks = GetDistanceBetweenWhiteTimingTicks(bpm);
+            return distanceBetweenWhiteTicks / currentSnapping;
+        }
+
+        public static double Lerp(double a, double b, double t) => t < 0 ? a : (t > 1 ? b : a + (b - a) * t);
+
+        public static double RemapNumbers(double x, double x_min, double x_max, double y_min, double y_max)
+        {
+            double normalized_x = (x - x_min) / (x_max - x_min);
+            double y = y_min + normalized_x * (y_max - y_min);
+
+            return y;
+        }
+
+        public static int SnapToTiming(float value, float bpm, int currentSnapping)
+        {
+            float distanceBetweenTicksInMilliseconds = OsuMath.GetDistanceBetweenTimingTicksInMilliseconds(bpm, currentSnapping);
+
+            int snappedValue = (int)(Math.Round(value / distanceBetweenTicksInMilliseconds) * distanceBetweenTicksInMilliseconds);
+
+            return snappedValue;
+        }
+
+        public static double CalculateHitObjectDuration(double arLevel)
+        {
+            double baseDuration;
+
+            baseDuration = arLevel < 5 ? 1800 - (arLevel * 120) : 1200 - ((arLevel - 5) * 150);
+
+            return Math.Max(baseDuration, 450);
         }
     }
 }

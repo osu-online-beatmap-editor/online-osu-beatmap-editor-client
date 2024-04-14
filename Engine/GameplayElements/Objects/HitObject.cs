@@ -24,6 +24,7 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Objects
             SpinnerEndTime = spinnerEndTime;
             SliderParameters = sliderParams;
         }
+        public int Id;
 
         /// <summary>
         /// Position of the object on the playfield.

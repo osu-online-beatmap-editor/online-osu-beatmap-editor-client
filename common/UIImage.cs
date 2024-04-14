@@ -46,6 +46,16 @@ namespace online_osu_beatmap_editor_client.common
 
         }
 
+        public override void HandleSizeUpdate(Vector2i size)
+        {
+            base.HandleSizeUpdate(size);
+            if (sprite != null)
+            {
+                sprite.Scale = new Vector2f((float)size.X / texture.Size.X, (float)size.Y / texture.Size.Y);
+                sprite.Origin = new Vector2f(sprite.GetLocalBounds().Width * this.origin.X, sprite.GetLocalBounds().Height * this.origin.Y);
+            }
+        }
+
         public override void HandlePositionUpdate(Vector2i pos)
         {
             base.HandlePositionUpdate(pos);

@@ -22,22 +22,24 @@ namespace online_osu_beatmap_editor_client.components.Slider
                 if (_sliderValue != value)
                 {
                     _sliderValue = value;
-                    ValueChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(sliderValue)));
+                    if (knob != null) {
+                        knob.Position = new Vector2f(pos.X + sliderValue * size.X - 10, pos.Y + size.Y / 4 - 5);
+                    }
                 }
             }
         }
 
-        public UISlider(Vector2i pos, int width) : base(pos)
+        public UISlider(Vector2i pos, int width, int height = 20) : base(pos)
         {
-            size = new Vector2i(width, 20);
+            size = new Vector2i(width, height);
 
             track = new RectangleShape(new Vector2f(size.X, 10));
             track.FillColor = StyleVariables.colorBgTertiary;
-            track.Position = new Vector2f(pos.X, pos.Y + 5);
+            track.Position = new Vector2f(pos.X, pos.Y + size.Y / 4);
 
             knob = new RectangleShape(new Vector2f(20, 20));
             knob.FillColor = StyleVariables.colorPrimary;
-            knob.Position = new Vector2f(pos.X + sliderValue * size.X, pos.Y);
+            knob.Position = new Vector2f(pos.X + sliderValue * size.X, pos.Y + size.Y / 4 - 5);
         }
 
         public override void HandleSizeUpdate(Vector2i size)
@@ -45,6 +47,7 @@ namespace online_osu_beatmap_editor_client.components.Slider
             if (track != null)
             {
                 track.Size = new Vector2f(size.X, 20);
+                track.Position = new Vector2f(-size.X, -size.Y);
             }
             if (knob != null)
             {
@@ -57,11 +60,11 @@ namespace online_osu_beatmap_editor_client.components.Slider
             base.HandlePositionUpdate(pos);
             if (track != null)
             {
-                track.Position = new Vector2f(pos.X, pos.Y + 5);
+                track.Position = new Vector2f(pos.X, pos.Y + size.Y / 4);
             }
             if (knob != null)
             {
-                knob.Position = new Vector2f(pos.X + sliderValue * size.X - 10, pos.Y);
+                knob.Position = new Vector2f(pos.X + sliderValue * size.X - 10, pos.Y + size.Y / 4 - 5);
             }
         }
 
@@ -74,7 +77,8 @@ namespace online_osu_beatmap_editor_client.components.Slider
                     mousePos.Y >= pos.Y && mousePos.Y <= pos.Y + size.Y)
                 {
                     sliderValue = (mousePos.X - pos.X) / (float)size.X;
-                    knob.Position = new Vector2f(pos.X + sliderValue * size.X - 10, pos.Y);
+                    knob.Position = new Vector2f(pos.X + sliderValue * size.X - 10, pos.Y + size.Y / 4 - 5);
+                    ValueChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(sliderValue)));
                 }
             }
         }

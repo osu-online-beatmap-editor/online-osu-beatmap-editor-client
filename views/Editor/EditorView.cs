@@ -20,12 +20,14 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private EditorToolBar toolBar;
         private EditorDetailsBar detailsBar;
         private EditorField editorField;
+        private EditorTimeline editorTimeline;
 
         public EditorView(RenderWindow window)
         {
 
             EditorData.gridType = EditorGridType.Large;
             EditorData.CS = 4;
+            EditorData.AR = 10;
             EditorData.backgroundDim = AppConfig.defaultBackgroundDim;
             EditorData.distanceSnapping = 0.3f;
             editorShortcuts = new EditorShortcuts();
@@ -40,6 +42,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             InitDetailsBar();
             InitEditorField();
+            InitEditorTimeline();
         }
 
         private string GetRandomSeasonalBackground()
@@ -98,6 +101,12 @@ namespace online_osu_beatmap_editor_client.views.Editor
             AddComponent(detailsBarComponent);
         }
 
+        private void InitEditorTimeline()
+        {
+            editorTimeline = new EditorTimeline();
+        }
+
+
         private void InitEditorField ()
         {
             editorField = new EditorField(new Vector2i(853 * 2 / 2, 480 * 2 / 2 + 30), editorShortcuts);
@@ -113,6 +122,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             navBar.Update();
             navBar.Draw();
             detailsBar.Update();
+            editorTimeline.Draw();
         }
     }
 }
