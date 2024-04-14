@@ -17,7 +17,12 @@ namespace online_osu_beatmap_editor_client.Engine.Beatmap
     {
         public static void ParseBeatmap(string[] lines)
         {
-            BeatmapData.general.gameFileVersion = lines[0];
+            //clear lists to fresh load
+            BeatmapData.colours = new();
+            BeatmapData.timingPoints = new();
+            BeatmapData.hitObjects = new();
+
+            GameplayElements.Beatmap.General.gameFileVersion = lines[0];
 
             List<Action<string[]>> segments = new()
             {
@@ -57,15 +62,15 @@ namespace online_osu_beatmap_editor_client.Engine.Beatmap
         private static void General(string[] lines)
         { 
             int i=0;
-            BeatmapData.general.AudioFileName = lines[i++].Trim().Split(':')[1];
-            BeatmapData.general.AudioLeadIn = int.Parse(lines[i++].Split(':')[1]);
-            BeatmapData.general.PreviewTime = int.Parse(lines[i++].Split(':')[1]);
-            BeatmapData.general.Countdown = int.Parse(lines[i++].Split(':')[1]);
-            BeatmapData.general.SampleSet = lines[i++].Split(':')[1];
-            BeatmapData.general.StackLeniency = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
-            BeatmapData.general.Mode = int.Parse(lines[i++].Split(':')[1]);
-            BeatmapData.general.LetterboxInBreaks = int.Parse(lines[i++].Split(':')[1]);
-            BeatmapData.general.WidescreenStoryboard = int.Parse(lines[i++].Split(':')[1]);
+            GameplayElements.Beatmap.General.AudioFileName = lines[i++].Trim().Split(':')[1];
+            GameplayElements.Beatmap.General.AudioLeadIn = int.Parse(lines[i++].Split(':')[1]);
+            GameplayElements.Beatmap.General.PreviewTime = int.Parse(lines[i++].Split(':')[1]);
+            GameplayElements.Beatmap.General.Countdown = int.Parse(lines[i++].Split(':')[1]);
+            GameplayElements.Beatmap.General.SampleSet = lines[i++].Split(':')[1];
+            GameplayElements.Beatmap.General.StackLeniency = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
+            GameplayElements.Beatmap.General.Mode = int.Parse(lines[i++].Split(':')[1]);
+            GameplayElements.Beatmap.General.LetterboxInBreaks = int.Parse(lines[i++].Split(':')[1]);
+            GameplayElements.Beatmap.General.WidescreenStoryboard = int.Parse(lines[i++].Split(':')[1]);
         }
 
         private static void Editor(string[] lines)
@@ -73,38 +78,38 @@ namespace online_osu_beatmap_editor_client.Engine.Beatmap
             int i=1;
             if (lines[i].StartsWith("Bookmarks"))
             {
-                BeatmapData.editor.Bookmarks = lines[i++].Split(':')[1].Split(',').ToList().ConvertAll(int.Parse);
+                GameplayElements.Beatmap.Editor.Bookmarks = lines[i++].Split(':')[1].Split(',').ToList().ConvertAll(int.Parse);
             }
-            BeatmapData.editor.DistanceSpacing = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
-            BeatmapData.editor.BeatDivisor = int.Parse(lines[i++].Split(':')[1]);
-            BeatmapData.editor.GridSize = int.Parse(lines[i++].Split(':')[1]);
-            BeatmapData.editor.TimelineZoom = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
+            GameplayElements.Beatmap.Editor.DistanceSpacing = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
+            GameplayElements.Beatmap.Editor.BeatDivisor = int.Parse(lines[i++].Split(':')[1]);
+            GameplayElements.Beatmap.Editor.GridSize = int.Parse(lines[i++].Split(':')[1]);
+            GameplayElements.Beatmap.Editor.TimelineZoom = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
         }
 
         private static void Metadata(string[] lines)
         { 
             int i=1;
-            BeatmapData.metadata.Title = lines[i++].Split(':')[1];
-            BeatmapData.metadata.TitleUnicode = lines[i++].Split(':')[1];
-            BeatmapData.metadata.Artist = lines[i++].Split(':')[1];
-            BeatmapData.metadata.ArtistUnicode = lines[i++].Split(':')[1];
-            BeatmapData.metadata.Creator = lines[i++].Split(':')[1];
-            BeatmapData.metadata.Version = lines[i++].Split(':')[1];
-            BeatmapData.metadata.Source = lines[i++].Split(':')[1];
-            BeatmapData.metadata.Tags = lines[i++].Split(':')[1];
-            BeatmapData.metadata.BeatmapID = int.Parse(lines[i++].Split(':')[1]);
-            BeatmapData.metadata.BeatmapSetID = int.Parse(lines[i++].Split(':')[1]);
+            GameplayElements.Beatmap.Metadata.Title = lines[i++].Split(':')[1];
+            GameplayElements.Beatmap.Metadata.TitleUnicode = lines[i++].Split(':')[1];
+            GameplayElements.Beatmap.Metadata.Artist = lines[i++].Split(':')[1];
+            GameplayElements.Beatmap.Metadata.ArtistUnicode = lines[i++].Split(':')[1];
+            GameplayElements.Beatmap.Metadata.Creator = lines[i++].Split(':')[1];
+            GameplayElements.Beatmap.Metadata.Version = lines[i++].Split(':')[1];
+            GameplayElements.Beatmap.Metadata.Source = lines[i++].Split(':')[1];
+            GameplayElements.Beatmap.Metadata.Tags = lines[i++].Split(':')[1];
+            GameplayElements.Beatmap.Metadata.BeatmapID = int.Parse(lines[i++].Split(':')[1]);
+            GameplayElements.Beatmap.Metadata.BeatmapSetID = int.Parse(lines[i++].Split(':')[1]);
         }
 
         private static void Difficulty(string[] lines)
         { 
             int i=1;
-            BeatmapData.difficulty.HPDrainRate = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
-            BeatmapData.difficulty.CircleSize = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
-            BeatmapData.difficulty.OverallDifficulty = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
-            BeatmapData.difficulty.ApproachRate = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
-            BeatmapData.difficulty.SliderMultiplier = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
-            BeatmapData.difficulty.SliderTickrate = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
+            GameplayElements.Beatmap.Difficulty.HPDrainRate = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
+            GameplayElements.Beatmap.Difficulty.CircleSize = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
+            GameplayElements.Beatmap.Difficulty.OverallDifficulty = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
+            GameplayElements.Beatmap.Difficulty.ApproachRate = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
+            GameplayElements.Beatmap.Difficulty.SliderMultiplier = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
+            GameplayElements.Beatmap.Difficulty.SliderTickrate = float.Parse(lines[i++].Split(':')[1].Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
         }
 
         private static void Events(string[] lines)
@@ -137,16 +142,16 @@ namespace online_osu_beatmap_editor_client.Engine.Beatmap
             }
             string[] sbDump = new string[lines.Length - i + 1];
             Array.Copy(lines, i-1, sbDump, 0, lines.Length - i + 1);
-            BeatmapData.events.StoryboardLayerDump = string.Join( "", sbDump);
+            GameplayElements.Beatmap.Events.StoryboardLayerDump = string.Join( "", sbDump);
 
             void Background(string[] lines)
             {
                 int i=0;
                 string[] bg = lines[i++].Split(',');
-                BeatmapData.events.SetBackground(bg[2], int.Parse(bg[3]), int.Parse(bg[3]));
+                GameplayElements.Beatmap.Events.SetBackground(bg[2], int.Parse(bg[3]), int.Parse(bg[3]));
                 if(lines.Length > 1) 
                 {
-                    BeatmapData.events.SetVideo(lines[i].Split(',')[2], int.Parse(lines[i].Split(',')[1]));
+                    GameplayElements.Beatmap.Events.SetVideo(lines[i].Split(',')[2], int.Parse(lines[i].Split(',')[1]));
                 }
             }
             void Breaks(string[] lines)
@@ -154,7 +159,7 @@ namespace online_osu_beatmap_editor_client.Engine.Beatmap
                 for (int i=0; i < lines.Length; i++)
                 {
                     string[] lb = lines[i].Split(',');
-                    BeatmapData.events.AddBreakPeriod(int.Parse(lb[1]), int.Parse(lb[2]));
+                    GameplayElements.Beatmap.Events.AddBreakPeriod(int.Parse(lb[1]), int.Parse(lb[2]));
                 }
                 exitLoop = true;
             }
@@ -226,8 +231,16 @@ namespace online_osu_beatmap_editor_client.Engine.Beatmap
                 int hitSound = int.Parse(l[4]);
 
                 string[] hitSampleLine = l[l.Length-1].Split(':');
-                HitSample hitSample = new(int.Parse(hitSampleLine[0]),int.Parse(hitSampleLine[1]),
-                            int.Parse(hitSampleLine[2]),int.Parse(hitSampleLine[3]),hitSampleLine[4]);
+                HitSample hitSample;
+                if (hitSampleLine.Length == 4) 
+                {
+                    hitSample = new(int.Parse(hitSampleLine[0]),int.Parse(hitSampleLine[1]),
+                    int.Parse(hitSampleLine[2]),int.Parse(hitSampleLine[3]),hitSampleLine[4]);
+                }
+                else
+                {
+                    hitSample = new();
+                }
 
                 HitObject o = null;
                 switch (l.Length)

@@ -10,26 +10,26 @@ using System.Threading.Tasks;
 
 namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
 {
-    public class Editor
+    public static class Editor
     {
-        private List<int> _Bookmarks;
+        private static List<int> _Bookmarks;
         public static event PropertyChangedEventHandler BookmarksChanged;
-        public List<int> Bookmarks{get=>_Bookmarks;set{var _=_Bookmarks!=value?new Func<bool>(()=>{_Bookmarks=value;Utils.C(BookmarksChanged,Bookmarks);return true;})():false;}}
+        public static List<int> Bookmarks{get=>_Bookmarks;set{var _=_Bookmarks!=value?new Func<bool>(()=>{_Bookmarks=value;Utils.C(BookmarksChanged,Bookmarks);return true;})():false;}}
 
-        private float _DistanceSpacing;
+        private static float _DistanceSpacing;
         public static event PropertyChangedEventHandler DistanceSpacingChanged;
-        public float DistanceSpacing{get=>_DistanceSpacing;set{var _=_DistanceSpacing!=value?new Func<bool>(()=>{_DistanceSpacing = (float)Math.Round(value, 1);Utils.C(DistanceSpacingChanged,DistanceSpacing);return true;})():false;}}
+        public static float DistanceSpacing{get=>_DistanceSpacing;set{var _=_DistanceSpacing!=value?new Func<bool>(()=>{_DistanceSpacing = (float)Math.Round(value, 1);Utils.C(DistanceSpacingChanged,DistanceSpacing);return true;})():false;}}
 
-        private int _BeatDivisor;
+        private static int _BeatDivisor;
         public static event PropertyChangedEventHandler BeatDivisorChanged;
-        public int BeatDivisor{get=>_BeatDivisor;set{var _=_BeatDivisor!=value?new Func<bool>(()=>{_BeatDivisor=value;Utils.C(BeatDivisorChanged,BeatDivisor);return true;})():false;}}
+        public static int BeatDivisor{get=>_BeatDivisor;set{var _=_BeatDivisor!=value?new Func<bool>(()=>{_BeatDivisor=value;Utils.C(BeatDivisorChanged,BeatDivisor);return true;})():false;}}
 
-        private int _GridSize;
+        private static int _GridSize;
         public static event PropertyChangedEventHandler GridSizeChanged;
-        public int GridSize{get=>_GridSize;set{var _=_GridSize!=value?new Func<bool>(()=>{_GridSize=value;Utils.C(GridSizeChanged,GridSize);return true;})():false;}}
+        public static int GridSize{get=>_GridSize;set{var _=_GridSize!=value?new Func<bool>(()=>{_GridSize=value;Utils.C(GridSizeChanged,GridSize);return true;})():false;}}
 
-        private float _TimelineZoom;
+        private static float _TimelineZoom;
         public static event PropertyChangedEventHandler TimelineZoomChanged;
-        public float TimelineZoom{get=>_TimelineZoom;set{var _=_TimelineZoom!=value?new Func<bool>(()=>{_TimelineZoom=value;Utils.C(TimelineZoomChanged,TimelineZoom);return true;})():false;}}
+        public static float TimelineZoom{get=>_TimelineZoom;set{var _=_TimelineZoom!=value?new Func<bool>(()=>{_TimelineZoom=value;Utils.C(TimelineZoomChanged,TimelineZoom);return true;})():false;}}
     }
 }
