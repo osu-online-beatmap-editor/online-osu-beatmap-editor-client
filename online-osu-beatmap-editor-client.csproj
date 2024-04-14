@@ -110,6 +110,7 @@
     <Compile Include="Engine\GameplayElements\Objects\HitObject.cs" />
     <Compile Include="common\ShortcutManager.cs" />
     <Compile Include="Engine\GameplayElements\Objects\CurvePoint.cs" />
+    <Compile Include="Engine\GameplayElements\Timing\BreakPeriod.cs" />
     <Compile Include="Engine\GameplayElements\Timing\TimingPoint.cs" />
     <Compile Include="Engine\OsuMath.cs" />
     <Compile Include="Engine\TimeConverter.cs" />

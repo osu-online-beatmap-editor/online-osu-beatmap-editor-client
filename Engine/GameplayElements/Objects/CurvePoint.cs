@@ -1,4 +1,5 @@
 ﻿using online_osu_beatmap_editor_client.common;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,21 +11,16 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Objects
 {
     public class CurvePoint
     {
-        public CurvePoint(int x, int y//, AnchorType anchorType
+        public CurvePoint(Vector2i position//, AnchorType anchorType
             ) 
         {
-            X = x;
-            Y = y;
+            Position = position;
             //Type = anchorType;
         }
 
-        private int _X;
-        public static event PropertyChangedEventHandler XChanged;
-        public int X{get=>_X;set{var _=_X!=value?new Func<bool>(()=>{_X=value;Utils.C(XChanged,X);return true;})():false;}}
-
-        private int _Y;
-        public static event PropertyChangedEventHandler YChanged; 
-        public int Y{get=>_Y;set{var _=_Y!=value?new Func<bool>(()=>{_Y=value;Utils.C(YChanged,Y);return true;})():false;}}
+        private Vector2i _Position;
+        public static event PropertyChangedEventHandler PositionChanged;
+        public Vector2i Position{get=>_Position;set{var _=_Position!=value?new Func<bool>(()=>{_Position=value;Utils.C(PositionChanged,Position);return true;})():false;}}
 
         //private AnchorType _Type;
         //public static event PropertyChangedEventHandler TypeChanged; 
