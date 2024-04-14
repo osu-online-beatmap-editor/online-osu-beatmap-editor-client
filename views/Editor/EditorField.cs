@@ -3,7 +3,6 @@ using online_osu_beatmap_editor_client.components;
 using online_osu_beatmap_editor_client.components.Container;
 using online_osu_beatmap_editor_client.Engine;
 using online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap;
-using online_osu_beatmap_editor_client.gameplay_elements.Objects;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -14,6 +13,7 @@ using static SFML.Window.Joystick;
 using System.Xml.Linq;
 using System.Collections;
 using System.Linq;
+using online_osu_beatmap_editor_client.Engine.GameplayElements.Objects;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -340,10 +340,10 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             foreach (var hitObject in currenltyVisibleHitObjects)
             {
-                HitCircle circle = new HitCircle(new Vector2i(hitObject.X, hitObject.Y), 1, GetCircleSize(), Color.Red)
+                HitCircle circle = new HitCircle(hitObject.Position, 1, GetCircleSize(), Color.Red)
                 {
                     id = hitObject.Id,
-                    StartTime = hitObject.StartTime
+                    StartTime = hitObject.Time
                 };
                 circles.Add(circle);
             }

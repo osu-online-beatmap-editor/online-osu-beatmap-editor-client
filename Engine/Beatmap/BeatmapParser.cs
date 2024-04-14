@@ -4,6 +4,7 @@ using online_osu_beatmap_editor_client.Engine.GameplayElements.Colours;
 using online_osu_beatmap_editor_client.Engine.GameplayElements.Objects;
 using online_osu_beatmap_editor_client.Engine.GameplayElements.Timing;
 using online_osu_beatmap_editor_client.gameplay_elements.Audio;
+using SFML.System;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -148,10 +149,12 @@ namespace online_osu_beatmap_editor_client.Engine.Beatmap
             {
                 int i=0;
                 string[] bg = lines[i++].Split(',');
-                GameplayElements.Beatmap.Events.SetBackground(bg[2], int.Parse(bg[3]), int.Parse(bg[3]));
+                GameplayElements.Beatmap.Events.Background = bg[2];
+                GameplayElements.Beatmap.Events.BackgroundOffset = new Vector2i(int.Parse(bg[3]), int.Parse(bg[3]));
                 if(lines.Length > 1) 
                 {
-                    GameplayElements.Beatmap.Events.SetVideo(lines[i].Split(',')[2], int.Parse(lines[i].Split(',')[1]));
+                    GameplayElements.Beatmap.Events.Video = lines[i].Split(',')[2];
+                    GameplayElements.Beatmap.Events.VideoOffset = int.Parse(lines[i].Split(',')[1]);
                 }
             }
             void Breaks(string[] lines)
@@ -159,7 +162,7 @@ namespace online_osu_beatmap_editor_client.Engine.Beatmap
                 for (int i=0; i < lines.Length; i++)
                 {
                     string[] lb = lines[i].Split(',');
-                    GameplayElements.Beatmap.Events.AddBreakPeriod(int.Parse(lb[1]), int.Parse(lb[2]));
+                    BeatmapData.breakPeriods.Add(new BreakPeriod(int.Parse(lb[1]), int.Parse(lb[2])));
                 }
                 exitLoop = true;
             }
@@ -247,12 +250,12 @@ namespace online_osu_beatmap_editor_client.Engine.Beatmap
                 {
                     //circle
                     case 6:
-                        o = new(x,y,time,type,hitSound,hitSample);
+                        o = new(new Vector2i(x,y),time,type,hitSound,hitSample);
                         break;
 
                     //spinner
                     case 7:
-                        o = new(x, y, time, type, hitSound, hitSample, spinnerEndTime: int.Parse(l[5]));
+                        o = new(new Vector2i(x,y), time, type, hitSound, hitSample, spinnerEndTime: int.Parse(l[5]));
                         break;
 
                     //slider
@@ -266,7 +269,7 @@ namespace online_osu_beatmap_editor_client.Engine.Beatmap
                             new Converter<string, CurvePoint>((x) => 
                             { 
                                 string[] coords = x.Split(':');
-                                return new CurvePoint(int.Parse(coords[0]),int.Parse(coords[1]));
+                                return new CurvePoint(new Vector2i(int.Parse(coords[0]), int.Parse(coords[1])));
                             }));
 
                         int slides = int.Parse(l[6]);
@@ -278,7 +281,7 @@ namespace online_osu_beatmap_editor_client.Engine.Beatmap
 
                         SliderParams parameters = new SliderParams(curveType,curvePoints,slides,length,edgeSounds,edgeSets);
 
-                        o = new(x,y,time,type,hitSound,hitSample,sliderParams:parameters);
+                        o = new(new Vector2i(x,y),time,type,hitSound,hitSample,sliderParams:parameters);
                         break;
                 }
 
