@@ -20,16 +20,22 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Objects
             Time = time;
             TypeFlags = (ObjectFlags)type; SetTypeAndBoolsFromFlags();
             HitSoundTypeFlags = (HitSoundFlags)hitSound; SetHitsoundBoolsFromFlags();
-            Sample = hitSample;
+            Sample = hitSample ?? new HitSample();
             SpinnerEndTime = spinnerEndTime;
             SliderParameters = sliderParams;
         }
 
-        public HitObject(Vector2i position, int time, ObjectType type)
+        public HitObject(int x, int y, int time, ObjectType type, int hitSound = 0, HitSample hitSample = null,
+            int spinnerEndTime = 0, SliderParams sliderParams = null)
         {
-            Position = position;
+            X = x;
+            Y = y;
             Time = time;
             TypeFlags = (ObjectFlags)type; SetTypeAndBoolsFromFlags();
+            HitSoundTypeFlags = (HitSoundFlags)hitSound; SetHitsoundBoolsFromFlags();
+            Sample = hitSample ?? new HitSample();
+            SpinnerEndTime = spinnerEndTime;
+            SliderParameters = sliderParams;
         }
 
         public int Id;

@@ -81,6 +81,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             editorShortcuts.ScrollUpEvent += (sender, e) => HandleTimeBackward();
             editorShortcuts.ScrollDownEvent += (sender, e) => HandleTimeForward();
             EditorData.CurrentTimeChanged += (sender, e) => HandleTimeChange();
+            BeatmapData.HitObjectsChanged += (sender, e) => HandleHitObjectsChange();
         }
 
         #endregion Setup
@@ -134,6 +135,11 @@ namespace online_osu_beatmap_editor_client.views.Editor
         }
 
         private void HandleTimeChange()
+        {
+            PrepareCirclesToRender();
+        }
+
+        private void HandleHitObjectsChange()
         {
             PrepareCirclesToRender();
         }
@@ -341,7 +347,9 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             foreach (var hitObject in currenltyVisibleHitObjects)
             {
-                HitCircle circle = new HitCircle(hitObject.Position, 1, GetCircleSize(), Color.Red)
+                Vector2i calcPos = new Vector2i((int)(hitObject.X * scale), (int)(hitObject.Y * scale)) + new Vector2i(pos.X - size.X / 2, pos.Y - size.Y / 2);
+
+                HitCircle circle = new HitCircle(calcPos, 1, GetCircleSize(), Color.Red)
                 {
                     id = hitObject.Id,
                     StartTime = hitObject.Time
@@ -363,7 +371,6 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             HitObject newHitObject = new HitObject(newHitCirclePos, EditorData.currentTime, ObjectType.CIRCLE);
             newHitObject.Id = circleIndex;
-
 
             BeatmapData.AppendHitObject(EditorData.currentTime, newHitObject);
             EditorData.isNewComboActive = false;
