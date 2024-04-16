@@ -347,7 +347,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             foreach (var hitObject in currenltyVisibleHitObjects)
             {
-                Vector2i calcPos = new Vector2i((int)(hitObject.X * scale), (int)(hitObject.Y * scale)) + new Vector2i(pos.X - size.X / 2, pos.Y - size.Y / 2);
+                Vector2i calcPos = new Vector2i((int)(hitObject.Position.X * scale), (int)(hitObject.Position.Y * scale)) + new Vector2i(pos.X - size.X / 2, pos.Y - size.Y / 2);
 
                 HitCircle circle = new HitCircle(calcPos, 1, GetCircleSize(), Color.Red)
                 {
@@ -368,6 +368,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
             }
 
             Vector2i newHitCirclePos = CalculateCirclePos();
+            newHitCirclePos = newHitCirclePos - new Vector2i(pos.X - size.X / 2, pos.Y - size.Y / 2);
+            newHitCirclePos = new Vector2i((int)(newHitCirclePos.X / scale), (int)(newHitCirclePos.Y / scale));   
 
             HitObject newHitObject = new HitObject(newHitCirclePos, EditorData.currentTime, ObjectType.CIRCLE);
             newHitObject.Id = circleIndex;
@@ -461,6 +463,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 HitObject updatedHitObject = BeatmapData.GetHitObjectByTimeAndId(EditorData.selectedCircle.id, EditorData.selectedCircle.StartTime);
                 if (updatedHitObject != null)
                 {
+                    newPos = newPos - new Vector2i(pos.X - size.X / 2, pos.Y - size.Y / 2);
+                    newPos = new Vector2i((int)(newPos.X / scale), (int)(newPos.Y / scale));
                     updatedHitObject.Position = newPos;
                 }
             }

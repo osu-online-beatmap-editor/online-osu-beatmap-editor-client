@@ -25,11 +25,10 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Objects
             SliderParameters = sliderParams;
         }
 
-        public HitObject(int x, int y, int time, ObjectType type, int hitSound = 0, HitSample hitSample = null,
+        public HitObject(Vector2i position, int time, ObjectType type, int hitSound = 0, HitSample hitSample = null,
             int spinnerEndTime = 0, SliderParams sliderParams = null)
         {
-            X = x;
-            Y = y;
+            Position = position;
             Time = time;
             TypeFlags = (ObjectFlags)type; SetTypeAndBoolsFromFlags();
             HitSoundTypeFlags = (HitSoundFlags)hitSound; SetHitsoundBoolsFromFlags();
