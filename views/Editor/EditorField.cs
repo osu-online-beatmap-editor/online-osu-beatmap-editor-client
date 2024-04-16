@@ -369,7 +369,8 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             Vector2i newHitCirclePos = CalculateCirclePos();
 
-            HitObject newHitObject = new HitObject(newHitCirclePos.X, newHitCirclePos.Y, EditorData.currentTime, ObjectType.CIRCLE);
+            HitObject newHitObject = new HitObject(newHitCirclePos, EditorData.currentTime, ObjectType.CIRCLE);
+            newHitObject.Id = circleIndex;
 
             BeatmapData.AppendHitObject(EditorData.currentTime, newHitObject);
             EditorData.isNewComboActive = false;
@@ -460,8 +461,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 HitObject updatedHitObject = BeatmapData.GetHitObjectByTimeAndId(EditorData.selectedCircle.id, EditorData.selectedCircle.StartTime);
                 if (updatedHitObject != null)
                 {
-                    updatedHitObject.X = newPos.X;
-                    updatedHitObject.Y = newPos.Y;
+                    updatedHitObject.Position = newPos;
                 }
             }
         }
