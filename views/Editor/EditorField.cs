@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using System.Collections;
 using System.Linq;
 using online_osu_beatmap_editor_client.Engine.GameplayElements.Objects;
+using static online_osu_beatmap_editor_client.Engine.GameplayElements.Objects.HitObject;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -360,12 +361,9 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             Vector2i newHitCirclePos = CalculateCirclePos();
 
-            HitObject newHitObject = new HitObject() {
-                X = newHitCirclePos.X,
-                Y = newHitCirclePos.Y,
-                Id = circleIndex,
-                StartTime = EditorData.currentTime,
-            };
+            HitObject newHitObject = new HitObject(newHitCirclePos, EditorData.currentTime, ObjectType.CIRCLE);
+            newHitObject.Id = circleIndex;
+
 
             BeatmapData.AppendHitObject(EditorData.currentTime, newHitObject);
             EditorData.isNewComboActive = false;
@@ -456,8 +454,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 HitObject updatedHitObject = BeatmapData.GetHitObjectByTimeAndId(EditorData.selectedCircle.id, EditorData.selectedCircle.StartTime);
                 if (updatedHitObject != null)
                 {
-                    updatedHitObject.X = newPos.X;
-                    updatedHitObject.Y = newPos.Y;
+                    updatedHitObject.Position = newPos;
                 }
             }
         }

@@ -24,6 +24,14 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Objects
             SpinnerEndTime = spinnerEndTime;
             SliderParameters = sliderParams;
         }
+
+        public HitObject(Vector2i position, int time, ObjectType type)
+        {
+            Position = position;
+            Time = time;
+            TypeFlags = (ObjectFlags)type; SetTypeAndBoolsFromFlags();
+        }
+
         public int Id;
 
         /// <summary>
