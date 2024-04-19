@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using System.Collections;
 using System.Linq;
 using online_osu_beatmap_editor_client.Engine.GameplayElements.Objects;
+using static online_osu_beatmap_editor_client.Engine.GameplayElements.Objects.HitObject;
 
 namespace online_osu_beatmap_editor_client.views.Editor
 {
@@ -80,6 +81,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             editorShortcuts.ScrollUpEvent += (sender, e) => HandleTimeBackward();
             editorShortcuts.ScrollDownEvent += (sender, e) => HandleTimeForward();
             EditorData.CurrentTimeChanged += (sender, e) => HandleTimeChange();
+            BeatmapData.HitObjectsChanged += (sender, e) => HandleHitObjectsChange();
         }
 
         #endregion Setup
@@ -133,6 +135,12 @@ namespace online_osu_beatmap_editor_client.views.Editor
         }
 
         private void HandleTimeChange()
+        {
+            PrepareCirclesToRender();
+            UpdateCirclePreviewNumberAndColor();
+        }
+
+        private void HandleHitObjectsChange()
         {
             PrepareCirclesToRender();
         }
@@ -297,12 +305,12 @@ namespace online_osu_beatmap_editor_client.views.Editor
             if (isNewCombo)
             {
                 circlePreview.color = GetCircleColor(isNewCombo);
-                circlePreview.number = GetCircleNumber(true);
+                circlePreview.number = 1;
                 return;
             }
 
             circlePreview.color = colors[currentColor];
-            circlePreview.number = GetCircleNumber();
+            circlePreview.number = BeatmapData.DistanceToLastNewCombo(EditorData.currentTime) + 1;
         }
 
         private void UpdateCirclePreviewPos()
@@ -340,7 +348,9 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             foreach (var hitObject in currenltyVisibleHitObjects)
             {
-                HitCircle circle = new HitCircle(hitObject.Position, 1, GetCircleSize(), Color.Red)
+                Vector2i calcPos = new Vector2i((int)(hitObject.Position.X * scale), (int)(hitObject.Position.Y * scale)) + new Vector2i(pos.X - size.X / 2, pos.Y - size.Y / 2);
+
+                HitCircle circle = new HitCircle(calcPos, hitObject.Number, GetCircleSize(), Color.Red)
                 {
                     id = hitObject.Id,
                     StartTime = hitObject.Time
@@ -359,19 +369,18 @@ namespace online_osu_beatmap_editor_client.views.Editor
             }
 
             Vector2i newHitCirclePos = CalculateCirclePos();
+            newHitCirclePos = newHitCirclePos - new Vector2i(pos.X - size.X / 2, pos.Y - size.Y / 2);
+            newHitCirclePos = new Vector2i((int)(newHitCirclePos.X / scale), (int)(newHitCirclePos.Y / scale));   
 
-            HitObject newHitObject = new HitObject() {
-                X = newHitCirclePos.X,
-                Y = newHitCirclePos.Y,
-                Id = circleIndex,
-                StartTime = EditorData.currentTime,
-            };
+            HitObject newHitObject = new HitObject(newHitCirclePos, EditorData.currentTime, ObjectType.CIRCLE);
+            newHitObject.Id = circleIndex;
+            newHitObject.IsNewCombo = EditorData.isNewComboActive;
 
             BeatmapData.AppendHitObject(EditorData.currentTime, newHitObject);
             EditorData.isNewComboActive = false;
             IncreateCircleIndex();
-            UpdateCirclePreviewNumberAndColor();
             PrepareCirclesToRender();
+            UpdateCirclePreviewNumberAndColor();
         }
 
         private void SelectTool(Vector2i clickPoint)
@@ -456,8 +465,9 @@ namespace online_osu_beatmap_editor_client.views.Editor
                 HitObject updatedHitObject = BeatmapData.GetHitObjectByTimeAndId(EditorData.selectedCircle.id, EditorData.selectedCircle.StartTime);
                 if (updatedHitObject != null)
                 {
-                    updatedHitObject.X = newPos.X;
-                    updatedHitObject.Y = newPos.Y;
+                    newPos = newPos - new Vector2i(pos.X - size.X / 2, pos.Y - size.Y / 2);
+                    newPos = new Vector2i((int)(newPos.X / scale), (int)(newPos.Y / scale));
+                    updatedHitObject.Position = newPos;
                 }
             }
         }
