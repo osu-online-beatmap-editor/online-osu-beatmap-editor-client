@@ -57,6 +57,8 @@ namespace online_osu_beatmap_editor_client.Engine.Beatmap
 
             segments[current++]([.. segment]);
 
+            BeatmapData.MapHitObjects();
+
             Console.WriteLine("a");
         }
 

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel;
+using System.Collections;
 
 namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
 {
@@ -31,6 +32,25 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
             }
         }
 
+        public static void MapHitObjects ()
+        {
+            var sortedEntries = hitObjects.OrderBy(entry => entry.Key).ToList();
+            int distance = 0;
+
+            foreach (var hitObjectList in sortedEntries)
+            {
+                for (int j = hitObjectList.Value.Count - 1; j >= 0; j--)
+                {
+                    distance += 1;
+                    if (hitObjectList.Value[j].IsNewCombo)
+                    {
+                        distance = 1;
+                    }
+                    hitObjectList.Value[j].Number = distance;
+                }
+            }
+        }
+
         public static void AppendHitObject (int time, HitObject hitObject)
         {
             List<HitObject> data;
@@ -43,6 +63,7 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
 
             data.Add(hitObject);
             hitObjects[time] = data;
+            MapHitObjects();
         }
 
         public static List<HitObject> GetHitObjectsInRange(int timeMin, int timeMax)
@@ -72,6 +93,32 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Beatmap
             }
 
             return null;
+        }
+
+        public static int DistanceToLastNewCombo(int time)
+        {
+            int distance = 0;
+
+            foreach (var hitObjectList in hitObjects)
+            {
+                for (int j = hitObjectList.Value.Count - 1; j >= 0; j--)
+                {
+                    if (hitObjectList.Value[j].Time <= time)
+                    {
+                        distance += 1;
+                        if (hitObjectList.Value[j].IsNewCombo)
+                        {
+                            distance = 1;
+                        }
+                    }
+                    else
+                    {
+                        return distance;
+                    }
+                }
+            }
+
+            return distance;
         }
     }
 }

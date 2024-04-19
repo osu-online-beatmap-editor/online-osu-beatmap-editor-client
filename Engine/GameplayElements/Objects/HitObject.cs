@@ -37,6 +37,7 @@ namespace online_osu_beatmap_editor_client.Engine.GameplayElements.Objects
             SliderParameters = sliderParams;
         }
 
+        public int Number;
         public int Id;
 
         /// <summary>
