@@ -137,6 +137,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
         private void HandleTimeChange()
         {
             PrepareCirclesToRender();
+            UpdateCirclePreviewNumberAndColor();
         }
 
         private void HandleHitObjectsChange()
@@ -304,12 +305,12 @@ namespace online_osu_beatmap_editor_client.views.Editor
             if (isNewCombo)
             {
                 circlePreview.color = GetCircleColor(isNewCombo);
-                circlePreview.number = GetCircleNumber(true);
+                circlePreview.number = 1;
                 return;
             }
 
             circlePreview.color = colors[currentColor];
-            circlePreview.number = GetCircleNumber();
+            circlePreview.number = BeatmapData.DistanceToLastNewCombo(EditorData.currentTime) + 1;
         }
 
         private void UpdateCirclePreviewPos()
@@ -349,7 +350,7 @@ namespace online_osu_beatmap_editor_client.views.Editor
             {
                 Vector2i calcPos = new Vector2i((int)(hitObject.Position.X * scale), (int)(hitObject.Position.Y * scale)) + new Vector2i(pos.X - size.X / 2, pos.Y - size.Y / 2);
 
-                HitCircle circle = new HitCircle(calcPos, 1, GetCircleSize(), Color.Red)
+                HitCircle circle = new HitCircle(calcPos, hitObject.Number, GetCircleSize(), Color.Red)
                 {
                     id = hitObject.Id,
                     StartTime = hitObject.Time
@@ -373,12 +374,13 @@ namespace online_osu_beatmap_editor_client.views.Editor
 
             HitObject newHitObject = new HitObject(newHitCirclePos, EditorData.currentTime, ObjectType.CIRCLE);
             newHitObject.Id = circleIndex;
+            newHitObject.IsNewCombo = EditorData.isNewComboActive;
 
             BeatmapData.AppendHitObject(EditorData.currentTime, newHitObject);
             EditorData.isNewComboActive = false;
             IncreateCircleIndex();
-            UpdateCirclePreviewNumberAndColor();
             PrepareCirclesToRender();
+            UpdateCirclePreviewNumberAndColor();
         }
 
         private void SelectTool(Vector2i clickPoint)
