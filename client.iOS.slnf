@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "path": "client.sln",
+    "projects": [
+      "client.Game\\client.Game.csproj",
+      "client.Resources\\client.Resources.csproj",
+      "client.iOS\\client.iOS.csproj"
+    ]
+  }
+}
