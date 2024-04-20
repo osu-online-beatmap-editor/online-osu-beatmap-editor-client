@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using client.Game.Core.Data;
 using client.Game.Graphics.UserInterface;
+using client.Game.Resources;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -49,13 +50,14 @@ namespace client.Game.Interfaces.Editor.Components
             setupEvents();
         }
 
-        private IconButton createButton(int index, bool isActive)
+        private IconButton createButton(int index, string icon, bool isActive)
         {
             IconButton button = new IconButton
             {
                 Y = getPositionY(index),
                 Origin = Anchor.TopLeft,
-                IsActive = isActive
+                IsActive = isActive,
+                Icon = icon,
             };
             container.Add(button);
             return button;
@@ -68,7 +70,8 @@ namespace client.Game.Interfaces.Editor.Components
             foreach (EditorTools buttonTool in Enum.GetValues(typeof(EditorTools)))
             {
                 bool isActive = EditorData.IsToolActive(buttonTool);
-                IconButton button = createButton(buttonIndex, isActive);
+                string icon = IconsMapper.GetEditorToolIcon(buttonTool);
+                IconButton button = createButton(buttonIndex, icon, isActive);
 
                 toolButtons.Add(buttonTool, button);
                 buttonIndex++;
@@ -77,7 +80,8 @@ namespace client.Game.Interfaces.Editor.Components
             foreach (EditorToggleButtons buttonEnum in Enum.GetValues(typeof(EditorToggleButtons)))
             {
                 bool isActive = EditorData.GetToggleButtonState(buttonEnum);
-                IconButton button = createButton(buttonIndex, isActive);
+                string icon = IconsMapper.GetEditorToggleIcon(buttonEnum);
+                IconButton button = createButton(buttonIndex, icon, isActive);
               
                 toggleButtons.Add(buttonEnum, button);
                 buttonIndex++;

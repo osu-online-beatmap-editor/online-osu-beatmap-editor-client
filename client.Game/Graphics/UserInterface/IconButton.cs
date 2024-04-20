@@ -18,7 +18,7 @@ namespace client.Game.Graphics.UserInterface
     {
         private Container buttonContainer;
         private Box box;
-
+        public string Icon;
         private bool _IsActive = false;
 
         public bool IsActive
@@ -56,10 +56,10 @@ namespace client.Game.Graphics.UserInterface
                     },
                     new Sprite
                     {
-                        Width = 70,
-                        Height = 70,
+                        Width = 50,
+                        Height = 50,
                         Origin = Anchor.Centre,
-                        Texture = textures.Get("logo")
+                        Texture = textures.Get(Icon)
                     },
                 }
             };
