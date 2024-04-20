@@ -34,6 +34,7 @@ namespace client.Game.Interfaces.Editor.Components
             {
                 Y = gap,
                 X = gap,
+                RelativeSizeAxes = Axes.Y,
                 Children = new Drawable[]
                 {
                     new Box
@@ -42,7 +43,7 @@ namespace client.Game.Interfaces.Editor.Components
                         Y = -gap,
                         Origin = Anchor.TopLeft,
                         Width = buttonSize + gap * 2,
-                        Height = 1080,
+                        RelativeSizeAxes = Axes.Y,
                         Colour = Styles.BACKGROUND_SECONDARY_COLOR,
                     },
                 }
