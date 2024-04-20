@@ -46,7 +46,7 @@ namespace client.Game
         protected override void LoadComplete()
         {
             base.LoadComplete();
-            box.Loop(b => b.RotateTo(0).RotateTo(360, 2500));
+            //box.Loop(b => b.RotateTo(0).RotateTo(360, 2500));
         }
     }
 }

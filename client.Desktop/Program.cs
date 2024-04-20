@@ -1,6 +1,7 @@
 ﻿using osu.Framework.Platform;
 using osu.Framework;
 using client.Game;
+using System.Diagnostics;
 
 namespace client.Desktop
 {

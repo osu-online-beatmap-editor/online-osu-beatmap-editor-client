@@ -1,4 +1,5 @@
-﻿using osu.Framework.Allocation;
+﻿using client.Game.Interfaces.Editor;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Screens;
 
@@ -20,7 +21,7 @@ namespace client.Game
         {
             base.LoadComplete();
 
-            screenStack.Push(new MainScreen());
+            screenStack.Push(new EditorScreen());
         }
     }
 }
