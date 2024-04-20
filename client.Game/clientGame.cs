@@ -1,7 +1,10 @@
-﻿using client.Game.Interfaces.Editor;
+﻿using client.Game.Core.Shortcuts;
+using client.Game.Interfaces.Editor;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Input.Events;
 using osu.Framework.Screens;
+using osuTK.Input;
 
 namespace client.Game
 {
@@ -22,6 +25,14 @@ namespace client.Game
             base.LoadComplete();
 
             screenStack.Push(new EditorScreen());
+        }
+
+        protected override bool OnKeyDown(KeyDownEvent e)
+        {
+            if (EditorShortcuts.OnKeyDown(e))
+                return true;
+
+            return base.OnKeyDown(e);
         }
     }
 }
