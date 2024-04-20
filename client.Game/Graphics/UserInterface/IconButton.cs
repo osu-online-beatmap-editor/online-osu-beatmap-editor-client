@@ -52,7 +52,7 @@ namespace client.Game.Graphics.UserInterface
                         Width = 70,
                         Height = 70,
                         Origin = Anchor.Centre,
-                        Colour = Colour4.Blue,
+                        Colour = IsActive ? Colour4.Blue : Colour4.Red,
                     },
                     new Sprite
                     {

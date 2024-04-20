@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using client.Game.Config;
+using client.Game.Core.Data;
 using client.Game.Graphics.UserInterface;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -21,6 +23,9 @@ namespace client.Game.Interfaces.Editor.Components
         private int gap = 5;
 
         private IconButton buttonSelect;
+        private IconButton buttonCircle;
+        private IconButton buttonSlider;
+        private IconButton buttonSpinner;
 
         private bool isSelectSelected = false;
 
@@ -51,22 +56,25 @@ namespace client.Game.Interfaces.Editor.Components
                     {
                         Y = getPositionY(0),
                         Origin = Anchor.TopLeft,
-                        IsActive = isSelectSelected,
+                        IsActive = EditorData.IsToolActive(EditorTools.SELECT),
                     },
-                    new IconButton
+                    buttonCircle = new IconButton
                     {
                         Y = getPositionY(1),
-                        Origin = Anchor.TopLeft
+                        Origin = Anchor.TopLeft,
+                        IsActive = EditorData.IsToolActive(EditorTools.CIRCLE),
                     },
-                    new IconButton
+                    buttonSlider = new IconButton
                     {
                         Y = getPositionY(2),
-                        Origin = Anchor.TopLeft
+                        Origin = Anchor.TopLeft,
+                        IsActive = EditorData.IsToolActive(EditorTools.SLIDER),
                     },
-                    new IconButton
+                    buttonSpinner = new IconButton
                     {
                         Y = getPositionY(3),
-                        Origin = Anchor.TopLeft
+                        Origin = Anchor.TopLeft,
+                        IsActive = EditorData.IsToolActive(EditorTools.SPINNER),
                     },
 
                     new IconButton
@@ -99,14 +107,25 @@ namespace client.Game.Interfaces.Editor.Components
             setupEvents();
         }
 
-
         private void setupEvents ()
         {
-            buttonSelect.Action += () =>
+            var buttonToolMap = new Dictionary<IconButton, EditorTools>
             {
-                isSelectSelected = !isSelectSelected;
-                buttonSelect.IsActive = isSelectSelected;
+                { buttonSelect, EditorTools.SELECT },
+                { buttonCircle, EditorTools.CIRCLE },
+                { buttonSlider, EditorTools.SLIDER },
+                { buttonSpinner, EditorTools.SPINNER }
             };
+            foreach (var entry in buttonToolMap)
+            {
+                var button = entry.Key;
+                var tool = entry.Value;
+                button.Action = () => EditorData.CurrentTool = tool;
+                EditorData.CurrentToolChanged += (s, e) =>
+                {
+                    button.IsActive = EditorData.IsToolActive(tool);
+                };
+            }
         }
     }
 }
