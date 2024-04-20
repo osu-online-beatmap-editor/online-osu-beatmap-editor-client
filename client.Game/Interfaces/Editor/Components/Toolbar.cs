@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using client.Game.Config;
 using client.Game.Core.Data;
 using client.Game.Graphics.UserInterface;
 using client.Game.Resources;
@@ -15,8 +16,8 @@ namespace client.Game.Interfaces.Editor.Components
     {
         private Container container;
 
-        private int buttonSize = 70;
-        private int gap = 5;
+        private int buttonSize = Styles.TOOLBAR_BUTTON_SIZE;
+        private int gap = 10;
 
         private Dictionary<EditorTools, IconButton> toolButtons = new();
         private Dictionary<EditorToggleButtons, IconButton> toggleButtons = new();
@@ -42,7 +43,7 @@ namespace client.Game.Interfaces.Editor.Components
                         Origin = Anchor.TopLeft,
                         Width = buttonSize + gap * 2,
                         Height = 1080,
-                        Colour = Colour4.Brown,
+                        Colour = Styles.BACKGROUND_SECONDARY_COLOR,
                     },
                 }
             };

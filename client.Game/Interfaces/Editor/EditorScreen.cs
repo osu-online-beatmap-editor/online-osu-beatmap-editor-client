@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using client.Game.Config;
 using client.Game.Graphics.UserInterface;
 using client.Game.Interfaces.Editor.Components;
 using osu.Framework.Allocation;
@@ -22,7 +23,7 @@ namespace client.Game.Interfaces.Editor
             {
                 new Box
                 {
-                    Colour = Color4.Violet,
+                    Colour = Styles.BACKGROUND_COLOR,
                     RelativeSizeAxes = Axes.Both,
                 },
                 new Toolbar()

@@ -42,33 +42,43 @@ namespace client.Game.Graphics.UserInterface
         {
             InternalChild = buttonContainer = new Container
             {
-                AutoSizeAxes = Axes.Both,
+                Width = Styles.TOOLBAR_BUTTON_SIZE,
+                Height = Styles.TOOLBAR_BUTTON_SIZE,
+                Masking = true,
+                CornerRadius = Styles.CORNER_RADIUS_DEFAULT,
                 Anchor = Anchor.Centre,
-                Origin = Anchor.TopLeft,
+                Origin = Anchor.Centre,
                 Children = new Drawable[]
                 {
                     box = new Box
                     {
-                        Width = 70,
-                        Height = 70,
+                        Width = Styles.TOOLBAR_BUTTON_SIZE,
+                        Height = Styles.TOOLBAR_BUTTON_SIZE,
                         Origin = Anchor.Centre,
-                        Colour = IsActive ? Colour4.Blue : Colour4.Red,
+                        Anchor = Anchor.Centre,
                     },
                     new Sprite
                     {
-                        Width = 50,
-                        Height = 50,
+                        Width = getIconSize(),
+                        Height = getIconSize(),
                         Origin = Anchor.Centre,
+                        Anchor = Anchor.Centre,
                         Texture = textures.Get(Icon)
                     },
                 }
             };
+            UpdateButton();
+        }
+
+        private int getIconSize()
+        {
+            return Styles.TOOLBAR_BUTTON_SIZE - 20;
         }
 
         public void UpdateButton()
         {
             if (box != null) {
-                box.Colour = IsActive ? Colour4.Blue : Colour4.Red;
+                box.Colour = Styles.GetButtonColor(IsActive);
             }
         }
     }
