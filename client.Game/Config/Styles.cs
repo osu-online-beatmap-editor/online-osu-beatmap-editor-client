@@ -14,6 +14,7 @@ namespace client.Game.Config
         public static readonly int CORNER_RADIUS_DEFAULT = 10;
 
         public static readonly int TOOLBAR_BUTTON_SIZE = 70;
+        public static readonly int TOOLBAR_GAP = 10;
 
         public static Color4 GetButtonColor(bool isActive)
         {

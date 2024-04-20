@@ -30,6 +30,8 @@ namespace client.Game.Interfaces.Editor.Components
         [BackgroundDependencyLoader]
         private void load(TextureStore textures)
         {
+            RelativeSizeAxes = Axes.Y;
+            Width = buttonSize + gap * 2;
             InternalChild = container = new Container
             {
                 Y = gap,
