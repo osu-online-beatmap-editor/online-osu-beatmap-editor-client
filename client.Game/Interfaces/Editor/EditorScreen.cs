@@ -1,13 +1,19 @@
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using client.Game.Graphics.UserInterface;
+using client.Game.Interfaces.Editor.Components;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Rendering.Vertices;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
 using osuTK.Graphics;
 
-namespace client.Game
+namespace client.Game.Interfaces.Editor
 {
-    public partial class MainScreen : Screen
+    public partial class EditorScreen : Screen
     {
         [BackgroundDependencyLoader]
         private void load()
@@ -19,18 +25,7 @@ namespace client.Game
                     Colour = Color4.Violet,
                     RelativeSizeAxes = Axes.Both,
                 },
-                new SpriteText
-                {
-                    Y = 20,
-                    Text = "Main Screen",
-                    Anchor = Anchor.TopCentre,
-                    Origin = Anchor.TopCentre,
-                    Font = FontUsage.Default.With(size: 40)
-                },
-                new SpinningBox
-                {
-                    Anchor = Anchor.Centre,
-                }
+                new Toolbar()
             };
         }
     }

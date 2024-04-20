@@ -8,4 +8,8 @@
   <ItemGroup>
     <PackageReference Include="ppy.osu.Framework" Version="2024.419.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Graphics\Base\" />
+    <Folder Include="Graphics\Containers\" />
+  </ItemGroup>
 </Project>
