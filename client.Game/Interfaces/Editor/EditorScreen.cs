@@ -3,11 +3,8 @@ using client.Game.Interfaces.Editor.Components;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Cursor;
 using osu.Framework.Graphics.Shapes;
-using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Screens;
-using osuTK.Graphics;
 
 namespace client.Game.Interfaces.Editor
 {
@@ -37,15 +34,15 @@ namespace client.Game.Interfaces.Editor
                             Margin = new MarginPadding { Left = Styles.TOOLBAR_GAP * 2 + Styles.TOOLBAR_BUTTON_SIZE },
                             Children = new Drawable[]
                             {
-                                new NavBar(),
-                                new Timeline {
-                                    Y = 50, // Height of navbar
-                                },
                                 new Container
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Margin = new MarginPadding { Top = 50 + 75 }, // Height of navbar and timeline combined
+                                    Margin = new MarginPadding { Top = 30 + 75 }, // Height of navbar and timeline combined
                                 },
+                                new Timeline {
+                                    Y = 30, // Height of navbar
+                                },
+                                new NavBar(),
                                 new BottomBar(),
                             }
                         }

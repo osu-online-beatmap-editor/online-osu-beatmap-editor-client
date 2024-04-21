@@ -1,4 +1,5 @@
 ﻿using client.Game.Config;
+using client.Game.Graphics.UserInterface;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -9,6 +10,9 @@ namespace client.Game.Interfaces.Editor.Components
 {
     public partial class NavBar : CompositeDrawable
     {
+        private NavButton buttonFile;
+        private NavButton buttonEdit;
+        private NavButton buttonView;
 
         public NavBar() {
             
@@ -18,7 +22,7 @@ namespace client.Game.Interfaces.Editor.Components
         private void load(TextureStore textures)
         {
             RelativeSizeAxes = Axes.X;
-            Height = 50;
+            Height = 30;
             InternalChild = new Container
             {
                 RelativeSizeAxes = Axes.Both,
@@ -28,9 +32,28 @@ namespace client.Game.Interfaces.Editor.Components
                     {
                         RelativeSizeAxes = Axes.Both,
                         Colour = Styles.BACKGROUND_SECONDARY_COLOR,
-                    }
+                    },
                 }
             };
+            buttonFile = new NavButton
+            {
+                Label = "File"
+            };
+            AddInternal(buttonFile);
+
+            buttonEdit = new NavButton
+            {
+                Label = "Edit",
+                X = buttonFile.X + buttonFile.Width,
+            };
+            AddInternal(buttonEdit);
+
+            buttonView = new NavButton
+            {
+                Label = "View",
+                X = buttonEdit.X + buttonEdit.Width,
+            };
+            AddInternal(buttonView);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace client.Game.Graphics.UserInterface
             }
         }
 
-        public IconButton(bool test = false)
+        public IconButton()
         {
             AutoSizeAxes = Axes.Both;
             Origin = Anchor.Centre;
