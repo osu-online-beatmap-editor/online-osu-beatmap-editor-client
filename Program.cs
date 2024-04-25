@@ -43,7 +43,7 @@ namespace online_osu_beatmap_editor_client
                 app.DispatchEvents();
 
                 app.Clear(windowColor);
-
+                
                 view.Draw();
                 view.Update();
 

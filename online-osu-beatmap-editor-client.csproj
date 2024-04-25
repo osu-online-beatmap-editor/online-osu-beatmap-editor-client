@@ -1,17 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{423AC362-47D7-4647-99E3-FF5DF8B83ED9}</ProjectGuid>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>online_osu_beatmap_editor_client</RootNamespace>
-    <AssemblyName>online-osu-beatmap-editor-client</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,31 +18,16 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>online_osu_beatmap_editor_client.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <LangVersion>preview</LangVersion>
+    <LangVersion>12.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="sfml-audio">
@@ -66,71 +42,6 @@
     <Reference Include="sfml-window">
       <HintPath>.\sfml-window.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="common\BaseUIComponent.cs" />
-    <Compile Include="common\BaseView.cs" />
-    <Compile Include="common\ClickableUIObject.cs" />
-    <Compile Include="common\UIImage.cs" />
-    <Compile Include="common\UIRectangle.cs" />
-    <Compile Include="common\UIText.cs" />
-    <Compile Include="common\Utils.cs" />
-    <Compile Include="components\Background\UIBackground.cs" />
-    <Compile Include="components\ButtonIcon\UIButtonIcon.cs" />
-    <Compile Include="components\HitCircle\HitCircle.cs" />
-    <Compile Include="components\SelectionOutline\SelectionOutline.cs" />
-    <Compile Include="components\Slider\UISlider.cs" />
-    <Compile Include="components\Spacer\UISpacer.cs" />
-    <Compile Include="components\UIButtonLabel\UIButtonLabel.cs" />
-    <Compile Include="components\UIContainer\UIContainer.cs" />
-    <Compile Include="config\AppConfig.cs" />
-    <Compile Include="config\AppConfigParser.cs" />
-    <Compile Include="config\StyleVariables.cs" />
-    <Compile Include="Engine\Beatmap\BeatmapLoader.cs" />
-    <Compile Include="Engine\Beatmap\BeatmapParser.cs" />
-    <Compile Include="Engine\GameplayElements\Audio\HitSample.cs" />
-    <Compile Include="Engine\Beatmap\BeatmapData.cs" />
-    <Compile Include="Engine\GameplayElements\Beatmap\Difficulty.cs" />
-    <Compile Include="Engine\GameplayElements\Beatmap\Editor.cs" />
-    <Compile Include="Engine\GameplayElements\Beatmap\Events.cs" />
-    <Compile Include="Engine\GameplayElements\Beatmap\General.cs" />
-    <Compile Include="Engine\GameplayElements\Beatmap\Metadata.cs" />
-    <Compile Include="Engine\GameplayElements\Colours\Colour.cs" />
-    <Compile Include="Engine\GameplayElements\Objects\HitObject.cs" />
-    <Compile Include="common\ShortcutManager.cs" />
-    <Compile Include="Engine\GameplayElements\Objects\CurvePoint.cs" />
-    <Compile Include="Engine\GameplayElements\Timing\BreakPeriod.cs" />
-    <Compile Include="Engine\GameplayElements\Timing\TimingPoint.cs" />
-    <Compile Include="Engine\OsuMath.cs" />
-    <Compile Include="Engine\TimeConverter.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="views\Editor\EditorData.cs" />
-    <Compile Include="views\Editor\EditorDetailsBar.cs" />
-    <Compile Include="views\Editor\EditorField.cs" />
-    <Compile Include="views\Editor\EditorGridType.cs" />
-    <Compile Include="views\Editor\EditorHelper.cs" />
-    <Compile Include="views\Editor\EditorNavBar.cs" />
-    <Compile Include="views\Editor\EditorNavTab.cs" />
-    <Compile Include="views\Editor\EditorShortcuts.cs" />
-    <Compile Include="views\Editor\EditorTimeline.cs" />
-    <Compile Include="views\Editor\EditorToolBar.cs" />
-    <Compile Include="views\Editor\EditorTools.cs" />
-    <Compile Include="views\Editor\EditorView.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\baseSkin\approachcircle.png">
@@ -214,6 +125,41 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Engine\Sliders\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="NAudio.Core" Version="2.2.1" />
+    <PackageReference Include="NAudio.Midi" Version="2.2.1" />
+    <PackageReference Include="NAudio.Vorbis" Version="1.5.0" />
+    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
+    <PackageReference Include="NLayer" Version="1.15.0" />
+    <PackageReference Include="NLayer.NAudioSupport" Version="1.4.0" />
+    <PackageReference Include="NVorbis" Version="0.10.5" />
+    <PackageReference Include="OggVorbisEncoder" Version="1.2.2" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="8.0.0" />
+    <PackageReference Include="System.Console" Version="4.3.1" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Net.Primitives" Version="4.3.1" />
+    <PackageReference Include="System.Runtime" Version="4.3.1" />
+    <PackageReference Include="System.Runtime.Extensions" Version="4.3.1" />
+    <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+    <PackageReference Include="Microsoft.NETCore.Platforms" Version="8.0.0-preview.7.23375.6" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.1" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
+    <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" />
+    <PackageReference Include="System.Text.Json" Version="8.0.3" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+    <PackageReference Include="System.Xml.ReaderWriter" Version="4.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Engine\GameplayElements\DifficultySettings.cs" />
+    <Compile Remove="Engine\GameplayElements\Objects\HitCircle.cs" />
+    <Compile Remove="Engine\Sliders\OsuSliderCurves.cs" />
+  </ItemGroup>
 </Project>

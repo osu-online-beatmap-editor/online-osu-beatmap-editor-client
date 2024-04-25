@@ -21,10 +21,8 @@ namespace online_osu_beatmap_editor_client.Engine
         }
 
         // THERE'S NO FUCKING CLAMP FUNCTION IN .NET FRAMEWORK
-        public static int Clamp(int value, int min, int max)
-        {
-            return (value < min) ? min : (value > max) ? max : value;
-        }
+        public static int Clamp(int value, int min, int max) => (value < min) ? min : (value > max) ? max : value; 
+        public static float Clamp(float value, float min, float max) => (value < min) ? min : (value > max) ? max : value; 
 
         public static float GetDistanceBetweenWhiteTimingTicks(float bpm)
         {
@@ -38,6 +36,7 @@ namespace online_osu_beatmap_editor_client.Engine
         }
 
         public static double Lerp(double a, double b, double t) => t < 0 ? a : (t > 1 ? b : a + (b - a) * t);
+        public static float Lerp(float a, float b, float t) => t < 0 ? a : (t > 1 ? b : a + (b - a) * t);
 
         public static double RemapNumbers(double x, double x_min, double x_max, double y_min, double y_max)
         {
